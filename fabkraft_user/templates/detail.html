@@ -1,0 +1,916 @@
+{% extends 'base/base.html' %} {%load static%} {% block title %} Buy2Sell {% endblock %} {% block content %}
+
+<style>
+  .rate {
+      float: left;
+      height: 46px;
+      padding: 0 10px;
+  }
+  
+  .rate:not(:checked)>input {
+  display: none;
+  }
+  
+  .rate:not(:checked)>label {
+      float: right;
+      width: 1em;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+      font-size: 30px;
+      color: #ccc;
+  }
+  
+  .rate:not(:checked)>label:before {
+      content: '★ ';
+  }
+  
+  .rate>input:checked~label {
+      color: #ffc700;
+  }
+  
+  .rate:not(:checked)>label:hover,
+  .rate:not(:checked)>label:hover~label {
+      color: #deb217;
+  }
+  
+  .rate>input:checked+label:hover,
+  .rate>input:checked+label:hover~label,
+  .rate>input:checked~label:hover,
+  .rate>input:checked~label:hover~label,
+  .rate>label:hover~input:checked~label {
+      color: #c59b08;
+  }
+.card{
+    margin-top: 40px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+  .card-wrapper{
+      margin: 0 auto;
+      background: white;
+  }
+
+  .product-imgs{
+      /* width: 300px;
+      display: block; */
+      margin-left: 5px;
+  }
+
+  .img-display{
+      overflow: hidden;
+padding: 10px;  }
+
+  .img-showcase img{
+      min-width: 100%;
+      
+  }
+
+.img-select {
+  padding: 10px;
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent wrapping of items to next line */
+}
+
+.img-item {
+  padding: 10px;
+    flex: 0 0 auto; /* Allow items to grow and shrink, but do not specify initial size */
+    margin-right: 10px; /* Add some spacing between items */
+}
+
+.img-item:last-child {
+    margin-right: 0; /* Remove margin from the last item to prevent unnecessary space */
+}
+
+.img-item img {
+    display: block; /* Ensure images are displayed as block elements */
+}
+
+  .img-item:nth-child(1),
+  .img-item:nth-child(2),
+  .img-item:nth-child(3){
+      margin-right: 0;
+  }
+
+  .img-item:hover{
+      opacity: 0.8;
+  }
+
+  .product-content{
+    padding: 4rem 2rem;
+    margin-top: 0px;
+  }
+
+  .product-title{
+      font-size: 3rem;
+      text-transform: capitalize;
+      font-weight: 700;
+      position: relative;
+      color: #12263a;
+      margin: 1rem 0;
+  }
+
+  .product-link{
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 400;
+      font-size: 0.9rem;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      background: #256eff;
+      color: #fff;
+      padding: 0 0.3rem;
+      transition: all 0.5s ease;
+  }
+
+  .product-link:hover{
+      opacity: 0.9;
+  }
+
+  .product-rating span{
+      font-weight: 600;
+      color: gold;
+
+  }
+
+  .product-price{
+      margin: 1rem 0;
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+  }
+  .product-price p {
+    margin-right: 1rem; /* Adjust the value as needed */
+}
+
+
+  .last-price span{
+      color: #f64749;
+      text-decoration: line-through;
+  }
+
+  .new-price span{
+      color: #256eff;
+  }
+
+  .product-detail h2{
+      text-transform: capitalize;
+      color: #12263a;
+      padding-bottom: 0.6rem;
+  }
+
+  .product-detail pre{
+      font-size: 0.9rem;
+      padding: 0.3rem;
+      opacity: 0.8;
+      white-space: pre-wrap;
+  }
+
+  .product-detail ul li{
+      background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
+      background-size: 18px;
+      padding-left: 1.7rem;
+      margin: 0.4rem 0;
+      font-weight: 600;
+      opacity: 0.9;
+  }
+
+  .product-detail ul li span{
+      font-weight: 400;
+  }
+
+
+  .purchase-info{
+      margin: 1.5rem 0;
+  }
+
+  .purchase-info input,
+  .purchase-info .btn{
+      border: 1.5px solid #ddd;
+      border-radius: 25px;
+      text-align: center;
+      padding: 0.45rem 0.8rem;
+      outline: 0;
+      margin-right: 0.2rem;
+      margin-bottom: 1rem;
+  }
+
+  .purchase-info input{
+      width: 60px;
+  }
+
+  .purchase-info .btn{
+      cursor: pointer;
+      color: #fff;
+  }
+
+  .purchase-info .btn:first-of-type{
+      background: #ed7aa5;
+  }
+
+  .purchase-info .btn:last-of-type{
+      background: #ed7aa5;
+  }
+
+  .purchase-info .btn:hover{
+      opacity: 0.9;
+  }
+
+  .social-links a{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      color: #000;
+      border: 1px solid #000;
+      margin: 0 0.2rem;
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: all 0.5s ease;
+  }
+
+  .social-links a:hover{
+      background: #000;
+      border-color: transparent;
+      color: #fff;
+  }
+
+  @media screen and (min-width: 992px){
+      .card{
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+      }
+      .card-wrapper{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 1100px;
+      }
+      .product-imgs{
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-content: center;
+      }
+      .product-content{
+          padding-top: 0px;
+      }
+  }
+
+  .tab {
+      display: none;
+  }
+
+  .active {
+      display: block;
+  }
+
+  #tabs button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  }
+
+  #tabs button:hover {
+      background-color: #45a049;
+}
+
+#description, #reviews {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.stars {
+  margin-bottom: 10px;
+}
+
+.stars i {
+  color: #ccc;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.stars i.rated, .stars i:hover {
+  color: gold;
+}
+
+.review-container {
+  margin-bottom: 20px;
+}
+
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+form button[type="submit"] {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* Popup box styles */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+}
+
+.stars i {
+  cursor: pointer;
+}
+
+.stars .rated {
+  color: gold;
+}
+
+.hidden {
+  display: none;
+}
+.review-container {
+        height: 400px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .review {
+        margin-bottom: 10px;
+    }
+
+    .review-user {
+        font-weight: bold;
+    }
+
+    .review-rating {
+        color: #ffc107;
+    }
+
+    .review-comment {
+        color: #555;
+    }
+
+    .review-form input,
+    .review-form textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .review-form button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: #fff;
+        background-color: #007bff;
+        transition: background-color 0.3s ease;
+    }
+
+    .review-form button:hover {
+        background-color: #0056b3;
+    }
+
+
+
+    .section-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 24px;
+        color: #333;
+    }
+
+    .product_row {
+        display: flex;
+        flex-wrap: wrap;
+       
+    }
+
+    .product-grid {
+    background-color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    padding: 5px; /* Adjust padding */
+    margin: 0 auto 30px; /* Adjust margin */
+    max-width: 250px; /* Adjust max-width for smaller screens */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.product-grid .product-image {
+    position: relative;
+    overflow: hidden;
+    height: 200px; /* Set a fixed height for the product image container */
+}
+
+.product-grid .product-image img {
+    width: 96%;
+    height: 100%; /* Ensure the image fills the container */
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+    .product-grid .product-image .pic-1 {
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .product-image:hover .pic-1 {
+        transform: translateX(100%);
+    }
+
+    .product-grid .product-image .pic-2 {
+        width: 100%;
+        height: 100%;
+        transform: translateX(-101%);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .product-image:hover .pic-2 {
+        transform: translateX(0);
+    }
+
+    .product-grid .product-like-icon {
+        color: #000000;
+        font-size: 22px;
+        line-height: 20px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .product-grid .product-links {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid:hover .product-links {
+        bottom: 10px;
+        opacity: 1;
+    }
+
+    .product-grid .product-links li {
+        display: inline-block;
+        margin: 0 2px;
+    }
+
+    .product-grid .product-links li a {
+        display: block;
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #c8a59a;
+        border-radius: 10px;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid:hover .product-links li a:hover {
+        background-color: #333;
+    }
+
+    .product-grid .product-content {
+        padding: 15px 0 0;
+        text-align: left;
+    }
+
+    .product-grid .product-image img {
+        height: 400px; /* Set height for product image */
+        overflow: hidden; /* Hide overflow content */
+    }
+
+    .product-grid .title {
+        font-size: 14px;
+        font-weight: 500;
+        text-transform: capitalize;
+        margin: 0 0 8px;
+        overflow:hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; /* Limit product name to 2 lines */
+        line-height: 1.2em; /* Ensure consistent line height */
+        max-height: 2.4em; /* Set maximum height for 2 lines */
+        margin: 0 0 8px;
+        text-overflow: ellipsis;
+    }
+
+    .product-grid .title a {
+        color: #333;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .title a:hover {
+        color: #0a805e;
+    }
+
+
+
+    .product-grid .price {
+        color: #0a805e;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .product-grid .price span {
+        color: #555;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: line-through;
+        margin: 0 5px 0 0;
+    }
+
+    @media screen and (max-width: 1000px) {
+        .col-md-2 {
+        /* Adjust to display two products per row */
+        max-width: 50%; /* Adjust maximum width for smaller screens */
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+     pre{
+      font-size: 0.9rem;
+      padding: 0.3rem;
+      opacity: 0.8;
+      white-space: pre-wrap;
+  }
+
+    .product-grid {
+        padding: 5px; /* Reduce padding for product grid */
+        margin: 0 5px 10px; /* Adjust margin to reduce space between products */
+        max-width: 100%; /* Adjust max-width for smaller screens */
+    }
+    .product_row{
+        padding: 0px;
+        flex-wrap:wrap;
+
+    }
+        .product-grid .product-image {
+            height: 150px; /* Adjust height for product image */
+        }
+        .product-grid .product-content {
+            text-align: center; /* Center-align text */
+        }
+        .product-grid .title {
+            font-size: 14px; /* Adjust font size for product title */
+            margin-bottom: 5px; /* Add some space below product title */
+        }
+        .product-grid .price {
+            font-size: 14px; /* Adjust font size for product price */
+
+    }
+    .container {
+            margin: 0; /* Remove default margin for container */
+        }
+}
+h2 pre {
+    font-family: Poly, serif;
+      font-weight: 400;
+      font-style: normal;
+}
+</style>
+   <div class="container">
+    <!-- Products End -->
+    <div class = "card-wrapper">
+        <div class = "card">
+          <!-- card left -->
+          <div class = "product-imgs">
+            <div class = "img-display">
+
+              <div class = "img-showcase">
+                <img src = "/media/{{product_details.images_set.first.images}}" alt = "product image">
+
+              </div>
+            </div>
+            <div class="img-select">
+              {% for i in prod_image %}
+              <div class="img-item">
+                  <a href="#" data-id="{{ forloop.counter }}">
+                      <img src="/media/{{ i.images }}" alt="{{ i.product }}" style="width: 120px; height: 120px;">
+                  </a>
+              </div>
+              {% endfor %}
+          </div>
+          
+          
+          </div>
+          <!-- card right -->
+          <div class = "product-content">
+            <h2 class = "product-title" style="    font-family: Poly, serif;
+            font-weight: 400;
+            font-style: normal;">{{product_details.product_name}}</h2>
+            {% if product_details.is_deleted %}
+            Product is removed permanently
+            {% elif not product_details.is_active %}
+            Product is not available
+            {% else %}
+            <div class = "product-rating" >
+                {% for base in base_rate %}
+                {% if base <= overall_ratiing %}
+              <i class = "fas fa-star" style="color: gold;"></i>
+              {% else %}
+              <i class="far fa-star"></i>
+          {% endif %}
+      {% endfor %}
+            
+         
+              <span>({{review_count}} Reviews)</span>
+            </div>
+      
+   <div class = "product-price">
+              <p id="np" class = "new-price" ><span id="price" tyle="    font-family: Poly, serif;
+                font-weight: 400;
+                font-style: normal;">₹{{product_details.price}}</span></p>
+              <p id="lp" class = "last-price"><del tyle="    font-family: Poly, serif;
+                font-weight: 400;
+                font-style: normal;">₹{{product_details.max_price}}</del></p>
+            </div>         
+      
+            <div class = "product-detail">
+              <h2 style="    font-family: Poly, serif;
+              font-weight: 400;
+              font-style: normal;">about this item: </h2>
+              <pre style="    font-family: Poly, serif;
+              font-weight: 400;
+              font-style: normal;">{{product_details.description}}</pre>
+            </div>
+            
+            <div class = "purchase-info">
+              <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform" method="post">
+                {%csrf_token%}
+              {%if product_details.product_choices_set.all%}
+              <select name="verient" id="options">
+                {%for i in product_details.product_choices_set.all%}
+                  <option value="{{i.id}}" data-cost="{{i.options_cost}}">{{i.product_options}}</option>
+                {% endfor %}
+              </select> <br>
+                {%endif%}
+                <button type = "button"  class = "btn" onclick="checkout('addtocart')">Add to Cart <i class = "fas fa-shopping-cart"></i>
+                <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button>
+            </form>
+            </div>
+            {%endif%}
+          </div>
+        </div>
+      </div>
+
+ 
+      <div id="tabs">
+        <button onclick="openTab('description')">Description</button>
+        <button onclick="openTab('reviews')">Reviews({{review_count}})</button>
+      </div>
+    
+      <div id="description" class="tab active">
+        <!-- Description area -->
+        <h2 style="    font-family: Poly, serif;
+        font-weight: 400;
+        font-style: normal;">Product Description</h2>
+        <pre style="    font-family: Poly, serif;
+        font-weight: 400;
+        font-style: normal;">{{product_details.product_information}}</pre>
+      </div>
+    
+      <div id="reviews" class="tab">
+        <div class="product-review-section">
+            <div class="review-container" style="font-family: Poly, serif;
+            font-weight: 400;
+            font-style: normal;">
+              {% if review%}
+              {% for rv in review %}
+                <div class="review">
+                    <div class="review-user">{{ rv.user.user.username }}  {{ rv.date }}</div>
+                    <div class="review-rating">
+                    {% for base in base_rate %}
+                     
+                    {% if base <= rv.rate %}<i class="fas fa-star"></i>
+                    {% else %}
+                    <i class="far fa-star"></i> {% endif %} {% endfor %}
+                  </div>
+                    <div class="review-comment">{{ rv.commands }}
+                     
+                    </div>
+                </div>
+                {% endfor %}
+              {%else%}
+              <div class="review">
+                  <div class="review-comment">
+                   No reviews found
+                  </div>
+              </div>
+              {%endif%}
+            </div>
+        </div>
+      
+        <div class="review-form">
+            {% if review_right%} {% if is_reviewed %}
+            <h2>Edit a Review</h2>
+      
+            <form id="reviewForm" method="post" action="{% url 'edit_review' product_details.id %}">
+            {% csrf_token %}
+            
+                <select name="review_options" id="review_options">
+                  {% for i in review_options%}
+                              {%if edit_review.review_choice == i%}
+                                  <option value="{{i}}" selected>{{i}}</option>
+                              {%else%}
+                                  <option value="{{i}}">{{i}}</option>
+                              {%endif%}
+                  {%endfor%}
+              </select>
+                <br>
+                <div class="rate">
+                  <input type="radio" id="star5" name="rate" value="5" {% if edit_review.rate is 5 %} checked {% endif %}/>
+                  <label for="star5" title="text">5 stars</label>
+                  <input type="radio" id="star4" name="rate" value="4" {% if edit_review.rate is 4 %} checked {% endif %}/>
+                  <label for="star4" title="text">4 stars</label>
+                  <input type="radio" id="star3" name="rate" value="3" {% if edit_review.rate is 3 %} checked {% endif %}/>
+                  <label for="star3" title="text">3 stars</label>
+                  <input type="radio" id="star2" name="rate" value="2" {% if edit_review.rate is 2 %} checked {% endif %}/>
+                  <label for="star2" title="text">2 stars</label>
+                  <input type="radio" id="star1" name="rate" value="1" {% if edit_review.rate is 1 %} checked {% endif %}/>
+                  <label for="star1" title="text">1 star</label>
+              </div><br>
+                <textarea name="review" placeholder="Your Review" required>{{edit_review.commands}}</textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+            {%else%}
+            <h2>Add a Review</h2>
+      
+                <form id="reviewForm" method="post">
+                  {% csrf_token %}
+                  <select name="review_options" id="review_options">
+                    {% for i in review_options%}
+                                {%if edit_review.review_choice == i%}
+                                    <option value="{{i}}" selected>{{i}}</option>
+                                {%else%}
+                                    <option value="{{i}}">{{i}}</option>
+                                {%endif%}
+                    {%endfor%}
+                </select>
+                <br>
+                  <div class="rate">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="text">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="text">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" />
+                    <label for="star3" title="text">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="text">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" checked/>
+                    <label for="star1" title="text">1 star</label>
+                </div><br>
+                <textarea name="review" placeholder="Your Review" required></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+            {%endif%} 
+            {%endif%}
+      
+        </div>
+      </div>
+      
+      <div class="container" style="padding-left: 10px;">  
+        <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+          <h2 class="section-title" style="    font-family: Poly, serif;
+          font-weight: 400;
+          font-style: normal;">recommended products</h2>
+          <hr>
+      </div>
+        <div class="product_row">
+            {% for product in recomend %}
+            <div class="col-md-2">
+                <div class="product-grid">
+                    <div class="product-image">
+                        <a href="{% url 'product_details' product.id %}" class="image">
+                            <img class="pic-1" src="/media/{{ product.images_set.first.images }}" class="lazy">
+                            <img class="pic-2" src="/media/{{ product.images_set.first.images }}" class="lazy">
+                        </a>
+                        </a>
+                        <ul class="product-links">
+                            <li><a href="{% url 'add_to_cart' product.id %}"><i class="fas fa-shopping-cart"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="title"><a href="{% url 'product_details' product.id %}">{{ product.product_name }}</a></h3>
+                        <div class="price">{{ product.price }} <del style="color: #555;">{{ product.max_price }}</del> </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        function openTab(tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        document.getElementById(tabName).style.display = "block";
+    }
+    
+          // jQuery code for image slider, tabs, and review functionality
+          $(document).ready(function() {
+            $('.img-select a').click(function(event) {
+            event.preventDefault();
+            var imageUrl = $(this).find('img').attr('src');
+            $('.img-showcase img').attr('src', imageUrl);
+        });
+              $('[data-tab]').click(function() {
+                  var tabName = $(this).data('tab');
+                  $('.tab').hide();
+                  $('#' + tabName).show();
+              });
+          });
+          $(document).ready(function() {
+
+});
+
+      </script>
+      
+      <script>
+        function checkout(action) {
+            var form = document.getElementById('checkoutform');
+            if (action === 'addtocart') {
+                // Change the form action URL for action 1
+                form.action = "{% url 'add_to_cart' product_details.id %}";
+            } else if (action === 'checkout') {
+                // Change the form action URL for action 2
+                form.action = "{% url 'checkout_product' product_details.id %}";
+            }
+            // Submit the form
+            form.submit();
+        }
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#options').change(function(){
+                var selectedOption = $(this).find(":selected");
+                var cost = selectedOption.data('cost');
+                $('#price').text(cost);
+            });
+        });
+    </script>
+    
+  </div>
+</section>
+ {% endblock %}

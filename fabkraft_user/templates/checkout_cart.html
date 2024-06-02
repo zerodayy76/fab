@@ -1,0 +1,370 @@
+{% extends 'base/base.html' %} {%load static%} {% block title %} Buy2Sell {% endblock %} {% block content %}
+
+<style>
+    .billing_text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  margin: 0;
+  font-size: 16px;
+  color: #737373;
+}
+
+.yourCart_div {
+}
+
+.cart_img_content {
+}
+
+.food_img_price_des {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.food_img_price_des .cart_food_img {
+  width: 85px;
+  height: 51px;
+  overflow: hidden;
+  border: 1px solid #d4d4d491;
+  padding: 4px;
+}
+
+.food_img_price_des .cart_food_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.food_img_price_des .food_dec_flex {
+  margin-left: 2rem;
+}
+
+.food_img_price_des .food_dec_flex p {
+  color: #737373;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.food_img_price_des .food_dec_flex p:last-child {
+  color: red;
+}
+
+.yourCart_div {
+  border: 1px solid #d4d4d491;
+  padding: 19px;
+  margin-top: 2rem;
+}
+
+.cart_total {
+}
+
+.cart_total .price_total {
+  display: flex;
+  margin-bottom: 5px;
+  justify-content: space-between;
+}
+
+.cart_total .price_total p {
+  color: #737373;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.total_btn_cart {
+  width: 100%;
+  background: #ac1734 !important;
+  border-color: #ac1734 !important;
+  padding: 9px 19px !important;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  font-weight: 500;
+  border-style: unset;
+  font-family: "Montserrat", sans-serif;
+}
+
+.total_btn_cart:hover {
+  background-color: #ac1734 !important;
+  border-color: #ac1734 !important;
+}
+
+.cart_total {
+  border: 1px solid #d4d4d491;
+  padding: 8px 19px;
+  border-top: 0;
+}
+
+.input_form .input_box_cart input,
+.input_form .input_box_cart textarea {
+  width: 100%;
+  border: 1px solid #d4d4d491;
+  outline: none;
+  padding: 6px 10px;
+  font-weight: 600;
+  font-size: 13px;
+  resize: none;
+  font-family: "Montserrat", sans-serif;
+}
+
+.input_form .input_box_cart {
+  margin-bottom: 15px;
+}
+
+.mb_23px {
+  margin-bottom: 20px !important;
+}
+
+.text_center_button {
+  justify-content: center;
+}
+
+.input_form {
+  margin-top: 2rem;
+}
+
+.footer-parallax-container {
+  margin-bottom: 0 !important;
+  box-shadow: none;
+  min-height: auto !important;
+}
+
+.footer-parallax {
+  height: auto !important;
+  position: relative !important;
+  background-color: #f5f5f5 !important;
+  z-index: 1;
+}
+
+.section-bg-image_full_height {
+  background-image: url(../images/hd-8.png);
+  background-attachment: fixed;
+}
+
+.mt-12px {
+  margin-top: 12px !important;
+}
+
+.bg_green {
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+}
+
+.bg_green:hover {
+  background-color: #4caf50 !important;
+  border-color: #4caf50 !important;
+}
+
+button{
+  outline:none !important;
+}
+</style>
+
+
+
+  <!-- content -->
+  <form id="regForm" method="POST" action="{% url 'order' %}">
+    {% csrf_token %}
+  <div class="section-empty">
+    <div class="container content">
+      <div class="row">
+        <div class="col-md-7">
+          <p class="billing_text">Billing Address</p>
+          <div class="input_form">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input_box_cart">
+                    <label>First Name</label>
+                    <h5>{{user.first_name}}</h5>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input_box_cart">
+                    <label>Last Name</label>
+                    <h5>{{user.last_name}}</h5>
+                  </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input_box_cart">
+                    <label>Mobile No</label>
+                    <input class="form-control" type="text" id="phone" name="phone" value="{{userdata.phone_number}}" placeholder="+123 456 789">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input_box_cart">
+                    <label>E-mail</label>
+                    <input class="form-control" id="email" type="text" name="email" value="{{user.email}}" placeholder="example@email.com">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <div class="input_box_cart">
+                    <label>Country</label>
+                    <select class="custom-select">
+                        <option selected>India</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input_box_cart">
+                    <label>City</label>
+                    <input class="form-control" name="city" type="text" placeholder="City">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input_box_cart">
+                    <label>State</label>
+                    <input class="form-control" type="text" name="state" placeholder="State">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="input_box_cart">
+                    <label>PinCode</label>
+                    <input class="form-control" type="text" name="pincode" placeholder="Pincode">
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="input_box_cart">
+                  <textarea rows="4" name="address" placeholder="Full Address"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <button type="button" class="total_btn_cart text_center_button">
+            Place Order
+          </button>
+          <button id="rzpbutton1" type="submit" class="total_btn_cart text_center_button mt-12px bg_green"><i class="fas fa-money-bill"></i> pay with razorpay</button>
+        </div>
+        <div class="col-md-5">
+          <p class="billing_text">Your Cart</p>
+          <div class="yourCart_div">
+
+            <div class="cart_img_content">
+              {% for cart_item, quantity in cartdata %}   <!-- start -->
+                <div class="food_img_price_des">
+                  <div class="cart_food_img">
+                    <img src="https://www.greedygourmet.com/wp-content/uploads/2019/05/paneertikkatawa-683x1024.jpg">
+                  </div>
+                  <div class="food_dec_flex">
+                    <p>                    {{cart_item.products.product_name}}
+                    </p>
+                    <p><input type="text" class="price" value="{{cart_item.products.price}}"  hidden>{{cart_item.products.price}}</p>
+                    <input type="text" name="product_id" value="{{cart_item.products.id}}" hidden>
+                    {{cart_item.products.product_name}}
+                    <input type="number" style="width: 100px;" class="quantity" name="quantity" min="1" value="{{quantity}}" max="{{product.stock}}">
+                  </div>
+                </div>
+                <!-- end -->
+                <!-- start -->
+                
+                <!-- end -->
+                <!-- start -->
+                
+                <!-- end -->
+                {% endfor %}
+              </div>
+          </div>
+          <div class="cart_total">
+            <div class="price_total">
+              <p>Total</p>
+              <p>0</p>
+            </div>
+            <div class="price_total">
+              <p>Shipping</p>
+              <p>free</p>
+            </div>
+          </div>
+          <button type="button" class="total_btn_cart">
+            <span>Total</span>
+            <span>0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- end content -->
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+ $(document).ready(function () {
+    updateCart();
+    $('.quantity').on('input', updateCart);
+
+    function updateCart() {
+    var subtotal = 0;
+
+    $('.food_img_price_des').each(function () {
+        var priceStr = $(this).find('.price').val(); // Fetching price value as string
+        var price = parseFloat(priceStr); // Parsing price string to float
+        if (isNaN(price)) {
+            console.log("Invalid price:", priceStr);
+            return; // Skip to the next iteration
+        }
+
+        var quantityStr = $(this).find('.quantity').val(); // Fetching quantity value as string
+        var quantity = parseInt(quantityStr, 10); // Parsing quantity string to integer
+        if (isNaN(quantity)) {
+            console.log("Invalid quantity:", quantityStr);
+            return; // Skip to the next iteration
+        }
+
+        var total = price * quantity;
+        $(this).find('.total_price').text(total.toFixed(2));
+
+        subtotal += total;
+    });
+
+    $('.price_total p:last-child').text('₹' + subtotal.toFixed(2));
+    var shipping = 10; 
+    var total = subtotal + shipping;
+    $('.total_btn_cart span:last-child').text('₹' + total.toFixed(2));
+    $('#grand_total').val(total.toFixed(2));
+}
+});
+
+document.getElementById('rzpbutton').onclick = function (e) {
+    var total = $('#grand_total').val(); // Fetching latest total
+    var options = {
+        "key": "rzp_test_lCj0tCB2CJpRpz",
+        "amount": (total * 100),  // Razorpay amount is in paisa
+        "currency": "INR",
+        "description": "Acme Corp",
+        "image": "https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg",
+        "prefill": {
+            "email": $('#email').val(),
+            "contact": $('#phone').val(),
+        },
+        "handler": function (response) {
+            alert(response.razorpay_payment_id);
+        },
+        "modal": {
+            "ondismiss": function () {
+                if (confirm("Are you sure, you want to close the form?")) {
+                    console.log("Checkout form closed by the user");
+                } else {
+                    console.log("Complete the Payment");
+                }
+            }
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+{% endblock %}

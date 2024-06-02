@@ -1,0 +1,206 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+
+    <style>
+        /* Styles for the modal */
+        #cancelModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            text-align: center;
+        }
+
+        /* Styles for the overlay background */
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        label .input {
+            text-align: left;
+            align-items: left;
+        }
+
+        #textReason {
+            display: none;
+        }
+
+        .product-image {
+            width: auto; /* Set the desired width */
+            height: auto; /* Automatically adjust the height to maintain aspect ratio */
+            display: block; /* Ensure proper display as a block element */
+            margin: auto; /* Center the image horizontally */
+        }
+
+        /* Styles for the card layout */
+        .card {
+            margin-bottom: 30px;
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            max-height: 400px; /* Adjust the max height as needed */
+            overflow-x: hidden;
+        }
+
+
+        .column {
+            padding: 10px;
+        }
+
+        @media (min-width: 1000px) {
+            /* Desktop View */
+            .rowprod {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .product-details {
+                width: 50%;
+            }
+
+            .shipping-details {
+                width: 50%;
+            }
+            .product-image {
+            width: 10em; /* Set the desired width */
+            height: auto; /* Automatically adjust the height to maintain aspect ratio */
+            display: block; /* Ensure proper display as a block element */
+            margin: auto; /* Center the image horizontally */
+        }
+        }
+    </style>
+
+    <div class="container my-3">
+        <div class="card">
+            <div class="card-body">
+                <!-- Shopping Details -->
+                <div class="rowprod">
+                    <!-- Product Details -->
+                    <div class="column product-details scrollable">
+                        <!-- Order Products Cards -->
+                        {% for i in orderproducts %}
+                        <div class="card">
+                            <div class="rowprod g-0">
+                                <div class="col-md-4">
+                                    <img src="/media/{{ i.products.images_set.first.images }}" alt="product Image" class="card-img-top product-image">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{i.products.product_name}}</h5>
+                                        <p class="card-text">Price: {{i.product_price}}</p>
+                                        <pclass="card-text">Quantity: {{i.quantity}}</p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% endfor %}
+                    </div>
+                    <!-- Shipping Details -->
+                    <div class="column shipping-details">
+                        <!-- User Details Card -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Order details Details</h4>
+                                <hr>
+                                <label style="font-family: Poly, serif;" class="mt-2"><b>#{{order.id}}</label>
+                                <label style="font-family: Poly, serif;" class="mt-2"><b>Total</b>{{order.total_cost}}</label>
+                                <label style="font-family: Poly, serif;" class="mt-2"><b>Payment method : </b>{{order.payment_method}}</label>
+                                <label style="font-family: Poly, serif;" class="mt-2"><b>Payment id : </b>{{order.pay_id}}</label>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Shipping Details</h4>
+                                <hr>
+                                <label class="mt-2" style="font-family: Poly, serif;"><b> name : </b>{{order.name}}</label>
+                                <label class="mt-2" style="font-family: Poly, serif;"><b>Email : </b>{{order.email}}</label>
+                                <label class="mt-2" style="font-family: Poly, serif;"><b>Contact Number : </b>{{order.phno}}</label>
+                                <label class="mt-2" style="font-family: Poly, serif;"><b>Address</b></label>
+                                <div class="border p-1" style="font-family: Poly, serif;">
+                                    {{order.address}} <br>
+                                    {{order.city}} <br>
+                                    {{order.state}}
+                                </div>
+                                <label class="mt-2" style="font-family: Poly, serif;"><b>pincode : </b>{{order.pincode}}</label>
+                                <label class="mt-2" style="font-family: Poly, serif;"><b>status : </b>{{order.status}}</label>
+                                <div class="border p-1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if order.status != 'Delivered' and order.status != 'Cancelled' %}
+    <!-- Modal -->
+    <center><button id="openCancelModalBtn">cancel order</button></center>
+    <div id="cancelModal">
+        <h1>Cancel Order</h1>
+        <p>Why are you canceling your order?</p>
+        <form action="{% url 'cancel_order' order.id %}" method="post">
+            {% csrf_token %}
+            <label><input type="radio" name="cancelReason" class="cancelReason" value="not_interested"> Not Interested</label><br>
+            <label><input type="radio" name="cancelReason" class="cancelReason" value="found_better_price"> Found Better Price</label><br>
+            <label><input type="radio" name="cancelReason" class="cancelReason" value="changed_mind"> Changed Mind</label><br>
+            <label><input type="radio" name="cancelReason" class="cancelReason" value="other"> Others non mentioned</label>
+            <br>
+            <textarea type="text" id="textReason" name="cancelReasontxt" placeholder="Specify other reason"></textarea>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button id="closeCancelModalBtn" type="button" class="btn btn-secondary">Cancel</button>
+        </form>
+    </div>
+    {% endif %}
+    <!-- Overlay  ground -->
+    <div id="overlay"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            function openCancelModal() {
+                // Show the cancel modal and overlay
+                $('#cancelModal').css('display', 'block');
+                $('#overlay').css('display', 'block');
+            }
+
+            $('.cancelReason').change(function() {
+                if ($(this).val() === "other") {
+                    $('#textReason').css('display', 'block');
+                } else {
+                    $('#textReason').css('display', 'none');
+                }
+            });
+
+            function closeCancelModal() {
+                // Close the cancel modal and overlay
+                $('#cancelModal').css('display', 'none');
+                $('#overlay').css('display', 'none');
+            }
+
+            // Attach click event handlers
+            $('#openCancelModalBtn').click(openCancelModal);
+            $('#closeCancelModalBtn').click(closeCancelModal);
+        });
+    </script>
+
+</div>
+{% endblock %}

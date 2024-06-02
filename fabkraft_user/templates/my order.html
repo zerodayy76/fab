@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    /* Basic styling */
+    .card {
+        display: flex;
+        flex-wrap: wrap; /* Allow cards to wrap on smaller screens */
+        width: 60%; /* Adjust the width as needed */
+        max-width: 800px; /* Maximum width for the card */
+        margin: 0 auto; /* Center the card */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .left-side {
+        flex: 1;
+        overflow-y: auto;
+        max-height: 400px; /* Adjust as needed */
+    }
+    .right-side {
+        flex: 1;
+    }
+    .small-card {
+        display: flex;
+        margin-top: 5px;
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+    .small-card img {
+        width: 80px; /* Adjust as needed */
+        height: auto;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+    .small-card-text {
+        flex: 1;
+    }
+    @media screen and (max-width: 768px) {
+            .small-card {
+                width: 100%;
+                display: block;
+                padding-right: 10%;
+            }
+            .small-card img{
+                height: 80%;
+                width: 100%;
+            }
+            .card {
+                width: 90%; 
+                height: 60%;
+            }
+            .right-side {
+                padding-left: 0; /* Remove padding on smaller screens */
+                margin-top: 20px; /* Add margin between sections */
+        padding-left: 10px;
+
+            }
+            .small-card-text {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+   
+        }
+        .small-card-text p{
+            font-size: small;
+        }
+
+            .right-side p {
+                font-size: small;
+            }
+        }
+    /* Media queries for responsiveness
+    @media screen and (max-width: 768px) {
+        .small-card {
+            width: calc(100% - 20px);
+            margin-right: 0;
+            display: block;
+        }
+        .small-card-text {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        
+        .card {
+            width: 90%; 
+        }
+        .right-side {
+            padding-left: 0; 
+            margin-top: 20px; 
+        }
+    } */
+</style>
+
+{% for order in orders %}
+<div class="card">
+    <div class="left-side">
+        <!-- Scrollable area for small cards -->
+        {% for product in order.order_products_set.all %}    
+            <div class="small-card">
+                <img src="/media/{{product.products.images_set.first.images}}" alt="Image 1">
+                <div class="small-card-text">
+                    <p>{{product.products}}</p>
+                    <p>{{product.products.price}}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="right-side">
+        <!-- Information on the right side -->
+        <h2>{{order.id}}</h2>
+        <p>Order Date: {{ order.date }}</p>
+        <p>Status: {{ order.status }}</p>
+        <p>Net Amount: ₹{{ order.total_cost }}</p>
+        <a href="{% url 'order_details' order.id %}" class="btn btn-primary">View Details</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

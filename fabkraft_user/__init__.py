@@ -1,0 +1,1 @@
+default_app_config = 'fabkraft_user.apps.FabkraftUserConfig'

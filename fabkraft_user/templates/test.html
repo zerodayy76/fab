@@ -1,0 +1,80 @@
+<!-- images_set.first.imagess.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Images</title>
+</head>
+<body>
+    <h1>Product Images</h1>
+
+    <!-- Display existing images -->
+    <h2>Existing Images</h2>
+    <div id="existing-images">
+        {% for image in product.images_set.all %}
+            <div class="image-container">
+                <img src="{{ image.images.url }}" alt="Product Image" style="height: 100px;width: 100px;">
+                <button class="remove-image" data-image-id="{{ image.id }}">Remove</button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Add new image -->
+    <h2>Add New Image</h2>
+    <form id="add-image-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" id="image-input" name="image">
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+        // JavaScript for removing images
+        const removeButtons = document.querySelectorAll('.remove-image');
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const imageId = this.dataset.imageId;
+                if (confirm("Are you sure you want to remove this image?")) {
+                    fetch(`/seller/image/${imageId}/delete/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            this.parentNode.remove(); // Remove image container from DOM
+                        } else {
+                            alert("Failed to delete image");
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+            });
+        });
+
+        // JavaScript for adding images
+        const addImageForm = document.getElementById('add-image-form');
+        addImageForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch(this.action, {
+                method: this.method,
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Reload page to display newly added image
+                    window.location.reload();
+                } else {
+                    alert("Failed to upload image");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

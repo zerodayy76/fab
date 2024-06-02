@@ -1,0 +1,545 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>FABKRAFT</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <!-- Favicon -->
+    <link href="{% static 'user/img/fablogo.jpeg' %}" rel="icon">
+    <!-- Customized Bootstrap Stylesheet -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+   <link href="{% static 'css/normalize.css' %}" rel="stylesheet" class="lazy">
+   
+   
+   <link href="{% static 'icomoon/icomoon.css' %}" rel="stylesheet" class="lazy">
+   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" class="lazy" />
+   <link rel="stylesheet" type="text/css" media="all"
+     href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" class="lazy">
+     <link href="{% static 'css/vendor.css' %}" rel="stylesheet" class="lazy">
+       <link href="{% static 'user/css/newstyle.css' %}" rel="stylesheet" class="lazy">
+   <link rel="preconnect" href="https://fonts.googleapis.com" class="lazy">
+   <link rel="preconnect" href="https://fonts.gstatic.com" class="lazy" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+     rel="stylesheet" class="lazy">
+
+     <link rel="preconnect" href="https://fonts.googleapis.com" class="lazy">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin class="lazy">
+     <link href="https://fonts.googleapis.com/css2?family=Poly:ital@0;1&family=Walter+Turncoat&display=swap" rel="stylesheet" class="lazy">
+<script src="{% static 'js/modernizr.js'%}" class="lazy"></script>
+  <style>
+.footer{
+background:#ffa3c5;
+padding:30px 0px;
+font-family: 'Play', sans-serif;
+text-align:center;
+}
+
+.footer .row{
+width:100%;
+margin:1% 0%;
+padding:0.6% 0%;
+color:rgb(255, 255, 255);
+font-size:0.8em;
+}
+
+.footer .row a{
+text-decoration:none;
+color:rgb(255, 255, 255);
+transition:0.5s;
+}
+
+.footer .row a:hover{
+color:#fff;
+}
+
+.footer .row ul{
+width:100%;
+}
+
+.footer .row ul li{
+display:inline-block;
+margin:0px 30px;
+}
+
+.footer .row a i{
+font-size:2em;
+margin:0% 1%;
+}
+
+@media (max-width:720px){
+.footer{
+text-align:left;
+padding:5%;
+}
+.footer .row ul li{
+display:block;
+margin:10px 0px;
+text-align:left;
+}
+.footer .row a i{
+margin:0% 3%;
+}
+
+}
+
+/* Style for the circle background */
+.cart-icon {
+    position: relative; /* Make the position relative for absolute positioning */
+    display: inline-block; /* Ensure the link occupies only the necessary space */
+    width: 40px; /* Set the width of the link */
+    height: 40px; /* Set the height of the link */
+    border-radius: 50%; /* Make the link a circle */
+    background-color: white; /* Set the background color of the circle */
+    text-align: center; /* Center the icon horizontally and vertically */
+    line-height: 40px; /* Vertically center the icon */
+}
+
+/* Style for the cart icon */
+.cart-icon i {
+    color: white; /* Set the color of the icon */
+    font-size: 20px; /* Set the size of the icon */
+}
+
+/* Style for the cart number */
+.cart-icon .cart-number {
+    position: absolute; /* Position the number relative to the cart icon */
+    top: -5px; /* Adjust the position vertically */
+    right: -5px; /* Adjust the position horizontally */
+    background-color: red; /* Set the background color of the dot */
+    color: white; /* Set the text color */
+    width: 20px; /* Set the width of the dot */
+    height: 20px; /* Set the height of the dot */
+    border-radius: 50%; /* Make the dot a circle */
+    text-align: center; /* Center the text horizontally */
+    line-height: 20px; /* Center the text vertically */
+    font-size: 12px; /* Set the font size */
+    font-weight: bold; /* Make the number bold */
+}
+
+
+.chatbot-button {
+  position: fixed;
+  bottom: 71px;
+  right: 33px;
+  z-index: 999;
+  background-color: #00a130;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 80px;
+  height: 81px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+    .chatbot-button .fa-whatsapp {
+      font-size: 3rem;
+    }
+
+.popup {
+    display: none;
+    position: fixed;
+    bottom: 100px;
+    right: 90px;
+    z-index: 998;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.popup.active {
+    display: block;
+}
+  
+</style>
+</head>
+<body>
+
+  <a href="https://api.whatsapp.com/send/?phone=%2B917010326895&text&type=phone_number&app_absent=0" class="chatbot-button" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    
+
+
+<div class="popup" id="popup">
+  <div>
+<form class="filter" method="GET" action="{% url 'search_products' %}">
+  <input type="text" value="{{ query }}" name="q" hidden>
+
+      <input type="radio" id="option1" name="sorting" value="low_to_high" class="radio-input" {% if filter  == 'low_to_high' %} checked {%endif%}>
+      <label for="option1" class="radio-label">Price: Low to High</label>
+
+<br>
+  <input type="radio" id="option2" name="sorting" value="high_to_low" class="radio-input" {% if filter  == 'high_to_low' %} checked {%endif%}>
+  <label for="option2" class="radio-label">Price: High to Low</label>
+</div>
+<div>
+  <button type="submit" class="button-two"><span>Filter</span></button>
+</div>
+</form>
+
+</div>
+<script>
+  function togglePopup() {
+      var popup = document.getElementById("popup");
+      popup.classList.toggle("active");
+  }
+</script>
+    <div class="preloader-wrapper">
+    <div class="preloader">
+    </div>
+  </div>
+  <div class="search-popup">
+    <div class="search-popup-container">
+      <form role="search" method="get" class="search-form" action="{% url 'search_products' %}">
+        <input type="search" name="q" id="searchInput" placeholder="Type and press enter" class="form-control  search-field" required autocomplete="off" />        <div id="searchHistoryDropdown"></div>
+        <button type="submit" class="search-submit"><i class="icon icon-search"></i></button>
+      </form>
+      <h5 class="cat-list-title"></h5>
+      <ul class="cat-list" >
+        <li class="cat-list-item" >
+        </li>
+      </ul>
+    </div>
+  </div>
+  <header id="header">
+    <div id="header-wrap">
+      <nav class="secondary-nav" style="background-color:#ffa3c5 !important; color: #ffff !important;">
+        <div class="container">
+          <div class="row d-flex align-items-center">
+            <div class="col-md-4 header-contact">
+          <p>Let's talk! +91 789 890 7890
+              </p>
+            </div>
+            <div class="col-md-4 shipping-purchase text-center">
+              <p>Let the Block Prints Be a Game-Changer</p>
+            </div>
+            <div class="col-md-4 col-sm-12  user-items" style="color: #ffff !important;">
+              <ul class="d-flex justify-content-end  list-unstyled">
+
+                <li>
+                  <a href="{% url 'cart' %}" class="cart-icon">
+                    <i style="color: #ffa3c5;" class="icon icon-shopping-cart"></i>
+                    <span class="cart-number">{{cart_count}}</span> <!-- Example number, replace dynamically as needed -->
+                  </a>
+                </li>
+                
+                <li class="user-items search-item pe-3">
+                  <a href="#" class="search-button">
+                    <i class="icon icon-search"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <nav class="primary-nav padding-small" style="background-color: #ffffff;
+      font-family: Poly, serif;
+      font-weight: 400;
+      font-style: normal;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Bottom box shadow */
+      padding-bottom: 10px; /* Adjust padding for spacing */
+      margin-bottom: 10px; /* Adjust margin for spacing */">
+        <div class="container">
+          <div class="row d-flex align-items-center">
+            <div class="col-lg-2 col-md-2" style="padding-left: 15px;padding-right: 15px;">
+              <div class="main-logo">
+                <a href="{% url 'index' %}">
+                  <img src="{% static 'user/img/fablogo.jpeg' %}" alt="logo" style="width: 80x; height: 80px;">
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-10 col-md-10">
+              <div class="navbar">
+
+                <div id="main-nav" class="stellarnav d-flex justify-content-end right mobile">
+                  <ul class="menu-list">
+
+                    <li><a href="{% url 'index'%}" class="item-anchor" data-effect="Contact">Home</a></li>
+
+                    {% for cat in category %}
+                    <li class="menu-item{% if not cat.sub_category_set.all %} no-sub{% endif %}">
+                        {% if cat.category.sub_category_set.all %}
+                        <a href="{%url 'category' cat.category%}" class="item-anchor d-flex align-item-center" data-effect="Shop">{{ cat.category }}
+                        <i class="icon icon-chevron-down"></i>
+                        {%else%}
+                        <a href="{%url 'category' cat.category%}" class="item-anchor d-flex align-item-center" data-effect="Shop">{{ cat.category }}
+                        {% endif %}
+                      </a>
+                      <ul class="submenu">
+                        {% for subcat in cat.category.sub_category_set.all %}
+                          <li><a href="{% url 'subcategory' subcat.sub_category %}" class="item-anchor">{{ subcat }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endfor %}
+                  <li><a href="{% url 'About'%}" class="item-anchor" data-effect="About">About</a></li>
+
+                    <li class="menu-item has-sub" >
+                      <a href="#" class="item-anchor d-flex align-item-center" data-effect="Blog" style=" font-size: 22px; background-color: #ffa3c5; color: #ffffff;"><i class="icon icon-user"></i>{% if user.is_authenticated %} {{user.username}}{% else %} Account {% endif %}<i
+                          class="icon icon-chevron-down"></i></a>
+                      <ul class="submenu">
+                          {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile' %}" class="item-anchor">Profile<span class="text-primary"> </span></a>
+                        </li>
+                        <li><a href="{% url 'orders' %}" class="item-anchor">My Order<span class="text-primary">
+                              </span></a></li>
+                          
+                        <li><a href="{% url 'logout'%}" class="item-anchor">Logout<span class="text-primary">
+                              </span></a></li>
+                          {% else %}    
+
+                          <li><a href="{% url 'login' %}" class="item-anchor">Login<span class="text-primary">
+                              </span></a></li>
+                          {% endif %}    
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+{% block content %} {% endblock content %}
+<script src="{% static 'js/jquery-1.11.0.min.js'%}"></script>
+<script src="{% static 'js/plugins.js'%}"></script>
+<script src="{% static 'js/script.js'%}"></script>
+<footer>
+  <div class="footer">
+  <div class="row">
+  <a href="#"><i class="fa fa-facebook"></i></a>
+  <a href="#"><i class="fa fa-instagram"></i></a>
+  <a href="#"><i class="fa fa-youtube"></i></a>
+  <a href="#"><i class="fa fa-twitter"></i></a>
+  <a href="https://api.whatsapp.com/send/?phone=%2B917010326895&text&type=phone_number&app_absent=0" target="_blank"><i class="fa fa-whatsapp"></i></a>
+  </div>
+  <div class="row">
+  <ul>
+  <li><a href="{% url 'About'%}">About The FabKraft</a></li>
+  <li><a href="{% url 'FAQ'%}">FAQ</a></li>
+  <li><a href="{% url 'Refunds'%}">Refunds</a></li>
+  <li><a href="{% url 'Shipping'%}">Shipping & Returns</a></li>
+  <li><a href="{% url 'Privacy'%}">Privacy Policy</a></li>
+  <li><a href="{% url 'Terms'%}">Terms & Conditions</a></li>
+  </ul>
+  </div>
+  <div class="row">
+  FABKRAFT Copyright © 2024 FabKraft- All rights reserved || Designed By: Alpha Solutions
+  </div>
+  </div>
+  </footer>
+<script>
+    $(document).ready(function() {
+        // Load search history from local storage
+        var searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+        console.log('Initial search history:', searchHistory);
+
+        var searchInput = $('#searchInput');
+        var searchHistoryDropdown = $('#searchHistoryDropdown');
+
+        // Event listener for the search input focus
+        searchInput.on('focus', function() {
+            // Show the dropdown with recent search history
+            updateSearchHistoryDropdown();
+        });
+        $('#searchInput').on('change', function() {
+            var query = $(this).val().trim();
+            if (query !== '') {
+                // Add the query to the search history
+                if (!searchHistory.includes(query)) {
+                    searchHistory.push(query);
+
+                    // Save updated search history to local storage
+                    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                }
+
+                // Update the search history dropdown
+                updateSearchHistoryDropdown();
+            }
+        });
+
+        // Event listener for the search input
+        searchInput.on('input', function() {
+            var query = $(this).val().trim();
+
+            // Check if the query is not empty
+            if (query.length > 0) {
+                // Simulate fetching search history (you would fetch this from your server)
+                var filteredHistory = searchHistory.filter(function(item) {
+                    return item.toLowerCase().includes(query.toLowerCase());
+                });
+
+                // Build the dropdown content
+                var dropdownContent = filteredHistory.map(function(item) {
+                    return '<div class="dropdown-item">' + item + '<img class="search-symbol" width="15" height="15" src="https://rukminim2.flixcart.com/www/100/100/promos/20/07/2022/e13f8f3a-0de2-44f1-b532-258ee7f23147.png?q=90"></div>';
+                }).join('');
+
+                // Update the dropdown and show it
+                searchHistoryDropdown.html(dropdownContent).show();
+
+                // Set the width of the dropdown to match the search input
+                searchHistoryDropdown.width(searchInput.outerWidth());
+            } else {
+                // If the query is empty, show all search history
+                updateSearchHistoryDropdown();
+                searchHistoryDropdown.show();
+            }
+        });
+
+        // Event listener for clicking outside the dropdown to hide it
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('#searchHistoryDropdown').length) {
+                // Hide the dropdown after a short delay
+                setTimeout(function() {
+                    searchHistoryDropdown.hide();
+                }, 20000);
+            }
+        });
+
+        // Event listener for clicking on a history item
+        searchHistoryDropdown.on('click', '.dropdown-item', function() {
+            // Set the search input value to the clicked item
+            searchInput.val($(this).text().trim());
+
+            // Hide the dropdown
+            searchHistoryDropdown.hide();
+
+            // Add the selected item to the search history
+            var selectedHistoryItem = $(this).text().trim();
+            if (!searchHistory.includes(selectedHistoryItem)) {
+                searchHistory.push(selectedHistoryItem);
+
+                // Save updated search history to local storage
+                localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                console.log('Updated search history:', searchHistory);
+            } else {
+                console.log('Item already in search history:', selectedHistoryItem);
+            }
+        });
+
+        // Function to update the search history dropdown
+        function updateSearchHistoryDropdown() {
+            searchHistoryDropdown.empty();
+
+            searchHistory.forEach(function(query) {
+                searchHistoryDropdown.append($('<div class="dropdown-item">' + query + '<img class="search-symbol" width="30" height="30" src="https://rukminim2.flixcart.com/www/100/100/promos/20/07/2022/e13f8f3a-0de2-44f1-b532-258ee7f23147.png?q=90"></div>'));
+            });
+
+            // Show the dropdown
+            searchHistoryDropdown.show();
+
+            // Set the width of the dropdown to match the search input
+            searchHistoryDropdown.width(searchInput.outerWidth());
+        }
+    });
+</script>
+
+<script>
+  $(document).ready(function() {
+      var searchInput = $('#searchInput');
+      var searchHistoryDropdown = $('#searchHistoryDropdown');
+
+      // Event listener for the search input
+      searchInput.on('input', function() {
+          var query = $(this).val().trim();
+
+          // Check if the query is not empty
+          if (query.length > 0) {
+              // Make an AJAX request to get keyword suggestions
+              $.ajax({
+                  url: '/get_keyword_suggestions/',
+                  data: {
+                      'q': query
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                      // Build the dropdown content
+                      var dropdownContent = response.suggestions.map(function(item) {
+                          return '<a href="search/?q=' + item + '"><div class="dropdown-item">' + item + '</div></a>';
+                      }).join('');
+
+                      // Update the dropdown and show it
+                      searchHistoryDropdown.html(dropdownContent).show();
+
+                      // Set the width of the dropdown to match the search input
+                      searchHistoryDropdown.width(searchInput.outerWidth());
+                  },
+                  error: function(error) {
+                      console.log('Error fetching keyword suggestions:', error);
+                  }
+              });
+          } else {
+              // If the query is empty, hide the dropdown
+              searchHistoryDropdown.hide();
+          }
+      });
+
+  });
+</script>
+
+
+
+<script>
+    $(document).ready(function() {
+    $('.item').click(function(e) {
+        $(this).find('.dropdown-content').toggle();
+        e.stopPropagation(); // Prevent the event from bubbling up to parent elements
+    });
+    $(document).click(function() {
+        $('.dropdown-content').hide(); // Hide dropdown when clicking outside
+    });
+});
+</script>
+
+<script>
+  // static/myapp/lazyload.js
+
+// This event listener ensures that the code runs after the DOM content is fully loaded.
+document.addEventListener("DOMContentLoaded", function () {
+	// Select all elements with the "lazy" class, which are images intended for lazy loading.
+	const lazyImages = document.querySelectorAll(".lazy");
+
+	// Define the lazyLoad function, which checks if lazy images are in the viewport and loads them.
+	const lazyLoad = function () {
+	lazyImages.forEach(function (img) {
+		// Check if the top and bottom of the image are in the viewport and if the image is visible.
+		if (img.getBoundingClientRect().top <= window.innerHeight && img.getBoundingClientRect().bottom >= 0 && getComputedStyle(img).display !== "none") {
+		// If the conditions are met, set the image's src attribute to the value stored in its data-src attribute.
+		img.src = img.dataset.src;
+		// Remove the "lazy" class to mark the image as loaded.
+		img.classList.remove("lazy");
+		}
+	});
+	};
+
+	// Initially run the lazyLoad function to load images visible on page load.
+	lazyLoad();
+
+	// Add event listeners to call the lazyLoad function when the page is scrolled, resized, or the orientation changes.
+	document.addEventListener("scroll", lazyLoad);
+	window.addEventListener("resize", lazyLoad);
+	window.addEventListener("orientationchange", lazyLoad);
+});
+
+</script>
+</html>
+
+
+
+
+
+
+

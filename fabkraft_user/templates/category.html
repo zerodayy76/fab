@@ -1,0 +1,237 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+
+    .section-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .section-title {
+        font-family: Poly, serif;
+        font-style: normal;
+        font-size: 24px;
+        color: #333;
+    }
+
+    .product_row {
+        display: flex;
+        flex-wrap: wrap;
+       
+    }
+
+    .product-grid {
+        background-color: #fff;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        padding: 5px; /* Adjust padding */
+        margin: 0 auto 30px; /* Adjust margin */
+        max-width: 250px; /* Adjust max-width for smaller screens */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+    .product-grid .product-image {
+        position: relative;
+        overflow: hidden;
+        height: 200px; /* Set a fixed height for the product image */
+    }
+
+    .product-grid .product-image img {
+        width: 100%;
+        height: 100%; /* Ensure the image fills the container */
+        object-fit: cover; /* Maintain aspect ratio and cover the container */
+    }
+
+    .product-grid .product-image .pic-1 {
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .product-image:hover .pic-1 {
+        transform: translateX(100%);
+    }
+
+    .product-grid .product-image .pic-2 {
+        width: 100%;
+        height: 100%;
+        transform: translateX(-101%);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .product-image:hover .pic-2 {
+        transform: translateX(0);
+    }
+
+    .product-grid .product-like-icon {
+        color: #000000;
+        font-size: 22px;
+        line-height: 20px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .product-grid .product-links {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid:hover .product-links {
+        bottom: 10px;
+        opacity: 1;
+    }
+
+    .product-grid .product-links li {
+        display: inline-block;
+        margin: 0 2px;
+    }
+
+    .product-grid .product-links li a {
+        display: block;
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #c8a59a;
+        border-radius: 10px;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid:hover .product-links li a:hover {
+        background-color: #333;
+    }
+
+    .product-grid .product-content {
+        padding: 15px 0 0;
+        text-align: left;
+    }
+
+    .product-grid .product-image img {
+        height: 300px; /* Set height for product image */
+        overflow: hidden; /* Hide overflow content */
+    }
+
+    .product-grid .title {
+        font-size: 14px;
+        font-weight: 500;
+        font-family: Poly, serif;
+        font-weight: 400;
+        font-style: normal;
+        text-transform: capitalize;
+        margin: 0 0 8px;
+        overflow:hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; /* Limit product name to 2 lines */
+        line-height: 1.2em; /* Ensure consistent line height */
+        max-height: 2.4em; /* Set maximum height for 2 lines */
+        margin: 0 0 8px;
+        text-overflow: ellipsis;
+    }
+
+    .product-grid .title a {
+        color: #333;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .title a:hover {
+        color: #0a805e;
+    }
+
+    .product-grid .price {
+        color: #0a805e;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .product-grid .price span {
+        color: #555;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: line-through;
+        margin: 0 5px 0 0;
+    }
+
+    @media screen and (max-width: 1000px) {
+        .col-md-2 {
+        /* Adjust to display two products per row */
+        max-width: 50%; /* Adjust maximum width for smaller screens */
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+
+    .product-grid {
+        padding: 5px; /* Reduce padding for product grid */
+        margin: 0 5px 10px; /* Adjust margin to reduce space between products */
+        max-width: 100%; /* Adjust max-width for smaller screens */
+    }
+    .product_row{
+        padding: 0px;
+        flex-wrap:wrap;
+
+    }
+        .product-grid .product-image {
+            height: 150px; /* Adjust height for product image */
+        }
+        .product-grid .product-content {
+            text-align: center; /* Center-align text */
+        }
+        .product-grid .title {
+            font-size: 14px; /* Adjust font size for product title */
+            margin-bottom: 5px; /* Add some space below product title */
+        }
+        .product-grid .price {
+            font-size: 14px; /* Adjust font size for product price */
+        }
+        .container {
+            margin: 0; /* Remove default margin for container */
+        }
+    }
+
+</style>
+<div class="container">
+  <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+      <h2 class="section-title">{{cat_name}}</h2>
+      <hr>
+  </div>
+  {% if not products %}
+      none
+  {% endif %}
+  <div class="product_row">
+      {% for i in products %}
+      {%if not i.is_deleted %}
+
+      <div class="col-md-2 col-sm-6">
+          <div class="product-grid">
+              <div class="product-image">
+                  <a href="{% url 'product_details' i.id %}" class="image">
+                      <img class="pic-1" src="/media/{{i.images_set.first.images}}" class="lazy">
+                      <img class="pic-2" src="/media/{{i.images_set.first.images}}" class="lazy">
+                  </a>
+                  </a>
+              </div>
+              <div class="product-content">
+                  <h3 class="title"><a href="{% url 'product_details' i.id %}">{{ i.product_name }}</a></h3>
+                  <div class="price">₹{{i.price}} <del style="color: #555;">₹{{i.max_price}}</del> </div>
+              </div>
+          </div>
+      </div>
+      {%endif%}
+
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}

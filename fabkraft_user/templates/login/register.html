@@ -1,0 +1,198 @@
+{% extends 'base/base.html' %} {%load static%} {% block title %} Buy2Sell {% endblock %} {% block content %}
+
+    <div class="container">
+
+<style>
+    .main-content{
+	width: 50%;
+	border-radius: 20px;
+	box-shadow: 0 5px 5px rgba(0,0,0,.4);
+	margin: 5em auto;
+	display: flex;
+}
+.company__info{
+    background-color: #ffffff;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #000000;    
+  border-top: 1px #ccc;
+  border-top-width: 3px;
+border-top-style: none;
+}
+.company__info img {
+  display: inline-block;
+  border: 0;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  padding: 2rem;
+}
+.fa-android{
+	font-size:3em;
+}
+@media screen and (max-width: 1000px) {
+	.main-content{width: 90%;}
+	.company__info{
+		display: none;
+	}
+	.login_form{
+		border-top-left-radius:20px;
+		border-bottom-left-radius:20px;
+	}
+}
+@media screen and (min-width: 642px) and (max-width:800px){
+	.main-content{width: 70%;};
+    .container{
+	margin: 0px;
+}
+}
+.row > h2{
+	color:#008080;
+}
+.login_form{
+	background-color: #fff;
+	border-top-right-radius:20px;
+	border-bottom-right-radius:20px;
+	border-top:1px solid #ccc;
+	border-right:1px solid #ccc;
+}
+form{
+	padding: 0 2em;
+}
+.form__input{
+	width: 100%;
+	border:0px solid transparent;
+	border-radius: 0;
+	border-bottom: 1px solid #aaa;
+	padding: 1em .5em .5em;
+	padding-left: 2em;
+	outline:none;
+	margin:1.5em auto;
+	transition: all .5s ease;
+}
+.form__input:focus{
+	border-bottom-color: #008080;
+	box-shadow: 0 0 5px rgba(0,80,80,.4); 
+	border-radius: 4px;
+}
+.btn{
+	transition: all .5s ease;
+	width: 70%;
+	border-radius: 30px;
+	color:#008080;
+	font-weight: 600;
+	background-color: #fff;
+	border: 1px solid #008080;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+}
+.btn:hover, .btn:focus{
+	background-color: #008080;
+	color:#fff;
+}
+/* For mobile phones: */
+.form-group {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            background-color: #000000;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0a95ff;
+        }
+        /* Responsive */
+        @media screen and (max-width: 600px) {
+            .form-group {
+                width: 80%;
+            }
+        }
+.container{
+    margin: 0px;
+}
+</style>
+
+
+<center>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            {% endfor %}
+    </ul>
+    {% endif %}
+
+
+    
+<div class="container-fluid">
+    <div class="row main-content bg-success text-center">
+        <div class="col-md-4 text-center company__info" style="border-top-style: solid;border-top-width: 1px;padding-left: 0px;padding-right: 0px;margin-right: 0px;">
+            <img src="{% static 'user/img/fablogo.jpeg' %}" style="  padding-bottom: 25px;" alt="logo">        
+        </div>
+
+        <div class="col-md-8 col-xs-12 col-sm-12 login_form " style="padding-left: 0px;padding-right: 0px;">
+            <div class="container-fluid">
+                <div class="row">
+                    <h2>Login</h2>
+                </div>
+                <div class="row">
+                    <form control="" class="form-group" style="padding-left: 0px;padding-right: 0px;" action="{% url 'register' %}" method="post">
+                            {% csrf_token %}
+                        <div class="row">
+                <input type="email" name="email" value="{{email}}" class="form-control border-0 py-4" placeholder="Email" required="required" />
+
+                        </div>
+                        <div class="row">
+                            <input type="text" name="username" id="email" class="form-control border-0 py-4" placeholder="username" required="required" value="{{username}}" />
+
+                        </div>
+                        <div class="row">
+                <input type="Password" name="password" class="form-control border-0 py-4" placeholder="Password" required="required" />
+
+                        </div>
+                        <div class="row">
+                            <input type="submit" value="Submit" class="btn">
+                        </div>
+                       
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    
+</center>
+
+    </div>
+    </section>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+</ul>
+<br>
+<center>
+<a href="{% url 'index' %}">
+<input type="button" value="GO TO HOME">
+</a>
+</center>
+
+{% endif %}
+{% endblock %}

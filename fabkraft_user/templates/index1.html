@@ -1,0 +1,383 @@
+{% extends 'base/base.html' %} 
+{% load static %} 
+{% block title %} Buy2Sell {% endblock %} 
+{% block content %}
+
+<script src="https://kit.fontawesome.com/8fb3884555.js" crossorigin="anonymous" class="lazy"></script>
+
+<style>
+
+    .section-header {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 24px;
+        color: #333;
+    }
+
+    .product_row {
+        display: flex;
+        flex-wrap: wrap;
+       
+    }
+
+    .product-grid {
+        background-color: #fff;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        padding: 5px; /* Adjust padding */
+        margin: 0 auto 30px; /* Adjust margin */
+        max-width: 250px; /* Adjust max-width for smaller screens */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+
+    .product-grid .product-image {
+        position: relative;
+        overflow: hidden;
+        height: 200px; /* Set a fixed height for the product image */
+    }
+
+    .product-grid .product-image img {
+        width: 100%;
+        height: 100%; /* Ensure the image fills the container */
+        object-fit: cover; /* Maintain aspect ratio and cover the container */
+    }
+
+    .product-grid .product-image .pic-1 {
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .product-image:hover .pic-1 {
+        transform: translateX(100%);
+    }
+
+    .product-grid .product-image .pic-2 {
+        width: 100%;
+        height: 100%;
+        transform: translateX(-101%);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .product-image:hover .pic-2 {
+        transform: translateX(0);
+    }
+
+    .product-grid .product-like-icon {
+        color: #000000;
+        font-size: 22px;
+        line-height: 20px;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .product-grid .product-links {
+        position: absolute;
+        bottom: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        opacity: 0;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid:hover .product-links {
+        bottom: 10px;
+        opacity: 1;
+    }
+
+    .product-grid .product-links li {
+        display: inline-block;
+        margin: 0 2px;
+    }
+
+    .product-grid .product-links li a {
+        display: block;
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #c8a59a;
+        border-radius: 10px;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid:hover .product-links li a:hover {
+        background-color: #333;
+    }
+
+    .product-grid .product-content {
+        padding: 15px 0 0;
+        text-align: left;
+    }
+
+    .product-grid .product-image img {
+        height: 300px; /* Set height for product image */
+        overflow: hidden; /* Hide overflow content */
+    }
+
+    .product-grid .title {
+        font-size: 14px;
+        font-weight: 500;
+        font-family: Poly, serif;
+        font-weight: 400;
+        font-style: normal;
+        text-transform: capitalize;
+        margin: 0 0 8px;
+        overflow:hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1; /* Limit product name to 2 lines */
+        line-height: 1.2em; /* Ensure consistent line height */
+        max-height: 2.4em; /* Set maximum height for 2 lines */
+        margin: 0 0 8px;
+        text-overflow: ellipsis;
+    }
+
+    .product-grid .title a {
+        color: #333;
+        transition: all 0.3s ease 0s;
+    }
+
+    .product-grid .title a:hover {
+        color: #0a805e;
+    }
+
+    .product-grid .price {
+        color: #0a805e;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .product-grid .price span {
+        color: #555;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: line-through;
+        margin: 0 5px 0 0;
+    }
+
+    @media screen and (max-width: 1000px) {
+        .col-md-2 {
+        /* Adjust to display two products per row */
+        max-width: 50%; /* Adjust maximum width for smaller screens */
+        padding-left: 0%;
+        padding-right: 0%;
+    }
+
+    .product-grid {
+        padding: 5px; /* Reduce padding for product grid */
+        margin: 0 5px 10px; /* Adjust margin to reduce space between products */
+        max-width: 100%; /* Adjust max-width for smaller screens */
+    }
+    .product_row{
+        padding: 0px;
+        flex-wrap:wrap;
+
+    }
+        .product-grid .product-image {
+            height: 150px; /* Adjust height for product image */
+        }
+        .product-grid .product-content {
+            text-align: center; /* Center-align text */
+        }
+        .product-grid .title {
+            font-size: 14px; /* Adjust font size for product title */
+            margin-bottom: 5px; /* Add some space below product title */
+        }
+        .product-grid .price {
+            font-size: 14px; /* Adjust font size for product price */
+        }
+        .container {
+            margin: 0; /* Remove default margin for container */
+        }
+    }
+
+    #billboard .swiper-slide {
+    height: 100px; /* Set your desired height */
+}
+
+
+.swiper-slide {
+    position: relative; /* Ensure proper positioning */
+    background-size: cover; /* Cover entire slide area */
+    background-position: center; /* Center the background image */
+    padding: 30px;
+}
+/* Ensure the images cover the entire slide */
+#billboard .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio and cover the container */
+}
+
+/* Ensure the images are centered */
+#billboard .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    /* Make the carousel responsive */
+    @media screen and (max-width: 768px) {
+        #billboard .swiper-slide {
+            width: 10px;
+            height: 200px; /* Adjust height for smaller screens */
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    }
+    .navigation-buttons {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+        box-sizing: border-box;
+        z-index: 1;
+    }
+
+    .navigation-buttons .prev-button,
+    .navigation-buttons .next-button {
+        background-color: #ed7aa5;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .prev-button,
+    .next-button {
+        background-color: #333; /* Button background color */
+        color: #fff; /* Button text color */
+        border: none; /* Remove button border */
+        padding: 10px 20px; /* Add padding */
+        border-radius: 5px; /* Add rounded corners */
+        cursor: pointer; /* Add cursor pointer */
+        transition: background-color 0.3s; /* Add transition for smoother hover effect */
+    }
+
+    .prev-button:hover,
+    .next-button:hover {
+        background-color: #555; /* Change background color on hover */
+    }
+
+    .navigation-buttons .prev-button:hover,
+    .navigation-buttons .next-button:hover {
+        background-color: #555;
+    }
+</style>
+
+<section id="billboard" class="overflow-hidden">
+    <div class="swiper main-swiper">
+        <div class="swiper-wrapper">
+            {% for i in carousel %}
+            <div class="swiper-slide"
+                style="background-image: url('/media/{{ i.image }}');">
+                <div class="banner-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="banner-title"></h2>
+                                <p></p>
+                                <div class="btn-wrap">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Navigation buttons for billboard -->
+        <div class="navigation-buttons">
+            <button class="prev-button">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="next-button">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+  </section>
+
+  <div class="container" style="font-family: Poly, serif;
+  font-weight: 400;
+  font-style: normal;">
+    {% for cate in index_cat %}
+    <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+        <h2 class="section-title" style="font-family: Poly, serif;">{{ cate.category }}</h2>
+        <div class="btn-wrap">
+            <a href="{% url 'category' cate.category %}" class="d-flex align-items-center">View all products <i class="icon icon icon-arrow-io"></i></a>
+        </div>
+    </div>
+
+    <div class="product_row" >
+        {% for product in cate.category.products_set.all|slice:":6" %}
+        {%if not product.is_deleted %}
+
+        <div class="col-md-2" >
+            <div class="product-grid">
+                <div class="product-image">
+                    <a href="{% url 'product_details' product.id %}" class="image">
+                        <img class="pic-1" src="/media/{{ product.images_set.first.images }}" class="lazy">
+                        <img class="pic-2" src="/media/{{ product.images_set.first.images }}" class="lazy">
+                    </a>
+                    </a>
+                </div>
+                <div class="product-content">
+                    <h3 class="title"><a href="{% url 'product_details' product.id %}">{{ product.product_name }}</a></h3>
+                    <div class="price">₹{{ product.price }} <del style="color: #555;">₹{{ product.max_price }}</del> </div>
+                </div>
+            </div>
+        </div>
+        {%endif%}
+
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Swiper for featured products
+    var swiper = new Swiper('.product-swiper', {
+      // Add Swiper options here
+      slidesPerView: 'auto',
+      spaceBetween: 20,
+      navigation: {
+        nextEl: '.next-button',
+        prevEl: '.prev-button',
+      },
+    });
+  
+    // Initialize Swiper for billboard
+    var swiperBillboard = new Swiper('.main-swiper', {
+      // Add Swiper options here
+      loop: true, // Enable loop mode
+      navigation: {
+        nextEl: '.next-button',
+        prevEl: '.prev-button',
+      },
+    });
+  });
+  
+  </script>
+  
+
+{% endblock %}
