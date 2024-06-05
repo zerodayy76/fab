@@ -47,7 +47,7 @@
         object-fit: cover; /* Maintain aspect ratio and cover the container */
     }
 
-    .product-grid .product-image .pic-1 {
+    /* .product-grid .product-image .pic-1 {
         transition: all 0.3s ease 0s;
     }
 
@@ -67,7 +67,7 @@
 
     .product-grid .product-image:hover .pic-2 {
         transform: translateX(0);
-    }
+    } */
 
     .product-grid .product-like-icon {
         color: #000000;
@@ -335,7 +335,6 @@
                 <div class="product-image">
                     <a href="{% url 'product_details' product.id %}" class="image">
                         <img class="pic-1" src="/media/{{ product.images_set.first.images }}" class="lazy">
-                        <img class="pic-2" src="/media/{{ product.images_set.first.images }}" class="lazy">
                     </a>
                     </a>
                 </div>
