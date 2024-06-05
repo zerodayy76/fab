@@ -2,138 +2,179 @@
 
     <div class="container">
 
-<style>
-    .main-content{
-	width: 50%;
-	border-radius: 20px;
-	box-shadow: 0 5px 5px rgba(0,0,0,.4);
-	margin: 5em auto;
-	display: flex;
-}
-.company__info{
-    background-color: #ffffff;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: #000000;    
-  border-top: 1px #ccc;
-  border-top-width: 3px;
-border-top-style: none;
-}
-.company__info img {
-  display: inline-block;
-  border: 0;
-  max-width: 100%;
-  height: auto;
-  vertical-align: middle;
-  padding: 2rem;
-}
-.fa-android{
-	font-size:3em;
-}
-@media screen and (max-width: 1000px) {
-	.main-content{width: 90%;}
-	.company__info{
-		display: none;
-	}
-	.login_form{
-		border-top-left-radius:20px;
-		border-bottom-left-radius:20px;
-	}
-}
-@media screen and (min-width: 642px) and (max-width:800px){
-	.main-content{width: 70%;};
-    .container{
-	margin: 0px;
-}
-}
-.row > h2{
-	color:#008080;
-}
-.login_form{
-	background-color: #fff;
-	border-top-right-radius:20px;
-	border-bottom-right-radius:20px;
-	border-top:1px solid #ccc;
-	border-right:1px solid #ccc;
-}
-form{
-	padding: 0 2em;
-}
-.form__input{
-	width: 100%;
-	border:0px solid transparent;
-	border-radius: 0;
-	border-bottom: 1px solid #aaa;
-	padding: 1em .5em .5em;
-	padding-left: 2em;
-	outline:none;
-	margin:1.5em auto;
-	transition: all .5s ease;
-}
-.form__input:focus{
-	border-bottom-color: #008080;
-	box-shadow: 0 0 5px rgba(0,80,80,.4); 
-	border-radius: 4px;
-}
-.btn{
-	transition: all .5s ease;
-	width: 70%;
-	border-radius: 30px;
-	color:#008080;
-	font-weight: 600;
-	background-color: #fff;
-	border: 1px solid #008080;
-	margin-top: 1.5em;
-	margin-bottom: 1em;
-}
-.btn:hover, .btn:focus{
-	background-color: #008080;
-	color:#fff;
-}
-/* For mobile phones: */
-.form-group {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            outline: none;
-            font-size: 16px;
-        }
-        input[type="submit"] {
-            background-color: #000000;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-        input[type="submit"]:hover {
-            background-color: #0a95ff;
-        }
-        /* Responsive */
-        @media screen and (max-width: 600px) {
-            .form-group {
-                width: 80%;
+        <style>
+        
+            .main-content{
+                width: 50%;
+                border-radius: 20px;
+                box-shadow: 0 5px 5px rgba(0,0,0,.4);
+                margin: 5em auto;
+                display: flex;
             }
-        }
-.container{
-    margin: 0px;
-}
-</style>
+            
+            .company__info{
+                background-color: #ffffff;
+              border-top-left-radius: 20px;
+              border-bottom-left-radius: 20px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              color: #000000;    
+              border-top: 1px #ccc;
+              border-top-width: 3px;
+            border-top-style: none;
+            }
+            
+            .fa-android{
+                font-size:3em;
+            }
+            @media screen and (max-width: 1000px) {
+                .main-content{width: 100%;}
+                .company__info{
+                    display: none;
+                }
+                .login_form{
+                    border-top-left-radius:20px;
+                    border-bottom-left-radius:20px;
+                }
+            }
+            @media screen and (min-width: 642px) and (max-width:800px){
+                .main-content{width: 70%;};
+                .container{
+                margin: 0px;
+            }
+            }
+            .row > h2{
+                color:#008080;
+            }
+            .login_form{
+                background-color: #fff;
+                border-top-right-radius:20px;
+                border-bottom-right-radius:20px;
+                border-top:1px solid #ccc;
+                border-right:1px solid #ccc;
+            }
+            form{
+                padding: 0 2em;
+            }
+            .form__input{
+                width: 0%;
+                border:0px solid transparent;
+                border-radius: 0;
+                border-bottom: 1px solid #aaa;
+                padding: 1em .5em .5em;
+                padding-left: 2em;
+                outline:none;
+                margin:1.5em auto;
+                transition: all .5s ease;
+            }
+            .form__input:focus{
+                border-bottom-color: #008080;
+                box-shadow: 0 0 5px rgba(0,80,80,.4); 
+                border-radius: 4px;
+            }
+            .btn{
+                transition: all .5s ease;
+                width: 70%;
+                border-radius: 30px;
+                color:#008080;
+                font-weight: 600;
+                background-color: #fff;
+                border: 1px solid #008080;
+                margin-top: 1.5em;
+                margin-bottom: 1em;
+            }
+            .btn:hover, .btn:focus{
+                background-color: #008080;
+                color:#fff;
+            }
+             
+            @media screen and(max-width:768px){
+                .form-control{
+                    width: 30px;
+                }
+            } 
+            
+            /* For mobile phones: */
+            [class*="col-"] {
+                width: 100%;
+            }
+            
+            /* For tablets and up: */
+            @media only screen and (min-width: 768px) {
+                .col-sm-1 {width: 8.33333333%;}
+                .col-sm-2 {width: 16.66666667%;}
+                .col-sm-3 {width: 25%;}
+                .col-sm-4 {width: 33.33333333%;}
+                .col-sm-5 {width: 41.66666667%;}
+                .col-sm-6 {width: 50%;}
+                .col-sm-7 {width: 58.33333333%;}
+                .col-sm-8 {width: 66.66666667%;}
+                .col-sm-9 {width: 75%;}
+                .col-sm-10 {width: 83.33333333%;}
+                .col-sm-11 {width: 91.66666667%;}
+                .col-sm-12 {width: 100%;}
+            
+            }
+            
+            /* For desktop: */
+            @media only screen and (min-width: 992px) {
+                .col-md-1 {width: 8.33333333%;}
+                .col-md-2 {width: 16.66666667%;}
+                .col-md-3 {width: 25%;}
+                .col-md-4 {width: 33.33333333%;}
+                .col-md-5 {width: 41.66666667%;}
+                .col-md-6 {width: 50%;}
+                .col-md-7 {width: 58.33333333%;}
+                .col-md-8 {width: 66.66666667%;}
+                .col-md-9 {width: 75%;}
+                .col-md-10 {width: 83.33333333%;}
+                .col-md-11 {width: 91.66666667%;}
+                .col-md-12 {width: 100%;}
+            }
+            
+            /* For large desktop: */
+            @media only screen and (min-width: 1200px) {
+                .col-lg-1 {width: 8.33333333%;}
+                .col-lg-2 {width: 16.66666667%;}
+                .col-lg-3 {width: 25%;}
+                .col-lg-4 {width: 33.33333333%;}
+                .col-lg-5 {width: 41.66666667%;}
+                .col-lg-6 {width: 50%;}
+                .col-lg-7 {width: 58.33333333%;}
+                .col-lg-8 {width: 66.66666667%;}
+                .col-lg-9 {width: 75%;}
+                .col-lg-10 {width: 83.33333333%;}
+                .col-lg-11 {width: 91.66666667%;}
+                .col-lg-12 {width: 100%;}
+            }
+            
+            /* Style for input fields */
+            input[type="email"],
+            input[type="password"] {
+                width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
+            
+            /* Style for submit button */
+            .btn {
+                width: 100%;
+                padding: 10px;
+                background-color: #007bff;
+                border: none;
+                color: white;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            
+            </style>
 
 
 <center>

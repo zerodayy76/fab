@@ -226,7 +226,7 @@ def register(request):
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = email
 
-        send_mail(subject, message, from_email, [to_email])
+        send_mail(subject, message, from_email, [to_email],fail_silently=True)
         user = authenticate(request, username=username, password=password)
         login(request, user)
         messages.success(request, 'Registration successful. Please check your email for verification.')
