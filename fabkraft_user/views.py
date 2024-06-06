@@ -410,7 +410,35 @@ def add_to_cart(request, prod_id):
                     session_cart.append(item)
             request.session['cart'] = session_cart
             return redirect('cart')
-    
+    elif request.method == 'GET':
+        verid = request.POST.get('verient')
+        
+        # If the user is authenticated, use the database cart
+        if request.user.is_authenticated:
+            user_data = get_object_or_404(UserData, user=request.user)
+            if product_choices.objects.filter(product__id=prod_id).exists() and verid:
+                verid = verid
+                if not cart.objects.filter(user=user_data, products_id=prod_id, verients_id=verid).exists():
+                    cart.objects.create(user=user_data, products_id=prod_id, verients_id=verid)
+            else:
+                if not cart.objects.filter(user=user_data, products_id=prod_id).exists():
+                    cart.objects.create(user=user_data, products_id=prod_id)
+            return redirect('cart')
+        
+        # If the user is not authenticated, use the session cart
+        else:
+            session_cart = request.session.get('cart', [])
+            if product_choices.objects.filter(product__id=prod_id).exists() and verid:
+                verid = int(verid)
+                item = {'product_id': prod_id, 'verient_id': verid}
+                if item not in session_cart:
+                    session_cart.append(item)
+            else:
+                item = {'product_id': prod_id, 'verient_id': None}
+                if item not in session_cart:
+                    session_cart.append(item)
+            request.session['cart'] = session_cart
+            return redirect('cart')
     return redirect('login')
 
 def remove_from_cart(request, prod_id):

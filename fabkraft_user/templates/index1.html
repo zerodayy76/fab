@@ -280,6 +280,34 @@
     .navigation-buttons .next-button:hover {
         background-color: #555;
     }
+    .product-grid {
+    position: relative;
+}
+
+.product-image {
+    position: relative;
+}
+
+.add-to-cart-icon {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background: rgba(255, 255, 255, 0.7); /* Optional: add background for better visibility */
+    border-radius: 50%;
+    padding: 5px; /* Adjust as needed */
+    color: #333; /* Change color as needed */
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 20px; /* Align icon vertically */
+    font-size: 16px; /* Adjust size as needed */
+}
+
+.add-to-cart-icon:hover {
+    color: #fff; /* Change color on hover */
+    background: #333; /* Change background on hover */
+}
+
 </style>
 
 <section id="billboard" class="overflow-hidden">
@@ -319,35 +347,37 @@
   font-weight: 400;
   font-style: normal;">
     {% for cate in index_cat %}
-    <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
+    <div class="section-header d-flex flex-wrap align-items-center justify-content-between" style="padding-bottom: 0px;margin-bottom: 0px;">
         <h2 class="section-title" style="font-family: Poly, serif;">{{ cate.category }}</h2>
         <div class="btn-wrap">
             <a href="{% url 'category' cate.category %}" class="d-flex align-items-center">View all products <i class="icon icon icon-arrow-io"></i></a>
         </div>
     </div>
-
-    <div class="product_row" >
+    <div class="product_row">
         {% for product in cate.category.products_set.all|slice:":6" %}
-        {%if not product.is_deleted %}
-
-        <div class="col-md-2" >
+        {% if not product.is_deleted %}
+    
+        <div class="col-md-2">
             <div class="product-grid">
                 <div class="product-image">
                     <a href="{% url 'product_details' product.id %}" class="image">
                         <img class="pic-1" src="/media/{{ product.images_set.first.images }}" class="lazy">
                     </a>
+                    <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-icon">
+                        <i class="fas fa-shopping-cart"  ></i>
                     </a>
                 </div>
                 <div class="product-content">
                     <h3 class="title"><a href="{% url 'product_details' product.id %}">{{ product.product_name }}</a></h3>
-                    <div class="price">₹{{ product.price }} <del style="color: #555;">₹{{ product.max_price }}</del> </div>
+                    <div class="price">₹{{ product.price }} <del style="color: #555;">₹{{ product.max_price }}</del></div>
                 </div>
             </div>
         </div>
-        {%endif%}
-
+        {% endif %}
         {% endfor %}
     </div>
+    
+    
     {% endfor %}
 </div>
 

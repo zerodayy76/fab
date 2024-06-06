@@ -42,7 +42,7 @@
       color: #c59b08;
   }
 .card{
-    margin-top: 40px;
+    margin-top: 30px;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -103,7 +103,7 @@ padding: 10px;  }
   }
 
   .product-content{
-    padding: 4rem 2rem;
+    padding: 1rem 1rem;
     margin-top: 0px;
   }
 
@@ -211,11 +211,11 @@ padding: 10px;  }
   }
 
   .purchase-info .btn:first-of-type{
-      background: #ed7aa5;
+      background: #77cc33;
   }
 
   .purchase-info .btn:last-of-type{
-      background: #ed7aa5;
+      background: #77cc33;
   }
 
   .purchase-info .btn:hover{
@@ -263,6 +263,7 @@ padding: 10px;  }
       .product-content{
           padding-top: 0px;
       }
+
   }
 
   .tab {
@@ -274,7 +275,7 @@ padding: 10px;  }
   }
 
   #tabs button {
-      background-color: #4CAF50;
+      background-color: #77cc33;
       border: none;
       color: white;
       padding: 10px 20px;
@@ -585,6 +586,21 @@ form button[type="submit"]:hover {
         padding-left: 0%;
         padding-right: 0%;
     }
+    .purchase-info input,
+  .purchase-info .btn{
+      border: 1.5px solid #ddd;
+      border-radius: 0px;
+      text-align: center;
+      padding: 0.45rem 0.8rem;
+      outline: 0;
+      margin-right: 0.2rem;
+      margin-bottom: 1rem;
+      width: 100%;
+  }
+
+    .product-detail{
+        display: none;
+      }
      pre{
       font-size: 0.9rem;
       padding: 0.3rem;
@@ -625,6 +641,34 @@ h2 pre {
       font-weight: 400;
       font-style: normal;
 }
+.product-grid {
+    position: relative;
+}
+
+.product-image {
+    position: relative;
+}
+
+.add-to-cart-icon {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+    background: rgba(255, 255, 255, 0.7); /* Optional: add background for better visibility */
+    border-radius: 50%;
+    padding: 5px; /* Adjust as needed */
+    color: #333; /* Change color as needed */
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 20px; /* Align icon vertically */
+    font-size: 16px; /* Adjust size as needed */
+}
+
+.add-to-cart-icon:hover {
+    color: #fff; /* Change color on hover */
+    background: #333; /* Change background on hover */
+}
+
 </style>
    <div class="container">
     <!-- Products End -->
@@ -703,7 +747,7 @@ h2 pre {
               </select> <br>
                 {%endif%}
                 <button type = "button"  class = "btn" onclick="checkout('addtocart')">Add to Cart <i class = "fas fa-shopping-cart"></i>
-                <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button>
+                <!-- <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button> -->
             </form>
             </div>
             {%endif%}
@@ -826,7 +870,7 @@ h2 pre {
         </div>
       </div>
       
-      <div class="container" style="padding-left: 10px;">  
+      <div class="container" style="padding-left: 1px;">  
         <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
           <h2 class="section-title" style="    font-family: Poly, serif;
           font-weight: 400;
@@ -840,8 +884,9 @@ h2 pre {
                     <div class="product-image">
                         <a href="{% url 'product_details' product.id %}" class="image">
                             <img class="pic-1" src="/media/{{ product.images_set.first.images }}" class="lazy">
-                            <img class="pic-2" src="/media/{{ product.images_set.first.images }}" class="lazy">
                         </a>
+                        <a href="{% url 'add_to_cart' product.id %}" class="add-to-cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
                         </a>
                     </div>
                     <div class="product-content">

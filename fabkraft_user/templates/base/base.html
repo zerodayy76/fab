@@ -27,7 +27,7 @@
 
   <style>
 .footer{
-background:#ffa3c5;
+background:#ffccdf;
 padding:30px 0px;
 font-family: 'Play', sans-serif;
 text-align:center;
@@ -37,18 +37,18 @@ text-align:center;
 width:100%;
 margin:1% 0%;
 padding:0.6% 0%;
-color:rgb(255, 255, 255);
+color:rgb(0, 0, 0);
 font-size:0.8em;
 }
 
 .footer .row a{
 text-decoration:none;
-color:rgb(255, 255, 255);
+color:rgb(0, 0, 0);
 transition:0.5s;
 }
 
 .footer .row a:hover{
-color:#fff;
+color:#000000;
 }
 
 .footer .row ul{
@@ -65,10 +65,12 @@ font-size:2em;
 margin:0% 1%;
 }
 
+
 @media (max-width:720px){
 .footer{
 text-align:left;
 padding:5%;
+font-size: 1.2rem;
 }
 .footer .row ul li{
 display:block;
@@ -79,24 +81,31 @@ text-align:left;
 margin:0% 3%;
 }
 
+.footer .row a{
+font-size:1em;
+margin:0% 1%;
+font-family: Poly, serif;
+}
+
 }
 
 /* Style for the circle background */
 .cart-icon {
-    position: relative; /* Make the position relative for absolute positioning */
-    display: inline-block; /* Ensure the link occupies only the necessary space */
-    width: 40px; /* Set the width of the link */
-    height: 40px; /* Set the height of the link */
-    border-radius: 50%; /* Make the link a circle */
-    background-color: white; /* Set the background color of the circle */
-    text-align: center; /* Center the icon horizontally and vertically */
-    line-height: 40px; /* Vertically center the icon */
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: white;
+  text-align: center;
+  line-height: 30px;
 }
 
 /* Style for the cart icon */
 .cart-icon i {
-    color: white; /* Set the color of the icon */
-    font-size: 20px; /* Set the size of the icon */
+    color: rgb(0, 0, 0); /* Set the color of the icon */
+    font-size: px; /* Set the size of the icon */
+    
 }
 
 /* Style for the cart number */
@@ -153,7 +162,7 @@ margin:0% 3%;
 .popup.active {
     display: block;
 }
-  
+
 </style>
 </head>
 <body>
@@ -205,29 +214,28 @@ margin:0% 3%;
   </div>
   <header id="header">
     <div id="header-wrap">
-      <nav class="secondary-nav" style="background-color:#ffa3c5 !important; color: #ffff !important;">
+      <nav class="secondary-nav" style="background-color:#ffccdf !important; color: #000 !important;">
         <div class="container">
           <div class="row d-flex align-items-center">
-            <div class="col-md-4 header-contact">
-          <p>Let's talk! +91 789 890 7890
-              </p>
+            <div class="col-md-4 header-contact" style="padding-left: 0px;padding-right: 0px;">
+          <p style="font-family: Poly, serif;">Let's talk! +91 789 890 7890</p>
             </div>
             <div class="col-md-4 shipping-purchase text-center">
-              <p>Let the Block Prints Be a Game-Changer</p>
+              <p style="font-family: Poly, serif;">Let the Block Prints Be a Game-Changer</p>
             </div>
-            <div class="col-md-4 col-sm-12  user-items" style="color: #ffff !important;">
+            <div class="col-md-4 col-sm-12  user-items" style="color: #000000 !important;">
               <ul class="d-flex justify-content-end  list-unstyled">
 
                 <li>
                   <a href="{% url 'cart' %}" class="cart-icon">
-                    <i style="color: #ffa3c5;" class="icon icon-shopping-cart"></i>
+                    <i style="color: #000;" class="icon icon-shopping-cart"></i>
                     <span class="cart-number">{{cart_count}}</span> <!-- Example number, replace dynamically as needed -->
                   </a>
                 </li>
                 
                 <li class="user-items search-item pe-3">
                   <a href="#" class="search-button">
-                    <i class="icon icon-search"></i>
+                    <i style="color: #000;" class="icon icon-search"></i>
                   </a>
                 </li>
               </ul>
@@ -247,7 +255,7 @@ margin:0% 3%;
             <div class="col-lg-2 col-md-2" style="padding-left: 15px;padding-right: 15px;">
               <div class="main-logo">
                 <a href="{% url 'index' %}">
-                  <img src="{% static 'user/img/fablogo.jpeg' %}" alt="logo" style="width: 80x; height: 80px;">
+                  <img src="{% static 'user/img/fablogo.jpeg' %}" alt="logo" style="width: 70x; height: 70px;">
                 </a>
               </div>
             </div>
@@ -278,7 +286,7 @@ margin:0% 3%;
                   <li><a href="{% url 'About'%}" class="item-anchor" data-effect="About">About</a></li>
 
                     <li class="menu-item has-sub" >
-                      <a href="#" class="item-anchor d-flex align-item-center" data-effect="Blog" style=" font-size: 22px; background-color: #ffa3c5; color: #ffffff;"><i class="icon icon-user"></i>{% if user.is_authenticated %} {{user.username}}{% else %} Account {% endif %}<i
+                      <a href="#" id="accountbar" class="item-anchor d-flex align-item-center" data-effect="Blog" style=" font-size: 22px;"><i class="icon icon-user"></i>{% if user.is_authenticated %} {{user.username}}{% else %} Account {% endif %}<i
                           class="icon icon-chevron-down"></i></a>
                       <ul class="submenu">
                           {% if user.is_authenticated %}
@@ -329,7 +337,7 @@ margin:0% 3%;
   </ul>
   </div>
   <div class="row">
-  FABKRAFT Copyright © 2024 FabKraft- All rights reserved || Designed By: Alpha Solutions
+  <p style="font-size: 10px;font-family: Poly, serif;">FABKRAFT Copyright © 2024 FabKraft- All rights reserved || Designed By: Alpha Solutions</p>
   </div>
   </div>
   </footer>
