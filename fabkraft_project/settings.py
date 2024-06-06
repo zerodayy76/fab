@@ -26,6 +26,15 @@ SECRET_KEY = 'django-insecure-hzw@d1u02awspddpvoba(%1d7p5-wi+pt#vn@zpz=7amiu57s$
 DEBUG = 0
 
 ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = False
+
+CSRF_TRUSTED_ORIGINS = [
+   "https://thefabkraft.in",
+]
+CORS_ALLOW_ORIGINS = [
+    "https://thefabkraft.in",  # Add your trusted domain here
+    # Add more trusted domains if needed
+]
 
 # Application definition
 
@@ -217,11 +226,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
+# #mail backend
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp-mail.outlook.com'
+# EMAIL_HOST_USER = "fabkraft@outlook.com"
+# EMAIL_HOST_PASSWORD = "thefab-kraft"
+# DEFAULT_FROM_EMAIL ='fabkraft@outlook.com'
+
 #mail backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_PORT = 587
+EMAIL_PORT = 465
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_HOST_USER = "fabkraft@outlook.com"
-EMAIL_HOST_PASSWORD = "thefab-kraft"
-DEFAULT_FROM_EMAIL ='fabkraft@outlook.com'
+EMAIL_HOST = 'smtp.hostinger.com'
+EMAIL_HOST_USER = "support@thefabkraft.in"
+EMAIL_HOST_PASSWORD = "Fabkraft@2024"
+DEFAULT_FROM_EMAIL ='support@thefabkraft.in'
