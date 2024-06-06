@@ -45,6 +45,13 @@ class Products(models.Model):
         return str(self.product_name)
     def get_images(self):
         return images.objects.filter(product=self)
+    def get_first_image(self):
+        first_image = self.images_set.first()
+        if first_image:
+            return mark_safe(f'<img src="{first_image.images.url}" width="80" height="80" />')
+        return "No Image"
+
+    get_first_image.short_description = 'Image'
 
 class product_views(models.Model):
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
@@ -114,12 +121,26 @@ class orders(models.Model):
 
     def __str__(self):
         return str(self.id)
+    def get_first_image(self):
+        first_image = self.order_products_set.first().products.images_set.first()
+        if first_image:
+            return mark_safe(f'<img src="{first_image.images.url}" width="80" height="80" />')
+        return "No Image"
+
+    get_first_image.short_description = 'Image'
 class order_products(models.Model):
     order = models.ForeignKey(orders,on_delete=models.CASCADE)
     products = models.ForeignKey(Products,on_delete=models.CASCADE)
     product_price = models.DecimalField(max_digits=10,decimal_places=2)
     verient =  models.ForeignKey(product_choices,on_delete=models.CASCADE,null=True,blank=True)
     quantity = models.IntegerField()
+    def get_first_image(self):
+        first_image = self.products.images_set.first()
+        if first_image:
+            return mark_safe(f'<img src="{first_image.images.url}" width="80" height="80" />')
+        return "No Image"
+
+    get_first_image.short_description = 'Image'
 
 #------------------------------------index page-------------------------------------------
 

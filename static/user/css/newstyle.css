@@ -1610,7 +1610,7 @@ left: 3.5em;
     display:none;
   }
 .header-contact p{
-  font-size: 14px;
+  font-size: 0.65em;
 } 
 }
 
@@ -2851,7 +2851,7 @@ margin: auto;
 @media screen and (max-width: 768px) {
   .container {
     margin: 0px;
-    padding-left: 24px;
+    padding-left: 1em;
     margin-left: 10px;
   }
 }

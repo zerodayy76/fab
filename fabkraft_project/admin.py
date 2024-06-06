@@ -49,7 +49,7 @@ class ProductratingChoicesInline(admin.TabularInline):
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ['id','product_name']
+    list_display = ['id','get_first_image','product_name']
     search_fields = ['product_name', 'description', 'subcategory', 'category']  # Add fields you want to search
     list_filter = ['category', 'subcategory', 'is_active'] 
     inlines = [ImageInline, ProductChoicesInline,ProductratingChoicesInline]
@@ -58,14 +58,14 @@ class ProductsAdmin(admin.ModelAdmin):
 class OrderProductsInline(admin.TabularInline):
     model = order_products
     extra = 1
-    readonly_fields = ['order', 'products','product_price','verient','quantity']
+    readonly_fields = ['order', 'get_first_image','products','product_price','verient','quantity']
     def has_delete_permission(self, request, obj=None):
         return False
 @admin.register(orders)
 class OrdersAdmin(admin.ModelAdmin):
     readonly_fields = ['user', 'date','address','pincode','city','state','phno','email','area','district','shipping_cost','tax_cost','total_cost','pay_id','payment_method','is_paid','is_canceled','cancel_reason']
     inlines = [OrderProductsInline]
-    list_display = ["id","name","status",'pay_id']
+    list_display = ["id","get_first_image","name","status",'pay_id']
     search_fields = ['id', 'name', 'status', 'pay_id']  # Add fields you want to search
 
 class SubCategoryInline(admin.TabularInline):
