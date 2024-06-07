@@ -28,7 +28,7 @@ from django.conf import settings
 from .token_gen import *
 from django.contrib.auth.hashers import make_password
 pincode_df = read_csv('datasets/pincode.csv',low_memory=False)
-
+import threading
 import random
 def test(request):
     return render(request,'admin/base.html')
@@ -188,6 +188,17 @@ def login_page(request):
 
 
 def register(request):
+    def sendregmail(to_email):
+        link = request.build_absolute_uri(reverse('index'))
+        subject = 'FabKraft : Thank you for registering with FabKraft'
+        message = render_to_string('login/registermail.html', {
+            'user': registeruser,
+            'link': link,
+        })
+        from_email = settings.DEFAULT_FROM_EMAIL
+
+        send_mail(subject, message, from_email, [to_email])
+
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -195,47 +206,30 @@ def register(request):
 
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email is already registered.')
-            return redirect('register')
+            return render(request, 'login/register.html', {"email": email, 'username': username})
         if User.objects.filter(username=username).exists():
-            messages.error(request, 'username is already taken.')
-            return redirect('register')
+            messages.error(request, 'Username is already taken.')
+            return render(request, 'login/register.html', {"email": email, 'username': username})
         if len(password) < 8:
-            messages.error(request, 'password is weak.')
-            return redirect('register')
-        # if len(str(phone_number)) != 10:
-        #     messages.error(request, 'phone number is not valid')
-        #     return redirect('register')
-        
+            messages.error(request, 'Password is weak.')
+            return render(request, 'login/register.html', {"email": email, 'username': username})
+
         registeruser = User.objects.create_user(username, email, password)
+        # If you have UserData model and you want to create related data, ensure it is properly handled
         userdata = UserData.objects.create(user=registeruser)
-        # # Generate custom token
-        # token = generate_token(registeruser.pk)
-        # uid = urlsafe_base64_encode(force_bytes(registeruser.pk))
-        # verification_link = request.build_absolute_uri(
-        #     reverse('verify_email', kwargs={'uidb64': uid, 'token': token})
-        # )
-        # print(verification_link)
 
-        # # Sending email verification
-        link = request.build_absolute_uri(
-             reverse('index')
-         )
-        subject = 'FabKraft : Thankyou for register in FabKraft'
-        message = render_to_string('login/registermail.html', {
-            'user': registeruser,
-            'link': link,
-        })
-        from_email = settings.DEFAULT_FROM_EMAIL
-        to_email = email
+        # Sending email in a separate thread
+        mailthread = threading.Thread(target=sendregmail, args=(email,))
+        mailthread.start()
 
-        send_mail(subject, message, from_email, [to_email],fail_silently=True)
         user = authenticate(request, username=username, password=password)
-        login(request, user)
-        messages.success(request, 'Registration successful. Please check your email for verification.')
-        previous_page = request.session.pop('previous_page', '/')
-        return HttpResponseRedirect(previous_page)
+        if user is not None:
+            login(request, user)
+            previous_page = request.session.pop('previous_page', '/')
+            return HttpResponseRedirect(previous_page)
+        else:
+            return redirect('login')
     return render(request, 'login/register.html')
-
 def verify_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))

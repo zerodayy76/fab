@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-hzw@d1u02awspddpvoba(%1d7p5-wi+pt#vn@zpz=7amiu57s$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 0
+DEBUG = 1
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = False
@@ -238,7 +238,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #mail backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_PORT = 465
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.hostinger.com'
 EMAIL_HOST_USER = "support@thefabkraft.in"

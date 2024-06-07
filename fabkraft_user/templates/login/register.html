@@ -171,14 +171,13 @@
 			.btn:hover {
 				background-color: #0056b3;
 			}
-			.container{
-				margin: 0px;
-			}
+
 			</style>
 
 
 <div class="container-fluid">
-		{% if messages %} {% for message in messages %} {% if message.tags %} {{ message.tags }} {% endif %}{{ message }}<br> {% endfor %} {% endif %}
+
+		{% if messages %}<div class="message-box red"><center>{% for message in messages %} {% if message.tags %} {{ message.tags }} {% endif %}{{ message }}<br> {% endfor %}</center></div>  {% endif %}
 
 		<div class="row main-content bg-success text-center">
 			<div class="col-md-4 text-center company__info" style="border-top-style: solid;border-top-width: 1px;">
