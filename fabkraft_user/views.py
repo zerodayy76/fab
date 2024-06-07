@@ -172,6 +172,8 @@ def login_page(request):
                 if user is not None:
                     login(request, user)
                     previous_page = request.session.pop('previous_page', '/')
+                    if request.user.is_superuser:
+                        return redirect('/admin/admin/')
                     return HttpResponseRedirect(previous_page)
  
             except:
