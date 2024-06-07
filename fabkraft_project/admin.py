@@ -74,6 +74,7 @@ class SubCategoryInline(admin.TabularInline):
 
 class productsInline(admin.TabularInline):
     model = Products
+    readonly_fields = ["id","get_first_image","product_name"]
     extra = 1
 
 @admin.register(Category)
