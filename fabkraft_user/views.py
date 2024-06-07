@@ -756,7 +756,9 @@ def save_checkouts(request):
         state = str(pincode_details.iloc[0]['StateName'])
         total_cost = 0
         print('products',products)
-        for prod_id in list(set(products)):
+        cart_prods = cart.objects.filter(user=UserData.objects.get(user=request.user))
+        for prod in cart_prods:
+            prod_id = prod.products.id
             print('prod id',prod_id)
             product = Products.objects.get(id=prod_id)
             print('exists',prod_id,product_choices.objects.filter(product__id=prod_id).exists())

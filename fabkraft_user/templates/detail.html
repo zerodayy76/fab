@@ -727,15 +727,15 @@ h2 pre {
                 font-style: normal;">₹{{product_details.max_price}}</del></p>
             </div>         
       
-            <!-- <div class = "product-detail">
+             <div class = "product-detail">
               <h2 style="    font-family: Poly, serif;
               font-weight: 400;
               font-style: normal;">about this item: </h2>
               <pre style="    font-family: Poly, serif;
               font-weight: 400;
               font-style: normal;">{{product_details.description}}</pre>
-            </div> -->
-            
+            </div>
+
             <div class = "purchase-info">
               <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform" method="post">
                 {%csrf_token%}
