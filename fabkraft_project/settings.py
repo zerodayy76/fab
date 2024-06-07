@@ -30,8 +30,10 @@ CORS_ALLOW_ALL_ORIGINS = False
 
 CSRF_TRUSTED_ORIGINS = [
    "https://thefabkraft.in",
+   "https://www.thefabkraft.in",
 ]
 CORS_ALLOW_ORIGINS = [
+    "https://www.thefabkraft.in",
     "https://thefabkraft.in",  # Add your trusted domain here
     # Add more trusted domains if needed
 ]
