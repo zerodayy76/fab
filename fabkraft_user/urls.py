@@ -66,6 +66,7 @@ urlpatterns = [
     path('Privacy/',views.Privacy,name='Privacy'),
     path('Terms/',views.Terms,name='Terms'),
     
+    path('contact/',views.contact,name='contact'),
     path('pincode_details/', views.pincode_details ,name='pincode_details'),
     path('shipping_cost/', views.shipping_cost ,name='shipping_cost'),
 

@@ -5,6 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Group, Permission
 from django.utils import timezone
 from django.utils.crypto import get_random_string
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class UserData(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
@@ -157,13 +158,16 @@ class index_categories(models.Model):
     category = models.ForeignKey(Category,models.CASCADE)
     
 class Rating(models.Model):
-    date = models.DateField(auto_created=True,auto_now=True)
-    user = models.ForeignKey(UserData, on_delete=models.CASCADE)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    commands = models.TextField(null=1)
-    review_choice = models.CharField(max_length=225,null=True)
-    rate = models.IntegerField()
-    
+    date = models.DateField()
+    user = models.CharField(max_length=100)
+    stars = models.IntegerField(default=1,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(1)
+        ])
+    review = models.TextField(null=1)
+    country =  models.CharField(max_length=100)
+
 #===================search keyword==========================================
 
 class SearchKeyword(models.Model):

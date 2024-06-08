@@ -65,6 +65,10 @@ font-size:2em;
 margin:0% 1%;
 }
 
+#logo{
+width:4em;
+height:4em;
+}
 
 @media (max-width:720px){
 .footer{
@@ -85,6 +89,10 @@ margin:0% 3%;
 font-size:1em;
 margin:0% 1%;
 font-family: Poly, serif;
+}
+#logo{
+width:3em;
+height:3em;
 }
 
 }
@@ -186,7 +194,7 @@ font-family: Poly, serif;
     
 
 
-<div class="popup" id="popup">
+<!--<div class="popup" id="popup">
   <div>
 <form class="filter" method="GET" action="{% url 'search_products' %}">
   <input type="text" value="{{ query }}" name="q" hidden>
@@ -203,13 +211,13 @@ font-family: Poly, serif;
 </div>
 </form>
 
-</div>
-<script>
+</div>-->
+<!--<script>
   function togglePopup() {
       var popup = document.getElementById("popup");
       popup.classList.toggle("active");
   }
-</script>
+</script>-->
     <div class="preloader-wrapper">
     <div class="preloader">
     </div>
@@ -233,7 +241,7 @@ font-family: Poly, serif;
         <div class="container">
           <div class="row d-flex align-items-center">
             <div class="col-md-4 header-contact" style="padding-left: 0px;padding-right: 0px;">
-          <p style="font-family: Poly, serif;">Let's talk! +91 789 890 7890</p>
+          <p style="font-family: Poly, serif;">Let's talk! +9170103 26895</p>
             </div>
             <div class="col-md-4 shipping-purchase text-center">
               <p style="font-family: Poly, serif;">Let the Block Prints Be a Game-Changer</p>
@@ -258,19 +266,18 @@ font-family: Poly, serif;
           </div>
         </div>
       </nav>
-      <nav class="primary-nav padding-small" style="background-color: #ffffff;
+      <nav class="primary-nav " style="background-color: #ffffff;
       font-family: Poly, serif;
       font-weight: 400;
       font-style: normal;
       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Bottom box shadow */
-      padding-bottom: 10px; /* Adjust padding for spacing */
-      margin-bottom: 10px; /* Adjust margin for spacing */">
+      margin-bottom: 1px; /* Adjust margin for spacing */">
         <div class="container">
           <div class="row d-flex align-items-center">
             <div class="col-lg-2 col-md-2" style="padding-left: 15px;padding-right: 15px;">
               <div class="main-logo">
                 <a href="{% url 'index' %}">
-                  <img src="{% static 'user/img/fablogo.jpeg' %}" alt="logo" style="width: 70x; height: 70px;">
+                  <img src="{% static 'user/img/fablogo.jpeg' %}" alt="logo" id='logo'>
                 </a>
               </div>
             </div>
@@ -349,6 +356,7 @@ font-family: Poly, serif;
   <li><a href="{% url 'Shipping'%}">Shipping & Returns</a></li>
   <li><a href="{% url 'Privacy'%}">Privacy Policy</a></li>
   <li><a href="{% url 'Terms'%}">Terms & Conditions</a></li>
+    <li><a href="{% url 'contact'%}">Contact us</a></li>
   </ul>
   </div>
   <div class="row">

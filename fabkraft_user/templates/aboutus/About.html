@@ -1,25 +1,25 @@
-{% extends 'base/base.html' %} {%load static%} {% block title %} Buy2Sell {% endblock %} {% block content %}
-  <div class="container">
-  
+{% extends 'base/base.html' %} {%load static%} {% block content %}
+{% load custom_filters%}
+<div class="container">
+
 <style>
       .title {
     text-align: center;
     position: relative;
-    margin-bottom: 20px; /* Adjust as needed */
    padding: 10px;
   }
   .title h1 {
     font-size: 22px;
     display: inline-block;
-    padding-bottom: 10px; /* Adjust the underline height */
     border-bottom: 2px solid black; /* You can change the color and thickness */
   }
 
   /* Styling for the content with bullet points */
+  .content {
 
+  }
   .content ul {
     list-style-type: disc; /* You can change to circle or square */
-    padding-left: 20px; /* Adjust the distance between bullet points and text */
     text-align: left;
  }
 
@@ -37,8 +37,7 @@
  ::selection{
   background: rgba(23,162,184,0.3);
 }
-.wrapper{
-  max-width: 1400px;
+.wrapper {
   padding: 10px;
   margin-top: 100px;
   display: flex;
@@ -51,6 +50,7 @@
   width: calc(33% - 10px);
   padding: 25px;
   border-radius: 3px;
+  margin-bottom:10px;
   box-shadow: 0px 4px 8px rgba(0,0,0,0.15);
 }
 .wrapper .box i.quote{
@@ -107,9 +107,9 @@
   .wrapper .box{
     width: 100%;
   }
-}
-.container {
-  margin: 0;
+  .container{
+  margin: 0px;
+  }
 }
 </style>
 
@@ -120,7 +120,7 @@
 <div class="title">
     <h1>About</h1>
   </div>
-  
+
   <div class="content">
     <ul>
       <li>Introducing our handcrafted home decor and Linens..! </li>
@@ -128,171 +128,48 @@
       <li>Add our prints and colors to make your home more beautiful and artistic. The Mughal floral prints depict buds, flowers, and leaves that evoke a sense of airy calm. Combine these prints with soft cotton to have the ideal mix of comfort and class.</li>
       <!-- Add more points as needed -->
     </ul>
-<br>
-<div class="container-fluid">
+  </div>
+
+
+
+
+
+
   <div class="title">
-    <h1>Contact Us</h1>
-    </div>
-  <div class="row px-xl-5">
-      <div class="col-lg-5 mb-5">
-          <div class="bg-light p-30 mb-3">
-              <p class="mb-2"><i class="fa fa-map-marker text-primary mr-3"></i> 50 Feet Road, Krishnaswamy Nagar, Coimbatore 641045, Tamil nadu</p>
-              <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i> tharika100@yahoo.com</p>
-              <p class="mb-2"><i class="fa fa-phone text-primary mr-3"></i> +91 70103 26895</p>
-          </div>
-      </div>
-  </div>
-</div>
-</div>
-
-
-
-
-
-  </div>
-  <!-- <div class="title">
     <h1>Testimonals</h1>
-  </div>  
-  <div class="wrapper">
+  </div>
+
+  <div class="wrapper" style="margin-top:0px;">
+{% for i in rating%}
     <div class="box">
       <i class="fas fa-quote-left quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
+      <p>{{i.review}}<p>
       <div class="content">
         <div class="info">
-          <div class="name">Alex Smith</div>
-          <div class="job">Designer | Developer</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
+          <div class="name">{{i.user}}</div>
+          <div class="job">{{i.country}}</div>
+
+         <div class="stars">
+            {% for i in i.stars|int_range %}
+                <i class="fas fa-star"></i>
+            {% endfor %}
+            {% for i in 5|subtract:i.stars|int_range %}
+                <i class="far fa-star"></i>
+            {% endfor %}
+        </div>
+</div>
+
+
         </div>
         <div class="image">
           <img src="images/profile-1.jpeg" alt="">
         </div>
       </div>
-    </div>
-    <div class="box">
-      <i class="fas fa-quote-left quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
-      <div class="content">
-        <div class="info">
-          <div class="name">Steven Chris</div>
-          <div class="job">YouTuber | Blogger</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-        </div>
-        <div class="image">
-          <img src="images/profile-2.jpeg" alt="">
-        </div>
-      </div>
-    </div>
-    <div class="box">
-      <i class="fas fa-quote-left  quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
-      <div class="content">
-        <div class="info">
-          <div class="name">Kristina Bellis</div>
-          <div class="job">Freelancer | Advertiser</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-        </div>
-        <div class="image">
-          <img src="images/profile-3.jpeg" alt="">
-        </div>
-      </div>
-    </div>
-    <div class="box">
-      <i class="fas fa-quote-left  quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
-      <div class="content">
-        <div class="info">
-          <div class="name">Kristina Bellis</div>
-          <div class="job">Freelancer | Advertiser</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-        </div>
-        <div class="image">
-          <img src="images/profile-3.jpeg" alt="">
-        </div>
-      </div>
-    </div>    <div class="box">
-      <i class="fas fa-quote-left  quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
-      <div class="content">
-        <div class="info">
-          <div class="name">Kristina Bellis</div>
-          <div class="job">Freelancer | Advertiser</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-        </div>
-        <div class="image">
-          <img src="images/profile-3.jpeg" alt="">
-        </div>
-      </div>
-    </div>    <div class="box">
-      <i class="fas fa-quote-left  quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
-      <div class="content">
-        <div class="info">
-          <div class="name">Kristina Bellis</div>
-          <div class="job">Freelancer | Advertiser</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-        </div>
-        <div class="image">
-          <img src="images/profile-3.jpeg" alt="">
-        </div>
-      </div>
-    </div>    <div class="box">
-      <i class="fas fa-quote-left  quote"></i>
-      <p>Lorem aliasry ipsum dolor sits ametans, consectetur adipisicing elitits. Expedita reiciendis itaque placeat thuratu, quasi yiuos repellendus repudiandae deleniti ideas fuga molestiae, alias.</p>
-      <div class="content">
-        <div class="info">
-          <div class="name">Kristina Bellis</div>
-          <div class="job">Freelancer | Advertiser</div>
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-        </div>
-        <div class="image">
-          <img src="images/profile-3.jpeg" alt="">
-        </div>
-      </div>
-    </div>
+{%endfor%}
   </div>
-</div> -->
-  
-  
+    </div>
+
+  </div>
+
+
 {% endblock %}

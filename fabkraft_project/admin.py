@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-admin.site.unregister(Group)
+#admin.site.unregister(Group)
 
 class UserDataInline(admin.TabularInline):
     model = UserData
@@ -43,16 +43,13 @@ class ProductChoicesInline(admin.TabularInline):
     model = product_choices
     extra = 1
 
-class ProductratingChoicesInline(admin.TabularInline):
-    model = Rating
-    extra = 1
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ['id','get_first_image','product_name']
     search_fields = ['product_name', 'description', 'subcategory', 'category']  # Add fields you want to search
     list_filter = ['category', 'subcategory', 'is_active'] 
-    inlines = [ImageInline, ProductChoicesInline,ProductratingChoicesInline]
+    inlines = [ImageInline, ProductChoicesInline]
 
 #===============[orders]==============================
 class OrderProductsInline(admin.TabularInline):
@@ -85,7 +82,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 
-
 class index_page_customization(AdminSite):
     site_header = 'index page customisation'
 
@@ -105,8 +101,12 @@ class IndexCategoriesAdmin(admin.ModelAdmin):
 class adminFAQ(admin.ModelAdmin):
     list_display = ['questions','models']
 
+class index_page_ProductratingChoicesInline(admin.ModelAdmin):
+    list_display = ['date','user','stars','review','country']
+
+
 indexpage.register(index_carousel, IndexCarouselAdmin)
 indexpage.register(index_top_categories, IndexTopCategoriesAdmin)
 indexpage.register(index_categories, IndexCategoriesAdmin)
 indexpage.register(FAQ, adminFAQ)
-
+indexpage.register(Rating, index_page_ProductratingChoicesInline)

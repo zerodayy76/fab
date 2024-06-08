@@ -499,20 +499,9 @@ def show_product(request, prod_id):
     request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
 
     review = 'None'
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            Rating.objects.create(
-                user=UserData.objects.get(user=request.user),
-                product=Products.objects.get(id=prod_id),
-                commands=request.POST.get("review"),
-                rate=request.POST.get("rate"),
-                review_choice=request.POST.get('review_options'),
-            )
-        else:
-            return redirect('login')
+
     try:
         product_details = Products.objects.get(id=prod_id)
-        reviews = Rating.objects.filter(product=product_details)
         prod_image = images.objects.filter(product = product_details)
         
         if 'recently_viewed' in request.session:
@@ -547,41 +536,15 @@ def show_product(request, prod_id):
             (Q(subcategory__in=product_details.subcategory.all())) &
             ~Q(id=product_details.id)
         )[:10]
-        review_right = False
-        if request.user.is_authenticated:
-            try:
-                review_right = order_products.objects.filter(order__user=UserData.objects.get(user=request.user), products=product_details,order__status = 'Delivered')
-                
-                review_right = review_right[0].order.status  == 'Delivered'
-                print(review_right)
-            except IndexError:
-                review_right = False
 
-            is_reviewed = Rating.objects.filter(user=UserData.objects.get(user=request.user), product=product_details)
-        if len(is_reviewed):
-            review = Rating.objects.get(user=UserData.objects.get(user=request.user), product=product_details)
-        over_All_rating = 0
-        for i in reviews:
-            over_All_rating += i.rate
-        try:
-            over_All_rating = over_All_rating//len(reviews)
-        except:
-            over_All_rating=0
-        print(over_All_rating)
+
         
         context = {
             "product_details": product_details,
-            "review": reviews,
-            "base_rate":[1,2,3,4,5],
-            "review_count":reviews.count(),
-            "is_reviewed": len(is_reviewed),
-            "edit_review": review,
-            "review_right": review_right,
+
             "recent_prod": Products.objects.filter(id__in = request.session['recently_viewed']),
             "prod_image":prod_image,
             "recomend":recomendations,
-            "overall_ratiing":over_All_rating,
-            'review_options':['good','bad','not ok']
         }
     except Products.DoesNotExist:
         return render(request, '404_error.html')
@@ -996,9 +959,11 @@ def FAQ_page(request):
 def Refunds(request):
     return render(request,'aboutus/Refunds.html')    
 
-
+def contact(request):
+    return render(request,'aboutus/contact.html')
 def About(request):
-    return render(request,'aboutus/About.html')  
+    reviews_ = Rating.objects.all()
+    return render(request,'aboutus/About.html',{'rating':reviews_})
 
 def Shipping(request):
     return render(request,'aboutus/Shipping.html')    
