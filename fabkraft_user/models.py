@@ -41,7 +41,9 @@ class Products(models.Model):
     stock = models.IntegerField(default=0)
     is_deleted = models.BooleanField(default=False)
     views =  models.IntegerField(default=0)  
-    
+    class Meta:
+        verbose_name = "Products"
+        verbose_name_plural = "Products"
     def __str__(self):
         return str(self.product_name)
     def get_images(self):
@@ -119,7 +121,9 @@ class orders(models.Model):
     is_paid = models.BooleanField(default=False)
     is_canceled = models.BooleanField(default=False)    
     cancel_reason = models.TextField(null=True)
-
+    class Meta:
+        verbose_name = "Orders"
+        verbose_name_plural = "Orders"
     def __str__(self):
         return str(self.id)
     def get_first_image(self):
@@ -140,7 +144,9 @@ class order_products(models.Model):
         if first_image:
             return mark_safe(f'<img src="{first_image.images.url}" width="80" height="80" />')
         return "No Image"
-
+    class Meta:
+        verbose_name = "Products"
+        verbose_name_plural = "Products"
     get_first_image.short_description = 'Image'
 
 #------------------------------------index page-------------------------------------------
