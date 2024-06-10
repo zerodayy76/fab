@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-#admin.site.unregister(Group)
+admin.site.unregister(Group)
 
 class UserDataInline(admin.TabularInline):
     model = UserData
@@ -88,8 +88,17 @@ class index_page_customization(AdminSite):
 indexpage = index_page_customization(name='index page')
 
 class IndexCarouselAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name','get_first_image']
+
     # Customize further as needed
+    def display_image(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" style="max-height: 200px; max-width: 200px;" />', obj.image.url)
+        else:
+            return None
+
+    display_image.short_description = 'Image Preview'
+    readonly_fields = ['display_image']
 
 class IndexTopCategoriesAdmin(admin.ModelAdmin):
     list_display = ['category', 'order']
@@ -104,9 +113,13 @@ class adminFAQ(admin.ModelAdmin):
 class index_page_ProductratingChoicesInline(admin.ModelAdmin):
     list_display = ['date','user','stars','review','country']
 
+class index_page_settings(admin.ModelAdmin):
+    list_display = ['name','value']
+
 
 indexpage.register(index_carousel, IndexCarouselAdmin)
 indexpage.register(index_top_categories, IndexTopCategoriesAdmin)
 indexpage.register(index_categories, IndexCategoriesAdmin)
 indexpage.register(FAQ, adminFAQ)
 indexpage.register(Rating, index_page_ProductratingChoicesInline)
+indexpage.register(setting_values, index_page_settings)

@@ -27,6 +27,9 @@ class sub_Category(models.Model):
     is_active = models.BooleanField(default=True)
     def __str__(self):
         return str(self.sub_category)
+    class Meta:
+        verbose_name = "Sub Category"
+        verbose_name_plural = "Sub Category"
 #----------------------Product-----------------------------------------
 
 class Products(models.Model):
@@ -155,14 +158,28 @@ class index_carousel(models.Model):
     image = models.ImageField(upload_to='carousel_image/')
     name = models.CharField(max_length=225)
     redirect = models.TextField()
+    class Meta:
+        verbose_name = "Carousel"
+        verbose_name_plural = "Carousel"
+    def get_first_image(self):
+        first_image = self.image
+        if first_image:
+            return mark_safe(f'<img src="{first_image.url}" width="80" height="80" />')
+        return "No Image"
 
+    get_first_image.short_description = 'Image'
 class index_top_categories(models.Model):
     category = models.ForeignKey(Category,models.CASCADE)
     order = models.IntegerField(unique=True)
-
+    class Meta:
+        verbose_name = "top category"
+        verbose_name_plural = "top category"
 class index_categories(models.Model):
     category = models.ForeignKey(Category,models.CASCADE)
-    
+    class Meta:
+        verbose_name = "index page category"
+        verbose_name_plural = "index page category"
+
 class Rating(models.Model):
     date = models.DateField()
     user = models.CharField(max_length=100)
@@ -188,7 +205,9 @@ class SearchKeyword(models.Model):
 class setting_values(models.Model):
     name = models.CharField(max_length=100)
     value = models.JSONField()
-    
+    class Meta:
+        verbose_name = "settings"
+        verbose_name_plural = "settings"
 
 class FAQ(models.Model):
     questions = models.TextField()
