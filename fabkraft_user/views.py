@@ -750,6 +750,7 @@ def save_checkouts(request):
                 email=email,
                 payment_method = payment,    
                 pay_id=payid,
+                area=area,
                 shipping_cost = calculate_shipping_charge(total_cost),
                 tax_cost = 00,
                 total_cost =  total_cost,   

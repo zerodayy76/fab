@@ -393,14 +393,12 @@ $(document).ready(function () {
             var priceStr = $(this).find('.price').val(); // Fetching price value as string
             var price = parseFloat(priceStr); // Parsing price string to float
             if (isNaN(price)) {
-                console.log("Invalid price:", priceStr);
                 return; // Skip to the next iteration
             }
 
             var quantityStr = $(this).find('.quantity').val(); // Fetching quantity value as string
             var quantity = parseInt(quantityStr, 10); // Parsing quantity string to integer
             if (isNaN(quantity)) {
-                console.log("Invalid quantity:", quantityStr);
                 return; // Skip to the next iteration
             }
 
@@ -442,7 +440,6 @@ $(document).ready(function () {
 
 document.getElementById('rzpbutton').onclick = function (e) {
   var isTrue = "{{userdata.email_verified}}";
-  console.log('isfalse',isTrue)
     if (isTrue == 'False') {
         alert("Email is not verified \n Email verification is manditaory for making orders \n check your inbox and spam on registered mail for verification link.");
         return;
