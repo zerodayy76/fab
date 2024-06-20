@@ -73,6 +73,7 @@ class ProductChoicesInline(admin.TabularInline):
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ['id', 'get_first_image', 'product_name']
+    readonly_fields = ['views']
     search_fields = ['product_name', 'description', 'subcategory__name', 'category__name']
     list_filter = ['category', 'subcategory', 'is_active'] 
     inlines = [ImageInline, ProductChoicesInline]
