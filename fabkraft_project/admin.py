@@ -9,6 +9,8 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.db import transaction
+from django.contrib import messages
 
 admin.site.unregister(Group)
 
@@ -26,6 +28,31 @@ admin.site.register(User, UserAdmin)
 
 
 #===============[products]========================
+@transaction.atomic
+def duplicate_selected_products(modeladmin, request, queryset):
+    for product in queryset:
+        original_id = product.id
+        product.pk = None  # This resets the primary key field, creating a new object
+        product.save()
+        
+        # Duplicate related images
+        original_images = images.objects.filter(product_id=original_id)
+        for image in original_images:
+            image.pk = None
+            image.product = product
+            image.save()
+
+        # Duplicate related product choices
+        original_choices = product_choices.objects.filter(product_id=original_id)
+        for choice in original_choices:
+            choice.pk = None
+            choice.product = product
+            choice.save()
+
+    modeladmin.message_user(request, "Selected products have been duplicated.", messages.SUCCESS)
+
+    duplicate_selected_products.short_description = "Duplicate selected products and their related data"
+
 class ImageInline(admin.TabularInline):
     model = images
     extra = 1
@@ -43,13 +70,13 @@ class ProductChoicesInline(admin.TabularInline):
     model = product_choices
     extra = 1
 
-
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = ['id','get_first_image','product_name']
-    search_fields = ['product_name', 'description', 'subcategory', 'category']  # Add fields you want to search
+    list_display = ['id', 'get_first_image', 'product_name']
+    search_fields = ['product_name', 'description', 'subcategory__name', 'category__name']
     list_filter = ['category', 'subcategory', 'is_active'] 
     inlines = [ImageInline, ProductChoicesInline]
+    actions = [duplicate_selected_products]
 
 #===============[orders]==============================
 class OrderProductsInline(admin.TabularInline):
