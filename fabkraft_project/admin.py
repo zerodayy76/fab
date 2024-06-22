@@ -74,7 +74,7 @@ class ProductChoicesInline(admin.TabularInline):
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ['id', 'get_first_image', 'product_name']
     readonly_fields = ['views']
-    search_fields = ['product_name', 'description', 'subcategory__name', 'category__name']
+    search_fields = ['product_name', 'description','category__name','subcategory__sub_category']
     list_filter = ['category', 'subcategory', 'is_active'] 
     inlines = [ImageInline, ProductChoicesInline]
     actions = [duplicate_selected_products]
