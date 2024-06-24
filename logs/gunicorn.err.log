@@ -2941,3 +2941,56 @@ Could not reverse url from admin
 Could not reverse url from admin
 Could not reverse url from admin
 Could not reverse url from admin
+[2024-06-22 10:24:05 +0000] [118050] [INFO] Handling signal: term
+[2024-06-22 10:24:05 +0000] [118051] [INFO] Worker exiting (pid: 118051)
+[2024-06-22 10:24:05 +0000] [118053] [INFO] Worker exiting (pid: 118053)
+[2024-06-22 10:24:05 +0000] [118052] [INFO] Worker exiting (pid: 118052)
+[2024-06-22 10:24:06 +0000] [118050] [INFO] Shutting down: Master
+[2024-06-22 10:24:07 +0000] [122116] [INFO] Starting gunicorn 22.0.0
+[2024-06-22 10:24:07 +0000] [122116] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (122116)
+[2024-06-22 10:24:07 +0000] [122116] [INFO] Using worker: sync
+[2024-06-22 10:24:07 +0000] [122117] [INFO] Booting worker with pid: 122117
+[2024-06-22 10:24:07 +0000] [122118] [INFO] Booting worker with pid: 122118
+[2024-06-22 10:24:07 +0000] [122119] [INFO] Booting worker with pid: 122119
+[2024-06-22 11:09:07 +0000] [122116] [INFO] Handling signal: term
+[2024-06-22 11:09:07 +0000] [122117] [INFO] Worker exiting (pid: 122117)
+[2024-06-22 11:09:07 +0000] [122119] [INFO] Worker exiting (pid: 122119)
+[2024-06-22 11:09:07 +0000] [122118] [INFO] Worker exiting (pid: 122118)
+[2024-06-22 11:09:07 +0000] [122116] [INFO] Shutting down: Master
+[2024-06-22 11:09:08 +0000] [122241] [INFO] Starting gunicorn 22.0.0
+[2024-06-22 11:09:08 +0000] [122241] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (122241)
+[2024-06-22 11:09:08 +0000] [122241] [INFO] Using worker: sync
+[2024-06-22 11:09:08 +0000] [122242] [INFO] Booting worker with pid: 122242
+[2024-06-22 11:09:08 +0000] [122243] [INFO] Booting worker with pid: 122243
+[2024-06-22 11:09:09 +0000] [122244] [INFO] Booting worker with pid: 122244
+[2024-06-22 11:29:56 +0000] [122241] [INFO] Handling signal: term
+[2024-06-22 11:29:56 +0000] [122242] [INFO] Worker exiting (pid: 122242)
+[2024-06-22 11:29:56 +0000] [122243] [INFO] Worker exiting (pid: 122243)
+[2024-06-22 11:29:56 +0000] [122244] [INFO] Worker exiting (pid: 122244)
+[2024-06-22 11:29:56 +0000] [122241] [INFO] Shutting down: Master
+[2024-06-22 11:29:58 +0000] [122313] [INFO] Starting gunicorn 22.0.0
+[2024-06-22 11:29:58 +0000] [122313] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (122313)
+[2024-06-22 11:29:58 +0000] [122313] [INFO] Using worker: sync
+[2024-06-22 11:29:58 +0000] [122314] [INFO] Booting worker with pid: 122314
+[2024-06-22 11:29:58 +0000] [122315] [INFO] Booting worker with pid: 122315
+[2024-06-22 11:29:58 +0000] [122316] [INFO] Booting worker with pid: 122316
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
