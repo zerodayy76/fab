@@ -179,7 +179,7 @@ padding: 10px;  }
 
 
   .purchase-info{
-      margin: 1.5rem 0;
+      margin: 0px;
   }
 
   .purchase-info input,
@@ -666,6 +666,74 @@ h2 pre {
     color: #fff; /* Change color on hover */
     background: #333; /* Change background on hover */
 }
+.radiocontainer {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+}
+.radiocontainer .selection {
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 10px;
+  border: 2px solid lightgrey;
+  transition: all 0.3s ease;
+}
+.radiocontainer .selection .circle {
+  display: none; /* Hide the circle */
+}
+.radiocontainer .selection::before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background: #d9d9d9;
+  border-radius: 50%;
+  position: relative;
+  display: block;
+}
+.radiocontainer .selection::before {
+  position: absolute;
+  content: "";
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  background: #ff69b4;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+input[type="radio"] {
+  display: none;
+}
+input[type="radio"]:checked + .selection {
+  border-color: #ff69b4;
+  background: #ff69b4;
+}
+input[type="radio"]:checked + .selection::before {
+  background: #fff;
+}
+input[type="radio"]:checked + .selection::before {
+  opacity: 1;
+  transform: scale(1);
+}
+.radiocontainer .selection span {
+  font-size: 15px;
+  color: #808080;
+}
+input[type="radio"]:checked + .selection span {
+  color: #fff;
+}
+
 
 </style>
    <div class="container">
@@ -703,7 +771,7 @@ h2 pre {
             {% elif not product_details.is_active %}
             Product is not available
             {% else %}
-            <div class = "product-rating" >
+            <!-- <div class = "product-rating" >
                 {% for base in base_rate %}
                 {% if base <= overall_ratiing %}
               <i class = "fas fa-star" style="color: gold;"></i>
@@ -711,13 +779,13 @@ h2 pre {
               <i class="far fa-star"></i>
           {% endif %}
       {% endfor %}
-    </div>
+    </div> -->
       
-   <div class = "product-price">
-              <p id="np" class = "new-price" ><span id="price" tyle="    font-family: Poly, serif;
+   <div class = "product-price" style="margin-bottom: 0px;">
+              <p id="np" class = "new-price" style="margin-bottom: 0px;"><span id="price" tyle="    font-family: Poly, serif;
                 font-weight: 400;
-                font-style: normal;">₹{{product_details.price}}</span></p>
-              <p id="lp" class = "last-price"><del tyle="    font-family: Poly, serif;
+                font-style: normal;" >₹{{product_details.price}}</span></p>
+              <p id="lp" class = "last-price" style="margin-bottom: 0px;"><del tyle="    font-family: Poly, serif;
                 font-weight: 400;
                 font-style: normal;">₹{{product_details.max_price}}</del></p>
             </div>         
@@ -725,23 +793,30 @@ h2 pre {
              <div class = "product-detail">
               <h2 style="    font-family: Poly, serif;
               font-weight: 400;
-              font-style: normal;">about this item: </h2>
+              font-style: normal;">Product Description: </h2>
               <pre style="    font-family: Poly, serif;
               font-weight: 400;
               font-style: normal;">{{product_details.description}}</pre>
             </div>
 
             <div class = "purchase-info">
-              <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform" method="post">
+              <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform" style="margin-bottom: 0px;margin-top: 0px;" method="post">
                 {%csrf_token%}
               {%if product_details.product_choices_set.all%}
-              <select name="verient" id="options">
-                {%for i in product_details.product_choices_set.all%}
-                  <option value="{{i.id}}" data-cost="{{i.options_cost}}">{{i.product_options}}</option>
+              <div class="radiocontainer" style="margin-top: 15px;">
+                {% for i in product_details.product_choices_set.all %}
+                  <input type="radio" id="option{{ forloop.counter }}" name="verient" data-cost="{{ i.options_cost }}" value="{{ i.id }}" class="radio-input">
+                  <label for="option{{ forloop.counter }}" class="selection">
+                    <div class="circle"></div>
+                    <span>{{ i.product_options }}</span>
+                  </label>
                 {% endfor %}
-              </select> <br>
+
+            </div>
+            <br>
+
                 {%endif%}
-                <button type = "button"  class = "btn" onclick="checkout('addtocart')">Add to Cart <i class = "fas fa-shopping-cart"></i>
+                <button type = "button"  class = "btn" onclick="checkout('addtocart')" style="margin-bottom: 0rem; ">Add to Cart <i class = "fas fa-shopping-cart"></i>
                 <!-- <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button> -->
             </form>
             </div>
@@ -753,12 +828,19 @@ h2 pre {
     
       <div id="description" class="tab active">
         <!-- Description area -->
-        <h2 style="    font-family: Poly, serif;
+        <h2 style="        font-family: Poly, serif;
         font-weight: 400;
-        font-style: normal;">Product Description</h2>
-        <pre style="    font-family: Poly, serif;
+        font-style: normal;
+margin-bottom: 0px;
+margin-top: 0px;
+
+"> Wash care instructions</h2>
+        <pre style="        font-family: Poly, serif;
         font-weight: 400;
-        font-style: normal;">{{product_details.product_information}}</pre>
+        font-style: normal;
+margin-bottom: 0px;
+margin-top: 0px;
+">{{product_details.product_information}}</pre>
       </div>
     
 
@@ -837,13 +919,12 @@ h2 pre {
         }
     </script>
     <script>
-        $(document).ready(function(){
-            $('#options').change(function(){
-                var selectedOption = $(this).find(":selected");
-                var cost = selectedOption.data('cost');
-                $('#price').text(cost);
-            });
-        });
+$(document).ready(function(){
+    $('.radio-input').change(function(){
+        var cost = $(this).data('cost');
+        $('#price').text(cost);
+    });
+});
     </script>
     
   </div>

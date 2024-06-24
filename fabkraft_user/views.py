@@ -66,16 +66,19 @@ def index(request):
     if request.user.is_superuser:
         return redirect('/admin/admin/')
     if request.user.is_authenticated:
-        
+        print(Rating.objects.all())
         context = {
                    'index_prod':index_prod,
                    'index_cat':index_cat,
                    'carousel':carousel,
                     "recent_prod": recent_prod,
+                    'rating': Rating.objects.all()
+
                    }
         return render(request,'index1.html',context)
     
-    return render(request,'index1.html',{'index_prod':index_prod,'index_cat':index_cat,'carousel':carousel,"recent_prod": recent_prod})
+    return render(request,'index1.html',{'index_prod':index_prod,'index_cat':index_cat,'carousel':carousel,"recent_prod": recent_prod,'rating': Rating.objects.all()
+})
 '''
 def index(request):
     personal_viewed_cate = []

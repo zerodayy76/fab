@@ -2,6 +2,7 @@
 {% load static %} 
 {% block title %} Buy2Sell {% endblock %} 
 {% block content %}
+{% load custom_filters%}
 
 <script src="https://kit.fontawesome.com/8fb3884555.js" crossorigin="anonymous" class="lazy"></script>
 
@@ -307,6 +308,133 @@
     color: #fff; /* Change color on hover */
     background: #333; /* Change background on hover */
 }
+.title {
+    text-align: center;
+    position: relative;
+   padding: 10px;
+  }
+  .title h1 {
+    font-size: 22px;
+    display: inline-block;
+    margin: 0px;
+    border-bottom: 2px solid black; /* You can change the color and thickness */
+  }
+
+  /* Styling for the content with bullet points */
+  .content {
+
+  }
+  .content ul {
+    list-style-type: disc; /* You can change to circle or square */
+    text-align: left;
+ }
+
+
+ .title {
+  text-align: center;
+
+}
+
+.content {
+  text-align: left;
+}
+
+
+ ::selection{
+  background: rgba(23,162,184,0.3);
+}
+.wrapper {
+  padding: 10px;
+  margin-top: 100px;
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping items onto the next line */
+  align-items: flex-start; /* Adjusted alignment */
+  justify-content: flex-start; /* Start from the left */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  max-width: 100%; /* Ensure it takes up full width of its container */
+}
+
+.wrapper .box {
+    margin: 15px;
+  background: #fff;
+  flex: 0 0 auto; /* Maintain fixed width based on content */
+  width: calc(33.33% - 10px); /* Adjusted width for three-column layout with spacing */
+  padding: 25px;
+  border-radius: 3px;
+  margin-right: 10px; /* Spacing between boxes */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.wrapper .box:last-child {
+  margin-right: 0; /* Remove right margin from the last box to prevent extra space */
+}
+
+.wrapper .box i.quote {
+  font-size: 20px;
+  color: #17a2b8;
+}
+
+.wrapper .box .content {
+  display: flex;
+  flex-direction: column; /* Changed to column layout for better stacking */
+  align-items: flex-start; /* Adjusted alignment */
+  padding-top: 10px;
+}
+
+.box .info .name {
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.box .info .job {
+  font-size: 16px;
+  font-weight: 500;
+  color: #17a2b8;
+}
+
+.box .info .stars {
+  margin-top: 2px;
+}
+
+.box .info .stars i {
+  color: #17a2b8;
+}
+
+.box .content .image {
+  height: 75px;
+  width: 75px;
+  padding: 3px;
+  background: #17a2b8;
+  border-radius: 50%;
+}
+
+.content .image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.box:hover .content .image img {
+  border-color: #fff;
+}
+
+@media (max-width: 1045px) {
+  .wrapper .box {
+    width: calc(50% - 10px);
+    margin-right: 10px; /* Adjusted margin */
+  }
+}
+
+@media (max-width: 702px) {
+  .wrapper .box {
+    width: 100%;
+    margin-right: 0; /* Remove margin for full-width boxes */
+  }
+}
 
 </style>
 
@@ -379,6 +507,42 @@
     
     
     {% endfor %}
+
+    <div class="title">
+        <h1>Testimonals</h1>
+      </div>
+    
+      <div class="wrapper" style="margin-top:0px;">
+    {% for i in rating%}
+        <div class="box">
+          <i class="fas fa-quote-left quote"></i>
+          <p>{{i.review}}<p>
+          <div class="content">
+            <div class="info">
+              <div class="name">{{i.user}}</div>
+              <div class="job">{{i.country}}</div>
+    
+             <div class="stars">
+                {% for i in i.stars|int_range %}
+                    <i class="fas fa-star"></i>
+                {% endfor %}
+                {% for i in 5|subtract:i.stars|int_range %}
+                    <i class="far fa-star"></i>
+                {% endfor %}
+            </div>
+    </div>
+    
+    
+            </div>
+            <div class="image">
+              <img src="images/profile-1.jpeg" alt="">
+            </div>
+          </div>
+    {%endfor%}
+      </div>
+        </div>
+    
+      </div>
 </div>
 
 
