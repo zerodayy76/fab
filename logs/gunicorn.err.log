@@ -3274,3 +3274,74 @@ Traceback (most recent call last):
     raise TooManyFieldsSent(
 django.core.exceptions.TooManyFieldsSent: The number of GET/POST parameters exceeded settings.DATA_UPLOAD_MAX_NUMBER_FIELDS.
 Bad Request: /admin/admin/fabkraft_user/category/1/change/
+[2024-06-25 11:19:17 +0000] [139564] [INFO] Starting gunicorn 22.0.0
+[2024-06-25 11:19:17 +0000] [139564] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (139564)
+[2024-06-25 11:19:17 +0000] [139564] [INFO] Using worker: sync
+[2024-06-25 11:19:17 +0000] [139565] [INFO] Booting worker with pid: 139565
+[2024-06-25 11:19:17 +0000] [139566] [INFO] Booting worker with pid: 139566
+[2024-06-25 11:19:17 +0000] [139567] [INFO] Booting worker with pid: 139567
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Not Found: /images/profile-1.jpeg
+[2024-06-25 11:36:59 +0000] [139564] [INFO] Handling signal: term
+[2024-06-25 11:36:59 +0000] [139567] [INFO] Worker exiting (pid: 139567)
+[2024-06-25 11:36:59 +0000] [139565] [INFO] Worker exiting (pid: 139565)
+[2024-06-25 11:36:59 +0000] [139566] [INFO] Worker exiting (pid: 139566)
+[2024-06-25 11:36:59 +0000] [139564] [INFO] Shutting down: Master
+[2024-06-25 11:37:00 +0000] [139629] [INFO] Starting gunicorn 22.0.0
+[2024-06-25 11:37:00 +0000] [139629] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (139629)
+[2024-06-25 11:37:00 +0000] [139629] [INFO] Using worker: sync
+[2024-06-25 11:37:00 +0000] [139630] [INFO] Booting worker with pid: 139630
+[2024-06-25 11:37:00 +0000] [139631] [INFO] Booting worker with pid: 139631
+[2024-06-25 11:37:01 +0000] [139632] [INFO] Booting worker with pid: 139632

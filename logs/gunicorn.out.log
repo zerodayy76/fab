@@ -1446,3 +1446,68 @@ viewd
 []
 yeah there
 viewd
+[]
+yeah there
+viewd
+Signal triggered. Session cart: [{'product_id': 67, 'verient_id': None}]
+Session cart transferred to user cart.
+99 <class 'int'> 2500 <class 'int'> 3700.00 <class 'str'>
+Order Price: 3700.0
+Charges: 198.0
+[<Products: White Blue Flora>, <Products: Jungle Green>, <Products: Indigo - white floral>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Baby Quilt 1>, <Products: Brass Spice Box>, <Products: Dohar 10>, <Products: Quilted Bedcover 8>, <Products: Quilted Bedcover 7>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 5>, <Products: Quilted Bedcover 2>, <Products: Best Sellers - Curtains>, <Products: Best Sellers - Curtains>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Dohar 17>, <Products: Baby Quilt 3>, <Products: white Pink Floral>, <Products: Dohar 2>, <Products: Dohar 14>, <Products: Mustard Floral>]
+yeah there
+yeah there
+yeah there
+viewd
+yeah there
+yeah there
+yeah there
+viewd
+yeah there
+viewd
+yeah there
+viewd
+[<Products: Bedsheet>, <Products: Dohar 1>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Quilts>, <Products: Dohar 5>, <Products: Quilted Bedcover 3>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 1>, <Products: Best Sellers - Curtains>, <Products: white Pink Floral>, <Products: Best Sellers - Curtains>, <Products: Quilted Bedcover 9>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>]
+yeah there
+137
+138
+[]
+[<Products: White Blue Flora>, <Products: Jungle Green>, <Products: Indigo - white floral>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Baby Quilt 1>, <Products: Brass Spice Box>, <Products: Dohar 10>, <Products: Quilted Bedcover 8>, <Products: Quilted Bedcover 7>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 5>, <Products: Quilted Bedcover 2>, <Products: Best Sellers - Curtains>, <Products: Best Sellers - Curtains>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Dohar 17>, <Products: Baby Quilt 3>, <Products: white Pink Floral>, <Products: Dohar 2>, <Products: Dohar 14>, <Products: Mustard Floral>]
+yeah there
+yeah there
+yeah there
+yeah there
+yeah there
+yeah there
+yeah there
+yeah there
+viewd
+Signal triggered. Session cart: []
+No items in session cart.
+yeah there
+yeah there
+viewd
+yeah there
+viewd
+yeah there
+viewd
+yeah there
+viewd
+[<Products: Bedsheet>, <Products: Dohar 1>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Quilts>, <Products: Dohar 5>, <Products: Quilted Bedcover 3>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 1>, <Products: Best Sellers - Curtains>, <Products: white Pink Floral>, <Products: Best Sellers - Curtains>, <Products: Quilted Bedcover 9>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>]
+[<Products: Bedsheet>, <Products: Dohar 1>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Quilts>, <Products: Dohar 5>, <Products: Quilted Bedcover 3>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 1>, <Products: Best Sellers - Curtains>, <Products: white Pink Floral>, <Products: Best Sellers - Curtains>, <Products: Quilted Bedcover 9>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>]
+[<Products: Bedsheet>, <Products: Dohar 1>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Quilts>, <Products: Dohar 5>, <Products: Quilted Bedcover 3>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 1>, <Products: Best Sellers - Curtains>, <Products: white Pink Floral>, <Products: Best Sellers - Curtains>, <Products: Quilted Bedcover 9>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>]
+[<Products: Bedsheet>, <Products: Dohar 1>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Quilts>, <Products: Dohar 5>, <Products: Quilted Bedcover 3>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 1>, <Products: Best Sellers - Curtains>, <Products: white Pink Floral>, <Products: Best Sellers - Curtains>, <Products: Quilted Bedcover 9>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>]
+yeah there
+viewd
+yeah there
+yeah there
+yeah there
+yeah there
+[<Products: Best Sellers - Curtains>, <Products: Bedsheet>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Mustard Floral>, <Products: White Blue Flora>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Jungle Green>, <Products: Brass Spice Box>, <Products: Misty Blue Pine Quilted Bedcover>, <Products: Indigo - white floral>, <Products: Baby Quilt 1>, <Products: Dohar 10>, <Products: Quilted Bedcover 8>, <Products: Quilted Bedcover 7>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 5>, <Products: Quilted Bedcover 2>, <Products: Best Sellers - Curtains>, <Products: Dohar 17>, <Products: Baby Quilt 3>, <Products: white Pink Floral>, <Products: Dohar 2>, <Products: Dohar 14>]
+yeah there
+viewd
+[<Products: Mustard Floral>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Quilts>, <Products: Quilted Bedcover 1>, <Products: Bedsheet>, <Products: Dohar 1>, <Products: Brass Spice Box>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Dohar 5>, <Products: Quilted Bedcover 3>, <Products: Quilted Bedcover 4>, <Products: Best Sellers - Curtains>, <Products: white Pink Floral>, <Products: Best Sellers - Curtains>, <Products: Quilted Bedcover 9>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+[]
+yeah there
+[<Products: Best Sellers - Curtains>, <Products: Bedsheet>, <Products: Wild Rose Handblock Printed Bedsheet>, <Products: Mustard Floral>, <Products: White Blue Flora>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Jungle Green>, <Products: Brass Spice Box>, <Products: Misty Blue Pine Quilted Bedcover>, <Products: Indigo - white floral>, <Products: Baby Quilt 1>, <Products: Dohar 10>, <Products: Quilted Bedcover 8>, <Products: Quilted Bedcover 7>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 5>, <Products: Quilted Bedcover 2>, <Products: Best Sellers - Curtains>, <Products: Dohar 17>, <Products: Baby Quilt 3>, <Products: white Pink Floral>, <Products: Dohar 2>, <Products: Dohar 14>]
