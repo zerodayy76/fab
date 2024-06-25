@@ -3345,3 +3345,72 @@ Not Found: /images/profile-1.jpeg
 [2024-06-25 11:37:00 +0000] [139630] [INFO] Booting worker with pid: 139630
 [2024-06-25 11:37:00 +0000] [139631] [INFO] Booting worker with pid: 139631
 [2024-06-25 11:37:01 +0000] [139632] [INFO] Booting worker with pid: 139632
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Internal Server Error: /product_details/17
+Traceback (most recent call last):
+  File "/home/ubuntu/fab/fabkraft_user/views.py", line 507, in show_product
+    product_details = Products.objects.get(id=prod_id)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/db/models/query.py", line 649, in get
+    raise self.model.DoesNotExist(
+fabkraft_user.models.Products.DoesNotExist: Products matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/fabkraft_user/views.py", line 553, in show_product
+    return render(request, '404_error.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: 404_error.html
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Could not reverse url from admin
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Internal Server Error: /static/js/swiper-bundle.min.js.map
+Traceback (most recent call last):
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/views/static.py", line 45, in serve
+    fullpath = Path(safe_join(document_root, path))
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/utils/_os.py", line 17, in safe_join
+    final_path = abspath(join(base, *paths))
+                         ^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 76, in join
+TypeError: expected str, bytes or os.PathLike object, not NoneType
