@@ -2994,3 +2994,13 @@ Could not reverse url from admin
 Could not reverse url from admin
 Could not reverse url from admin
 Could not reverse url from admin
+[2024-06-25 07:17:48 +0000] [138263] [INFO] Starting gunicorn 22.0.0
+[2024-06-25 07:17:48 +0000] [138263] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (138263)
+[2024-06-25 07:17:48 +0000] [138263] [INFO] Using worker: sync
+[2024-06-25 07:17:48 +0000] [138264] [INFO] Booting worker with pid: 138264
+[2024-06-25 07:17:48 +0000] [138265] [INFO] Booting worker with pid: 138265
+[2024-06-25 07:17:48 +0000] [138266] [INFO] Booting worker with pid: 138266
+/home/ubuntu/fab/fabkraft_user/views.py:712: SyntaxWarning: "is" with 'str' literal. Did you mean "=="?
+  if user_.first_name is '' and user_.last_name is '':
+/home/ubuntu/fab/fabkraft_user/views.py:712: SyntaxWarning: "is" with 'str' literal. Did you mean "=="?
+  if user_.first_name is '' and user_.last_name is '':
