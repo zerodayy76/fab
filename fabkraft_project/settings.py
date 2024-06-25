@@ -175,7 +175,7 @@ WSGI_APPLICATION = 'fabkraft_project.wsgi.application'
     }
 }"""
 
-"""Test DB"""
+"""Production DB"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -187,7 +187,7 @@ DATABASES = {
     }
 }
 
-"""Production DB"""
+"""Test DB"""
 """DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

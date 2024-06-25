@@ -790,12 +790,12 @@ input[type="radio"]:checked + .selection span {
     </div> -->
       
    <div class = "product-price" style="margin-bottom: 0px;">
-              <p id="np" class = "new-price" style="margin-bottom: 0px; color: #256eff">₹<span id="price" tyle="    font-family: Poly, serif;
+              <p id="np" class = "new-price" style="margin-bottom: 0px; color: #256eff"><span id="price" tyle="    font-family: Poly, serif;
                 font-weight: 400;
-                font-style: normal;" >{{product_details.price}}</span></p>
-              <p id="lp" class = "last-price" style="margin-bottom: 0px;"><span id="max-cost" tyle="    font-family: Poly, serif;
+                font-style: normal;" >₹{{product_details.price}}</span></p>
+              <p id="lp" class = "last-price" style="margin-bottom: 0px;"><del id="max-cost" tyle="    font-family: Poly, serif;
                 font-weight: 400;
-                font-style: normal;">₹<del>{{product_details.max_price}}</del></span></p>
+                font-style: normal;">₹{{product_details.max_price}}</del></p>
             </div>
 
               <p>{{product_details.}}</p>
@@ -930,6 +930,7 @@ margin-top: 0px;
 $(document).ready(function(){
     $('.radio-input').change(function(){
         var cost = $(this).data('cost');
+        cost = '₹'+cost
         $('#price').text(cost);
     });
 });
@@ -939,6 +940,7 @@ $(document).ready(function(){
     $(document).ready(function(){
         $('.radio-input').change(function(){
             var cost = $(this).data('max-cost');
+            cost = '₹'+cost
             $('#max-cost').text(cost);
         });
     });

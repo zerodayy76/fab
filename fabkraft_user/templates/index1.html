@@ -37,9 +37,6 @@
 
 
     .product-grid .product-image {
-        display:flex;
-        align-items:center;
-        justify-content:center;
         position: relative;
         overflow: hidden;
         height: 200px; /* Set a fixed height for the product image */
@@ -131,6 +128,7 @@
     }
 
     .product-grid .title {
+        text-align:left;
         font-size: 14px;
         font-weight: 500;
         font-family: Poly, serif;
@@ -143,7 +141,7 @@
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1; /* Limit product name to 2 lines */
         line-height: 1.2em; /* Ensure consistent line height */
-        max-height: 2.4em; /* Set maximum height for 2 lines */
+        max-height: 2em; /* Set maximum height for 2 lines */
         margin: 0 0 8px;
         text-overflow: ellipsis;
     }
