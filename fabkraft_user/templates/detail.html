@@ -66,11 +66,6 @@
       overflow: hidden;
 padding: 10px;  }
 
-  .img-showcase{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  }
   .img-showcase img{
       min-width: 100%;
       
@@ -148,7 +143,8 @@ padding: 10px;  }
 
 
   .last-price span{
-      color: #f64749;
+      /* color: #f64749; */ /* RED */
+      color: #808080;
       text-decoration: line-through;
   }
 
@@ -797,10 +793,12 @@ input[type="radio"]:checked + .selection span {
               <p id="np" class = "new-price" style="margin-bottom: 0px; color: #256eff">₹<span id="price" tyle="    font-family: Poly, serif;
                 font-weight: 400;
                 font-style: normal;" >{{product_details.price}}</span></p>
-              <p id="lp" class = "last-price" style="margin-bottom: 0px;"><del tyle="    font-family: Poly, serif;
+              <p id="lp" class = "last-price" style="margin-bottom: 0px;"><span id="max-cost" tyle="    font-family: Poly, serif;
                 font-weight: 400;
-                font-style: normal;">₹{{product_details.max_price}}</del></p>
+                font-style: normal;">₹<del>{{product_details.max_price}}</del></span></p>
             </div>
+
+              <p>{{product_details.}}</p>
 
             <div class = "purchase-info">
               <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform" style="margin-bottom: 0px;margin-top: 0px;" method="post">
@@ -808,7 +806,7 @@ input[type="radio"]:checked + .selection span {
               {%if product_details.product_choices_set.all%}
               <div class="radiocontainer" style="margin-top: 15px;">
                 {% for i in product_details.product_choices_set.all %}
-                  <input type="radio" id="option{{ forloop.counter }}" name="verient" data-cost="{{ i.options_cost }}" value="{{ i.id }}" class="radio-input">
+                  <input type="radio" id="option{{ forloop.counter }}" name="verient" data-max-cost="{{ i.options_max_cost }}" data-cost="{{ i.options_cost }}" value="{{ i.id }}" class="radio-input">
                   <label for="option{{ forloop.counter }}" class="selection">
                     <div class="circle"></div>
                     <span>{{ i.product_options }}</span>
@@ -936,6 +934,15 @@ $(document).ready(function(){
     });
 });
     </script>
+
+    <script>
+    $(document).ready(function(){
+        $('.radio-input').change(function(){
+            var cost = $(this).data('max-cost');
+            $('#max-cost').text(cost);
+        });
+    });
+        </script>
     
   </div>
 </section>

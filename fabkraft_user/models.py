@@ -77,6 +77,7 @@ class product_choices(models.Model):
     product = models.ForeignKey(Products,on_delete=models.CASCADE)
     product_options = models.CharField(max_length=225)
     options_cost = models.DecimalField(max_digits=10,decimal_places=2)
+    options_max_cost = models.DecimalField(max_digits=10, decimal_places=2)  #custom_edit
     def __str__(self):
         return str(self.product_options)
     
