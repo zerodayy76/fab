@@ -158,7 +158,8 @@ padding: 10px;  }
   }
 
   .product-detail pre{
-      font-size: 0.9rem;
+      color: #12263a;
+      font-size: 1.2rem;
       padding: 0.3rem;
       opacity: 0.8;
       white-space: pre-wrap;
@@ -285,6 +286,12 @@ padding: 10px;  }
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#description pre{
+    color: #122630;
+    opacity: 90%;
+    font-size: 1.2rem;
 }
 
 .stars {
@@ -676,7 +683,7 @@ h2 pre {
 .radiocontainer .selection {
   background: #fff;
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -782,21 +789,12 @@ input[type="radio"]:checked + .selection span {
     </div> -->
       
    <div class = "product-price" style="margin-bottom: 0px;">
-              <p id="np" class = "new-price" style="margin-bottom: 0px;"><span id="price" tyle="    font-family: Poly, serif;
+              <p id="np" class = "new-price" style="margin-bottom: 0px; color: #256eff">₹<span id="price" tyle="    font-family: Poly, serif;
                 font-weight: 400;
-                font-style: normal;" >₹{{product_details.price}}</span></p>
+                font-style: normal;" >{{product_details.price}}</span></p>
               <p id="lp" class = "last-price" style="margin-bottom: 0px;"><del tyle="    font-family: Poly, serif;
                 font-weight: 400;
                 font-style: normal;">₹{{product_details.max_price}}</del></p>
-            </div>         
-      
-             <div class = "product-detail">
-              <h2 style="    font-family: Poly, serif;
-              font-weight: 400;
-              font-style: normal;">Product Description: </h2>
-              <pre style="    font-family: Poly, serif;
-              font-weight: 400;
-              font-style: normal;">{{product_details.description}}</pre>
             </div>
 
             <div class = "purchase-info">
@@ -814,8 +812,15 @@ input[type="radio"]:checked + .selection span {
 
             </div>
             <br>
-
                 {%endif%}
+                  <div class = "product-detail">
+              <h2 style="    font-family: Poly, serif;
+              font-weight: 400;
+              font-style: normal;">Product Description: </h2>
+              <pre style="    font-family: Poly, serif;
+              font-weight: 400;
+              font-style: normal;">{{product_details.description}}</pre>
+            </div>
                 <button type = "button"  class = "btn" onclick="checkout('addtocart')" style="margin-bottom: 0rem; ">Add to Cart <i class = "fas fa-shopping-cart"></i>
                 <!-- <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button> -->
             </form>
