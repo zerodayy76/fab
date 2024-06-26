@@ -13502,3 +13502,83 @@ Could not reverse url from admin
 Could not reverse url from admin
 Could not reverse url from admin
 Could not reverse url from admin
+[2024-06-25 21:41:36 +0000] [142378] [INFO] Handling signal: term
+[2024-06-25 21:41:36 +0000] [142379] [INFO] Worker exiting (pid: 142379)
+[2024-06-25 21:41:36 +0000] [142381] [INFO] Worker exiting (pid: 142381)
+[2024-06-25 21:41:36 +0000] [142380] [INFO] Worker exiting (pid: 142380)
+[2024-06-25 21:41:37 +0000] [142378] [INFO] Shutting down: Master
+[2024-06-25 21:41:38 +0000] [142668] [INFO] Starting gunicorn 22.0.0
+[2024-06-25 21:41:38 +0000] [142668] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (142668)
+[2024-06-25 21:41:38 +0000] [142668] [INFO] Using worker: sync
+[2024-06-25 21:41:38 +0000] [142669] [INFO] Booting worker with pid: 142669
+[2024-06-25 21:41:38 +0000] [142670] [INFO] Booting worker with pid: 142670
+[2024-06-25 21:41:38 +0000] [142671] [INFO] Booting worker with pid: 142671
+[2024-06-25 23:05:42 +0000] [142668] [INFO] Handling signal: term
+[2024-06-25 23:05:42 +0000] [142669] [INFO] Worker exiting (pid: 142669)
+[2024-06-25 23:05:42 +0000] [142671] [INFO] Worker exiting (pid: 142671)
+[2024-06-25 23:05:42 +0000] [142670] [INFO] Worker exiting (pid: 142670)
+[2024-06-25 23:05:42 +0000] [142668] [INFO] Shutting down: Master
+[2024-06-25 23:05:44 +0000] [142900] [INFO] Starting gunicorn 22.0.0
+[2024-06-25 23:05:44 +0000] [142900] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (142900)
+[2024-06-25 23:05:44 +0000] [142900] [INFO] Using worker: sync
+[2024-06-25 23:05:44 +0000] [142901] [INFO] Booting worker with pid: 142901
+[2024-06-25 23:05:44 +0000] [142902] [INFO] Booting worker with pid: 142902
+[2024-06-25 23:05:44 +0000] [142903] [INFO] Booting worker with pid: 142903
+Not Found: /{% static 'js/modernizr.js'%
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /.env
+Not Found: /robots.txt
+Not Found: /boaform/admin/formLogin
+Not Found: /images/profile-1.jpeg
+Internal Server Error: /product_details/17
+Traceback (most recent call last):
+  File "/home/ubuntu/fab/fabkraft_user/views.py", line 507, in show_product
+    product_details = Products.objects.get(id=prod_id)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/db/models/query.py", line 649, in get
+    raise self.model.DoesNotExist(
+fabkraft_user.models.Products.DoesNotExist: Products matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/fabkraft_user/views.py", line 553, in show_product
+    return render(request, '404_error.html')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/fab/venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: 404_error.html
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /images/profile-1.jpeg
+Not Found: /About/images/profile-1.jpeg
+[2024-06-26 16:41:50 +0000] [142900] [INFO] Handling signal: term
+[2024-06-26 16:41:50 +0000] [142902] [INFO] Worker exiting (pid: 142902)
+[2024-06-26 16:41:50 +0000] [142903] [INFO] Worker exiting (pid: 142903)
+[2024-06-26 16:41:50 +0000] [142901] [INFO] Worker exiting (pid: 142901)
+[2024-06-26 16:41:51 +0000] [142900] [INFO] Shutting down: Master
+[2024-06-26 16:41:52 +0000] [147801] [INFO] Starting gunicorn 22.0.0
+[2024-06-26 16:41:52 +0000] [147801] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (147801)
+[2024-06-26 16:41:52 +0000] [147801] [INFO] Using worker: sync
+[2024-06-26 16:41:52 +0000] [147803] [INFO] Booting worker with pid: 147803
+[2024-06-26 16:41:52 +0000] [147804] [INFO] Booting worker with pid: 147804
+[2024-06-26 16:41:52 +0000] [147805] [INFO] Booting worker with pid: 147805
+Not Found: /images/profile-1.jpeg
+Not Found: /About/images/profile-1.jpeg
