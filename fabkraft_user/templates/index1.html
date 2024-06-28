@@ -484,7 +484,7 @@
     </div>
     <div class="product_row">
         {% for product in cate.category.products_set.all|slice:":6" %}
-        {% if not product.is_deleted %}
+        {% if not product.is_deleted and product.is_active %}
     
         <div class="col-md-2">
             <div class="product-grid">

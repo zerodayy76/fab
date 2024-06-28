@@ -161,7 +161,7 @@
     {% endif %}
     <div class="product_row">
         {% for i in products %}
-        {% if not i.is_deleted %}
+        {% if not i.is_deleted and i.is_active %}
         <div class="col-md-2 col-sm-6">
             <div class="product-grid">
                 <div class="product-image">

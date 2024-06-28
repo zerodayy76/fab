@@ -300,7 +300,9 @@ height:3em;
                       </a>
                       <ul class="submenu">
                         {% for subcat in cat.category.sub_category_set.all %}
-                          <li><a href="{% url 'subcategory' subcat.sub_category %}" class="item-anchor">{{ subcat }}</a></li>
+                          {% if subcat.is_active %}
+                            <li><a href="{% url 'subcategory' subcat.sub_category %}" class="item-anchor">{{ subcat }}</a></li>
+                          {% endif %}
                         {% endfor %}
                       </ul>
                     </li>

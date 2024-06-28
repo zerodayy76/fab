@@ -906,6 +906,7 @@ def cart_checkout_page(request):
                 'qun_': qun_list,
                 'orderdata': order_data,
                 'rzp_order': rzp_order,
+                'key':settings.RAZORPAY_KEY_ID,
             }
             request.session['previous_page'] = request.build_absolute_uri()
             return render(request, 'checkout.html', context)
@@ -933,6 +934,7 @@ def cart_checkout_page(request):
             'userdata': user_data,
             'orderdata': order_data,
             'rzp_order': rzp_order,
+            'key': settings.RAZORPAY_KEY_ID,
         }
         request.session['previous_page'] = request.build_absolute_uri()
         return render(request, 'checkout.html', context)
