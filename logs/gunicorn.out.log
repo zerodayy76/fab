@@ -1564,3 +1564,202 @@ yeah there
 yeah there
 Signal triggered. Session cart: []
 No items in session cart.
+152
+Order Price: 3.0
+Charges: 99.0
+{'rates': [3], 'total': 3.0, 'shipping': 99.0, 'g_total': 102.0, 'order_id': '', 'receipt_id': 'boopathyganesh95_837711', 'notes': {152: 'test product'}}
+[]
+Order Price: 1650.0
+Charges: 99.0
+[]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+yeah there
+viewd
+Order Price: 3.0
+Charges: 99.0
+Order Price: 3.0
+Charges: 99.0
+fst lst name hasd asdasd
+products ['216']
+prod id 216
+exists 216 True
+['227']
+Order Price: 3.0
+Charges: 99.0
+['227']
+Order Price: 1650.0
+Charges: 99.0
+Order Price: 3300.0
+Charges: 198.0
+yeah there
+viewd
+Order Price: 2850.0
+Charges: 198.0
+152
+Order Price: 3.0
+Charges: 99.0
+yeah there
+viewd
+fst lst name hasd asdasd
+products ['221', '200']
+prod id 221
+exists 221 False
+justprod 221
+prod id 200
+exists 200 False
+justprod 200
+Order Price: 2850.0
+Charges: 198.0
+[<Products: Table Linen - 8 Seater>, <Products: Table Linen - 4 Seater>, <Products: test product>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+[]
+[<Products: Table Linen - 4 Seater>, <Products: Table Linen - 8 Seater>, <Products: test product>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+yeah there
+[]
+[]
+Order Price: 2850.0
+Charges: 198.0
+Order Price: 2850.0
+Charges: 198.0
+[]
+yeah there
+[]
+[]
+Order Price: 2299.0
+Charges: 99.0
+[]
+yeah there
+viewd
+[<Products: Dark Blue Geometric Handblock Printed Bedsheet>, <Products: Pink Floral Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: White Blue Handblock Printed Quilted Cushion Covers>, <Products: Baby Quilt 1>, <Products: Dohar 18>, <Products: Quilted Bedcover 10>, <Products: Quilted Bedcover 1>, <Products: Misty Blue Pine Quilted Bedcover>, <Products: Quilts>, <Products: Quilts>, <Products: Quilts>, <Products: Quilted Bedcover 4>, <Products: Quilts 1>, <Products: Dohar 17>, <Products: Dohar 2>, <Products: Dohar 10>, <Products: Dohar 12>, <Products: Dark Blue Lotus Handblock Printed Bedsheet>, <Products: Whispering Woods Handblock Printed Bedsheet>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Dohar 7>, <Products: Dohar 5>, <Products: Dohar 6>, <Products: Dohar 1>, <Products: Dohar 16>, <Products: Best Sellers - Curtains>, <Products: Yellow Classic Jaal Handblock Printed Bedsheet>, <Products: Mustard Floral>, <Products: White Blue Floral>, <Products: Jungle Green>, <Products: Indigo - white floral>, <Products: Quilted Bedcover 8>, <Products: Quilted Bedcover 7>, <Products: Quilted Bedcover 5>, <Products: Quilted Bedcover 2>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>, <Products: white Pink Floral>, <Products: Dohar 14>]
+[]
+yeah there
+viewd
+[]
+[]
+[]
+[<Products: Dohar 17>, <Products: Dohar 10>, <Products: Quilted Bedcover 10>, <Products: Quilted Bedcover 8>, <Products: Quilted Bedcover 4>, <Products: Quilted Bedcover 3>]
+yeah there
+viewd
+Signal triggered. Session cart: [{'product_id': 66, 'verient_id': 21}, {'product_id': 65, 'verient_id': 18}, {'product_id': 76, 'verient_id': None}]
+Session cart transferred to user cart.
+[]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+Order Price: 2099.0
+Charges: 99.0
+Order Price: 2099.0
+Charges: 99.0
+Order Price: 2299.0
+Charges: 99.0
+[]
+[]
+yeah there
+viewd
+[<Products: Mustard Floral>]
+Order Price: 10446.0
+Charges: 495.0
+[<Products: test product>, <Products: Petal Perfection Handblock Printed 8 Seater Table Linen>, <Products: Yellow Meadows Handblock Printed 4 Seater Table Linen>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+[<Products: test product>, <Products: Petal Perfection Handblock Printed 8 Seater Table Linen>, <Products: Yellow Meadows Handblock Printed 4 Seater Table Linen>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+[]
+Order Price: 4599.0
+Charges: 198.0
+Signal triggered. Session cart: [{'product_id': 62, 'verient_id': None}]
+Session cart transferred to user cart.
+Order Price: 5598.0
+Charges: 297.0
+[]
+yeah there
+viewd
+[<Products: test product>, <Products: Petal Perfection Handblock Printed 8 Seater Table Linen>, <Products: Yellow Meadows Handblock Printed 4 Seater Table Linen>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+Order Price: 2299.0
+Charges: 99.0
+[]
+[]
+yeah there
+[]
+[]
+Signal triggered. Session cart: [{'product_id': 23, 'verient_id': 236}, {'product_id': 82, 'verient_id': None}, {'product_id': 75, 'verient_id': 37}, {'product_id': 187, 'verient_id': 195}, {'product_id': 106, 'verient_id': 77}]
+Session cart transferred to user cart.
+Order Price: 10446.0
+Charges: 495.0
+[]
+Order Price: 4599.0
+Charges: 198.0
+Order Price: 5598.0
+Charges: 297.0
+Order Price: 5598.0
+Charges: 297.0
+Order Price: 4599.0
+Charges: 198.0
+Signal triggered. Session cart: []
+No items in session cart.
+Order Price: 2099.0
+Charges: 99.0
+Order Price: 2099.0
+Charges: 99.0
+[]
+[]
+yeah there
+viewd
+[]
+[]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+yeah there
+viewd
+[<Products: Pink Floral Handblock Printed Bedsheet>, <Products: White Blue Floral>]
+yeah there
+viewd
+[<Products: test product>, <Products: Petal Perfection Handblock Printed 8 Seater Table Linen>, <Products: Yellow Meadows Handblock Printed 4 Seater Table Linen>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+[<Products: Blue Elegance Handblock Printed 8 seater Table Linen>, <Products: Garden Grace Handblock Printed 8 seater Table Linen>, <Products: Blue Blossom Handblock Printed 4 Seater Table Linen>, <Products: Pink Floral Handblock Printed Bedsheet>, <Products: Blue Petal Bliss Reversible Handblock Printed Quilt>]
+yeah there
+Order Price: 2099.0
+Charges: 99.0
+generated_signature: 9a59ecd78b2e7c1af8829ca58e7aa9c05ecdffa55c228cb5e3add956b74e90f5
+signature: 9a59ecd78b2e7c1af8829ca58e7aa9c05ecdffa55c228cb5e3add956b74e90f5
+OrderId order_OSEoB4Wp4FRxj9
+Status captured
+Order Price: 2099.0
+Charges: 99.0
+Signal triggered. Session cart: []
+No items in session cart.
+[]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+Order Price: 2299.0
+Charges: 99.0
+Order Price: 2299.0
+Charges: 99.0
+generated_signature: 0cfe568ebc53fd7af466ebc3934397146ce4a9429069380e66b6585140794b9a
+signature: 0cfe568ebc53fd7af466ebc3934397146ce4a9429069380e66b6585140794b9a
+OrderId order_OSEtwIOr4Vw6ib
+Status captured
+Order Price: 2299.0
+Charges: 99.0
+Signal triggered. Session cart: []
+No items in session cart.
+yeah there
+viewd
+[<Products: test product>, <Products: Petal Perfection Handblock Printed 8 Seater Table Linen>, <Products: Yellow Meadows Handblock Printed 4 Seater Table Linen>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+yeah there
+viewd
+Order Price: 2099.0
+Charges: 99.0
+[]
+[]
+Signal triggered. Session cart: []
+No items in session cart.
+[<Products: Dark Blue Geometric Handblock Printed Bedsheet>, <Products: Pink Floral Handblock Printed Bedsheet>, <Products: Brass Spice Box>, <Products: White Blue Handblock Printed Quilted Cushion Covers>, <Products: Baby Quilt 1>, <Products: Royal Blue  Jaal Reversible Handblock Printed Dohar>, <Products: Grey Timeless Trellis Reversible Handblock Printed Quilted Bedcover>, <Products: Quilted Bedcover 1>, <Products: Misty Blue Pine Quilted Bedcover>, <Products: Flora Royal Jaal Reversible Handblock Printed Quilt>, <Products: Palm Meadows Reversible Handblock Printed Quilt>, <Products: Blue Classic Jaal Reversible Handblock Printed Quilt>, <Products: Blue Majesty Reversible Handblock Printed Quilted Bedcover>, <Products: Dohar 17>, <Products: Dohar 2>, <Products: Dohar 10>, <Products: Dohar 12>, <Products: Dark Blue Lotus Handblock Printed Bedsheet>, <Products: Whispering Woods Handblock Printed Bedsheet>, <Products: Indian Block Printed Reversible Razai Cotton>, <Products: Dohar 7>, <Products: Dohar 5>, <Products: Dohar 6>, <Products: Dohar 1>, <Products: Dohar 16>, <Products: Best Sellers - Curtains>, <Products: Yellow Classic Jaal Handblock Printed Bedsheet>, <Products: Mustard Floral>, <Products: White Blue Floral>, <Products: Jungle Green>, <Products: Indigo - white floral>, <Products: Sunset And Sky Reversible Handblock Printed Quilted Bedcover>, <Products: Green Pines Reversible Handblock Printed Quilted Bedcover>, <Products: Claret Royal Jaal Reversible Handblock Printed Quilted Bedcover>, <Products: Quilted Bedcover 2>, <Products: Best Sellers - Curtains>, <Products: Baby Quilt 3>, <Products: white Pink Floral>, <Products: Dohar 14>]
+[]
+yeah there
+viewd
+yeah there
+viewd
+yeah there
+viewd
+[<Products: test product>, <Products: Petal Perfection Handblock Printed 8 Seater Table Linen>, <Products: Yellow Meadows Handblock Printed 4 Seater Table Linen>]
+<QuerySet [<Rating: Rating object (1)>, <Rating: Rating object (2)>, <Rating: Rating object (4)>, <Rating: Rating object (5)>, <Rating: Rating object (6)>, <Rating: Rating object (7)>, <Rating: Rating object (8)>, <Rating: Rating object (9)>, <Rating: Rating object (10)>, <Rating: Rating object (11)>, <Rating: Rating object (12)>, <Rating: Rating object (13)>, <Rating: Rating object (14)>]>
+[<Products: Blue Elegance Handblock Printed 8 seater Table Linen>, <Products: Garden Grace Handblock Printed 8 seater Table Linen>, <Products: Blue Blossom Handblock Printed 4 Seater Table Linen>, <Products: Best Sellers - Curtains>, <Products: Pink Floral Handblock Printed Bedsheet>, <Products: Blue Petal Bliss Reversible Handblock Printed Quilt>]
