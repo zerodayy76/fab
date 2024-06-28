@@ -30,9 +30,14 @@ from django.contrib.auth.hashers import make_password
 pincode_df = read_csv('datasets/pincode.csv',low_memory=False)
 import threading
 import random
+
+import razorpay
+
 def test(request):
     return render(request,'admin/base.html')
 
+def rzp_test(request):
+    return render(request,'test_rzp.html')
 
 def cart_and_wishlist_count(request):
     cart_count = 0
@@ -340,7 +345,7 @@ def profile(request):
 def calculate_shipping_charge(order_price):
     base_charge = setting_values.objects.get(name='shipping').value['base_charge']
     threshold = setting_values.objects.get(name='shipping').value['threshold']
-    print(base_charge,type(base_charge),threshold,type(threshold),order_price,type(order_price))
+    #print(base_charge,type(base_charge),threshold,type(threshold),order_price,type(order_price))
     order_price = float(order_price)
 
 
@@ -658,13 +663,13 @@ def cart_checkout_page(request):
         # print(zip_)
         '''       for i in zip_:
             print(i[0]['products'],i[1])'''
-        
+
+
         context = {
             'cartdata' : cart_,
             'userdata' : user_data,
             'qun_':qun_list,
             'orderdata':order_data,
-            
         }
         request.session['previous_page'] = request.build_absolute_uri()
         return render(request,'checkout.html',context)
@@ -678,12 +683,58 @@ def cart_checkout_page(request):
         user_data = UserData.objects.get(user=request.user)
         order_data = orders.objects.filter(user=user_data).last()
 
+        cart_products = {
+            "rates": [],
+            "total": 0,
+            'shipping': 0,
+            "g_total": 0,
+            'order_id': '',
+            'receipt_id': '',
+            'notes': {}
+        }
 
-        
+        for item in cart_:
+            if item.verients:
+                # print(item.verients.options_cost)
+                # print(item.products.product_name)
+                cart_products["rates"].append(int(item.verients.options_cost))
+            if not item.verients:
+                # print(item.products.product_name)
+                # print(item.products.price)
+                cart_products["rates"].append(int(item.products.price))
+
+            cart_products["notes"][item.id] = item.products.product_name
+
+        cart_products['total'] = float(sum(cart_products['rates']))
+        # print("cart_total",cart_products['total'])
+        # print("shipping_charge",calculate_shipping_charge(cart_products['total']))
+        cart_products['shipping'] = calculate_shipping_charge(cart_products['total'])
+
+        cart_products['g_total'] = cart_products['total'] + cart_products['shipping']
+
+        cart_products['receipt_id'] = str(user_data) + '_' + str(('{:06d}'.format(random.randint(0, 999999))))
+
+        print(cart_products)
+
+        # razorpay order creation
+        client = razorpay.Client(auth=("rzp_test_Lb2CDpM9Jlk8BQ", "DPPTzAzVzqRZUIoLmWTBdqJ2"))  #important creds
+        rzp_order = client.order.create({
+            "amount": int(cart_products['g_total'])*100,
+            "currency": "INR",
+            "receipt": cart_products['receipt_id'],
+            "notes": cart_products['notes']
+        })
+
+        """rzp_order = {'amount': 519600, 'amount_due': 519600, 'amount_paid': 0, 'attempts': 0, 'created_at': 1719516379,
+                     'currency': 'INR', 'entity': 'order', 'id': 'order_ORtl6Afo0qfxYn',
+                     'notes': {'149': 'Baby Quilt 1', '150': 'Dohar 6'}, 'offer_id': None,
+                     'receipt': 'boopathyganesh95_125272', 'status': 'created'}"""
+
         context = {
             'cartdata' : cart_,
             'userdata' : user_data,
-            'orderdata':order_data,
+            'orderdata': order_data,
+            'rzp_order': rzp_order,
         }
         request.session['previous_page'] = request.build_absolute_uri()
         return render(request,'checkout.html',context)

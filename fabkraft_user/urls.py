@@ -76,5 +76,6 @@ urlpatterns = [
     
 
     #===================ajax=====================================
+    path('test-rzp/',views.rzp_test,name='test_rzp'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

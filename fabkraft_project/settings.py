@@ -23,16 +23,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-hzw@d1u02awspddpvoba(%1d7p5-wi+pt#vn@zpz=7amiu57s$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 1
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+
 CORS_ALLOW_ALL_ORIGINS = False
 
 CSRF_TRUSTED_ORIGINS = [
    "https://thefabkraft.in",
    "https://www.thefabkraft.in",
+    "https://api.razorpay.com"
 ]
 CORS_ALLOW_ORIGINS = [
+    "https://api.razorpay.com",
     "https://www.thefabkraft.in",
     "https://thefabkraft.in",  # Add your trusted domain here
     # Add more trusted domains if needed

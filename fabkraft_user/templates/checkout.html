@@ -175,12 +175,11 @@ button{
 </style>
 
 <div class="container">
-                                                                                        
+
 
   <!-- content -->
   <form id="regForm" method="POST" action="{% url 'order' %}">
     {% csrf_token %}
-
 
   <div class="section-empty">
     <div class="containers">
@@ -283,7 +282,7 @@ button{
                   </div>
                 </div>
               </div>
-              
+
             <div class="row">
               <div class="col-md-12">
                 <div class="input_box_cart">
@@ -314,13 +313,13 @@ button{
 
                 <p><input type="text" class="price" value="{{verient.options_cost}}"  hidden>{{verient.options_cost}}</p>
                 <input type="number" style="width: 100px;" class="quantity" name="quantity{{verient.id}}" min="1" value="1">
-                
+
                 {%else%}
                 <input type="text" name="product_id" value="{{product.id}}" hidden>
                 <input type="number" style="width: 100px;" class="quantity" name="quantity{{product.id}}" min="1" value="1">
                 <p><input type="text" class="price" value="{{product.price}}"  hidden>{{product.price}}</p>
                 {% endif %}
-            
+
               </div>
             </div>
             {%else%}
@@ -340,13 +339,13 @@ button{
 
                     <p><input type="text" class="price" value="{{cart_item.verients.options_cost}}"  hidden>{{cart_item.verients.options_cost}}</p>
                     <input type="number" style="width: 100px;" class="quantity" name="quantity{{cart_item.verients.id}}" min="1" value="1" >
-                    
+
                     {%else%}
                     <input type="text" name="product_id" value="{{cart_item.products.id}}" hidden>
                     <input type="number" style="width: 100px;" class="quantity" name="quantity{{cart_item.products.id}}" min="1" value="1">
                     <p><input type="text" class="price" value="{{cart_item.products.price}}"  hidden>{{cart_item.products.price}}</p>
                     {% endif %}
-                
+                  </div>
                   </div>
                 </div>
                 {% endfor %}
@@ -407,18 +406,18 @@ $(document).ready(function () {
 
             subtotal += total;
         });
-        
+
         // Calculate subtotal, shipping, and total
         var total = subtotal;
         $('.price_total p:last-child').text('₹' + subtotal.toFixed(2));
         var csrfToken = getCookie('csrftoken');
-        
+
         // Make AJAX request to get shipping cost
         $.ajax({
             url: '/shipping_cost/',
             method: 'POST',
             data: {
-                'total': total.toFixed(2)  
+                'total': total.toFixed(2)
             },
             dataType: 'json',
             headers: {
@@ -427,7 +426,8 @@ $(document).ready(function () {
             success: function(response) {
                 var shipping = parseFloat(response.shipping);
                 grandTotal = subtotal + shipping; // Update grandTotal here
-                
+
+
                 $('.Shipping p:last-child').text('₹' + shipping.toFixed(2));
                 $('.total_btn_cart span:last-child').text('₹' + grandTotal.toFixed(2));
             },
@@ -437,75 +437,81 @@ $(document).ready(function () {
         });
     }
 });
-
-document.getElementById('rzpbutton').onclick = function (e) {
-  var isTrue = "{{userdata.email_verified}}";
-    if (isTrue == 'False') {
-        alert("Email is not verified \n Email verification is manditaory for making orders \n check your inbox and spam on registered mail for verification link.");
-        return;
-    }  
-
-  // Check if all fields are filled
-    if (!validateForm()) {
-        alert('Please fill in all fields before proceeding to payment.');
-        return;
-    }
-    
-
-    var options = {
-        "key": "rzp_test_M0U7Np7zuHXK2B", //test key
-        "amount": (grandTotal.toFixed(2) * 100),  // Use grandTotal here
-        "currency": "INR",
-        "description": "Acme Corp",
-        "image": "{% static 'user/img/fablogo.jpeg' %}",
-        "prefill": {
-            "email": $('#email').val(),
-        },
-
-       
-      'method':'upi',
-
-        "handler": function (response) {
-            alert(response.razorpay_payment_id);
-            if (response.razorpay_payment_id) {
-                $('#payid').val(response.razorpay_payment_id);
-                $('#regForm').submit();
-            } else {
-                alert("Payment failed. Please try again.");
-            }
-        },
-        
-        "modal": {
-            "ondismiss": function () {
-                if (confirm("Are you sure, you want to close the form?")) {
-                    console.log("Checkout form closed by the user");
-                } else {
-                    console.log("Complete the Payment");
-                }
-            }
-        }
-        
-    };
-    
-    var rzp1 = new Razorpay(options);
-    rzp1.open();
-    e.preventDefault();
-}
-
-function validateForm() {
-    var isValid = true;
-    $('.input_box_cart input, .input_box_cart select, .input_box_cart textarea').each(function () {
-        if ($(this).val() === '') {
-            isValid = false;
-            return false; // Exit the loop early if any field is empty
-        }
-    });
-    return isValid;
-}
 </script>
 
+    <script>
+      var options = {
+            "key": "rzp_test_Lb2CDpM9Jlk8BQ",
+            "amount": "{{rzp_order.amount}}",
+            "currency": "INR",
+            "name": "Fabkraft",
+            "description": "Test Transaction",
+            "image": "{% static 'user/img/fablogo.jpeg' %}",
+            "order_id": "{{rzp_order.id}}",
+            "handler": function (response){
+                if (response.razorpay_payment_id) {
+                    $('#payid').val(response.razorpay_payment_id);
+                    $('#regForm').submit();
+                } else {
+                    alert("Payment failed. Please try again.");
+                }
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature)
+            },
+            "prefill": {
+              "email": $('#email').val(),
+              //phone,name
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+                alert(response.error.code);
+                alert(response.error.description);
+                alert(response.error.source);
+                alert(response.error.step);
+                alert(response.error.reason);
+                alert(response.error.metadata.order_id);
+                alert(response.error.metadata.payment_id);
+        });
+        document.getElementById('rzpbutton').onclick = function(e){
+            var isTrue = "{{userdata.email_verified}}";
+            if (isTrue == 'False') {
+                alert("Email is not verified \n Email verification is manditaory for making orders \n check your inbox and spam on registered mail for verification link.");
+                return;
+            }
 
-      
+            // Check if all fields are filled
+            if (!validateForm()) {
+                alert('Please fill in all fields before proceeding to payment.');
+                return;
+            }
+
+            rzp1.open();
+            e.preventDefault();
+        }
+
+      function validateForm() {
+        var isValid = true;
+        $('.input_box_cart input, .input_box_cart select, .input_box_cart textarea').each(function () {
+            if ($(this).val() === '') {
+                isValid = false;
+                return false; // Exit the loop early if any field is empty
+            }
+        });
+        return isValid;
+      }
+
+    </script>
+
+
+</form>
   </div>
 
 {% endblock %}
