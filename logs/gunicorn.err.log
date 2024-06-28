@@ -13582,3 +13582,13 @@ Not Found: /About/images/profile-1.jpeg
 [2024-06-26 16:41:52 +0000] [147805] [INFO] Booting worker with pid: 147805
 Not Found: /images/profile-1.jpeg
 Not Found: /About/images/profile-1.jpeg
+[2024-06-28 06:03:01 +0000] [1637] [INFO] Starting gunicorn 22.0.0
+[2024-06-28 06:03:01 +0000] [1637] [INFO] Listening at: unix:/home/ubuntu/fab/app.sock (1637)
+[2024-06-28 06:03:01 +0000] [1637] [INFO] Using worker: sync
+[2024-06-28 06:03:01 +0000] [1638] [INFO] Booting worker with pid: 1638
+[2024-06-28 06:03:01 +0000] [1639] [INFO] Booting worker with pid: 1639
+[2024-06-28 06:03:01 +0000] [1640] [INFO] Booting worker with pid: 1640
+/home/ubuntu/fab/fabkraft_user/views.py:763: SyntaxWarning: "is" with 'str' literal. Did you mean "=="?
+  if user_.first_name is '' and user_.last_name is '':
+/home/ubuntu/fab/fabkraft_user/views.py:763: SyntaxWarning: "is" with 'str' literal. Did you mean "=="?
+  if user_.first_name is '' and user_.last_name is '':

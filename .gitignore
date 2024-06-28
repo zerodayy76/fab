@@ -1,10 +1,10 @@
 venv
 
 .idea
-fabkraft_project/__pycache__
-fabkraft_user/__pycache__
-fabkraft_user/migrations/__pycache__
-fabkraft_user/templatetags/__pycache__
+fabkraft_project/__pycache__/
+fabkraft_user/__pycache__/
+fabkraft_user/migrations/__pycache__/
+fabkraft_user/templatetags/__pycache__/
 backup/
 
 datadump.json
