@@ -1,6 +1,7 @@
 venv
 
 .idea
+__pycache__/
 fabkraft_project/__pycache__/
 fabkraft_user/__pycache__/
 fabkraft_user/migrations/__pycache__/

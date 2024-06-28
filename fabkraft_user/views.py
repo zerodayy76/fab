@@ -620,7 +620,9 @@ def product_checkout_page(request,product_id):
     request.session['previous_page'] = request.build_absolute_uri()
     return render(request,'checkout.html',context)
 
-def cart_checkout_page(request):
+#original
+
+"""def cart_checkout_page(request):
     if request.method == 'POST' and not request.user.is_authenticated:
         qun_list = request.POST.getlist("quantity")
         print('1st cart',request.session.get('cart',[]))
@@ -663,13 +665,17 @@ def cart_checkout_page(request):
         # print(zip_)
         '''       for i in zip_:
             print(i[0]['products'],i[1])'''
-
+        rzp_order = {'amount': 519600, 'amount_due': 519600, 'amount_paid': 0, 'attempts': 0, 'created_at': 1719516379,
+                     'currency': 'INR', 'entity': 'order', 'id': 'order_ORtl6Afo0qfxYn',
+                     'notes': {'149': 'Baby Quilt 1', '150': 'Dohar 6'}, 'offer_id': None,
+                     'receipt': 'boopathyganesh95_125272', 'status': 'created'}
 
         context = {
             'cartdata' : cart_,
             'userdata' : user_data,
             'qun_':qun_list,
             'orderdata':order_data,
+            'rzp_order':rzp_order,
         }
         request.session['previous_page'] = request.build_absolute_uri()
         return render(request,'checkout.html',context)
@@ -725,10 +731,10 @@ def cart_checkout_page(request):
             "notes": cart_products['notes']
         })
 
-        """rzp_order = {'amount': 519600, 'amount_due': 519600, 'amount_paid': 0, 'attempts': 0, 'created_at': 1719516379,
+        rzp_order = {'amount': 519600, 'amount_due': 519600, 'amount_paid': 0, 'attempts': 0, 'created_at': 1719516379,
                      'currency': 'INR', 'entity': 'order', 'id': 'order_ORtl6Afo0qfxYn',
                      'notes': {'149': 'Baby Quilt 1', '150': 'Dohar 6'}, 'offer_id': None,
-                     'receipt': 'boopathyganesh95_125272', 'status': 'created'}"""
+                     'receipt': 'boopathyganesh95_125272', 'status': 'created'}
 
         context = {
             'cartdata' : cart_,
@@ -739,7 +745,103 @@ def cart_checkout_page(request):
         request.session['previous_page'] = request.build_absolute_uri()
         return render(request,'checkout.html',context)
     request.session['previous_page'] = request.build_absolute_uri()
-    return render(request, 'login/login.html')   
+    return render(request, 'login/login.html')  """
+
+
+def update_session_cart(request, qun_list):
+    request.session['cart_qunity'] = qun_list if qun_list else [1] * len(request.session.get('cart', []))
+
+
+def update_authenticated_cart(cart_, qun_list, request):
+    request.session['cart_qunity'] = []
+    for item in cart_:
+        if item.products.product_choices_set.all().exists():
+            verient_id = request.POST.get(f"verients{item.id}")
+            item.verients = product_choices.objects.get(id=int(verient_id))
+            item.save()
+    update_session_cart(request, qun_list)
+
+
+def calculate_cart_totals(cart_):
+    cart_products = {
+        "rates": [],
+        "total": 0,
+        "shipping": 0,
+        "g_total": 0,
+        "order_id": '',
+        "receipt_id": '',
+        "notes": {}
+    }
+    for item in cart_:
+        price = int(item.verients.options_cost) if item.verients else int(item.products.price)
+        cart_products["rates"].append(price)
+        cart_products["notes"][item.id] = item.products.product_name
+    cart_products['total'] = float(sum(cart_products['rates']))
+    cart_products['shipping'] = calculate_shipping_charge(cart_products['total'])
+    cart_products['g_total'] = cart_products['total'] + cart_products['shipping']
+    return cart_products
+
+
+def create_razorpay_order(cart_products, user_data):
+    client = razorpay.Client(auth=("rzp_test_Lb2CDpM9Jlk8BQ", "DPPTzAzVzqRZUIoLmWTBdqJ2"))
+    cart_products['receipt_id'] = f"{user_data}_{random.randint(0, 999999):06d}"
+    return client.order.create({
+        "amount": int(cart_products['g_total']) * 100,
+        "currency": "INR",
+        "receipt": cart_products['receipt_id'],
+        "notes": cart_products['notes']
+    })
+
+
+def cart_checkout_page(request):
+    if request.method == 'POST':
+        qun_list = request.POST.getlist("quantity")
+        if not request.user.is_authenticated:
+            update_session_cart(request, qun_list)
+            session_cart = request.session.get('cart', [])
+            for item in session_cart:
+                if Products.objects.get(id=item['product_id']).product_choices_set.all().exists():
+                    verient_id = request.POST.get(f"verients{item['product_id']}")
+                    item['verient_id'] = int(verient_id)
+            request.session['cart'] = session_cart
+        else:
+            cart_ = cart.objects.filter(user=UserData.objects.get(user=request.user))
+            if not cart_:
+                return redirect('cart')
+            update_authenticated_cart(cart_, qun_list, request)
+            user_data = UserData.objects.get(user=request.user)
+            order_data = orders.objects.filter(user=user_data).last()
+            rzp_order = create_razorpay_order(calculate_cart_totals(cart_), user_data)
+            context = {
+                'cartdata': cart_,
+                'userdata': user_data,
+                'qun_': qun_list,
+                'orderdata': order_data,
+                'rzp_order': rzp_order,
+            }
+            request.session['previous_page'] = request.build_absolute_uri()
+            return render(request, 'checkout.html', context)
+
+    if request.user.is_authenticated:
+        cart_ = cart.objects.filter(user=UserData.objects.get(user=request.user))
+        if 'cart_qunity' not in request.session:
+            request.session['cart_qunity'] = [1] * len(cart_)
+        user_data = UserData.objects.get(user=request.user)
+        order_data = orders.objects.filter(user=user_data).last()
+        cart_products = calculate_cart_totals(cart_)
+        rzp_order = create_razorpay_order(cart_products, user_data)
+        context = {
+            'cartdata': cart_,
+            'userdata': user_data,
+            'orderdata': order_data,
+            'rzp_order': rzp_order,
+        }
+        request.session['previous_page'] = request.build_absolute_uri()
+        return render(request, 'checkout.html', context)
+
+    request.session['previous_page'] = request.build_absolute_uri()
+    return render(request, 'login/login.html')
+
 def save_checkouts(request):
     if request.method == 'POST' and request.user.is_authenticated:
         name = request.POST.get('user_name')
