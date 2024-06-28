@@ -1,5 +1,6 @@
-from django.http import HttpResponseRedirect, JsonResponse
-from django.contrib.auth import login,authenticate,logout
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect, JsonResponse,HttpResponseBadRequest
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from .models import *
 from django.db.models import Q
@@ -21,23 +22,29 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import messages
 from django.conf import settings
 from .token_gen import *
 from django.contrib.auth.hashers import make_password
-pincode_df = read_csv('datasets/pincode.csv',low_memory=False)
+
+pincode_df = read_csv('datasets/pincode.csv', low_memory=False)
 import threading
 import random
 
 import razorpay
 
+rzp_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+
 def test(request):
-    return render(request,'admin/base.html')
+    return render(request, 'admin/base.html')
+
 
 def rzp_test(request):
-    return render(request,'test_rzp.html')
+    return render(request, 'test_rzp.html')
+
 
 def cart_and_wishlist_count(request):
     cart_count = 0
@@ -48,14 +55,16 @@ def cart_and_wishlist_count(request):
         wishlist_count = wishlist.objects.filter(user=UserData.objects.get(user=request.user)).count()
     else:
         session_cart = request.session.get('cart', [])
-        cart_count = len(session_cart)    
+        cart_count = len(session_cart)
     return {
         'cart_count': cart_count,
         'wishlist_count': wishlist_count,
-        'category':category,
-        'subcategory':sub_Category.objects.all() 
-        
+        'category': category,
+        'subcategory': sub_Category.objects.all()
+
     }
+
+
 def index(request):
     request.session.set_test_cookie()
     index_prod = Products.objects.all()
@@ -63,9 +72,9 @@ def index(request):
 
     carousel = index_carousel.objects.all()
     if 'recently_viewed' not in request.session:
-        recent_prod = request.session['recently_viewed']=[]
+        recent_prod = request.session['recently_viewed'] = []
     else:
-        recent_prod = sorted(Products.objects.filter(id__in = request.session['recently_viewed']),
+        recent_prod = sorted(Products.objects.filter(id__in=request.session['recently_viewed']),
                              key=lambda x: request.session['recently_viewed'].index(x.id))
     print(recent_prod)
     if request.user.is_superuser:
@@ -73,17 +82,21 @@ def index(request):
     if request.user.is_authenticated:
         print(Rating.objects.all())
         context = {
-                   'index_prod':index_prod,
-                   'index_cat':index_cat,
-                   'carousel':carousel,
-                    "recent_prod": recent_prod,
-                    'rating': Rating.objects.all()
+            'index_prod': index_prod,
+            'index_cat': index_cat,
+            'carousel': carousel,
+            "recent_prod": recent_prod,
+            'rating': Rating.objects.all()
 
-                   }
-        return render(request,'index1.html',context)
-    
-    return render(request,'index1.html',{'index_prod':index_prod,'index_cat':index_cat,'carousel':carousel,"recent_prod": recent_prod,'rating': Rating.objects.all()
-})
+        }
+        return render(request, 'index1.html', context)
+
+    return render(request, 'index1.html',
+                  {'index_prod': index_prod, 'index_cat': index_cat, 'carousel': carousel, "recent_prod": recent_prod,
+                   'rating': Rating.objects.all()
+                   })
+
+
 '''
 def index(request):
     personal_viewed_cate = []
@@ -161,21 +174,22 @@ def index(request):
 
 '''
 
-#-------------------------login and register-------------------------------------------------    
+
+#-------------------------login and register-------------------------------------------------
 
 def login_page(request):
     if request.method == 'POST':
         email_ = request.POST.get('email')
         password = request.POST.get('password')
         if password is None:
-            if User.objects.filter(email = email_).exists():
-                return render(request, 'login/login2.html',{'email':email_})
+            if User.objects.filter(email=email_).exists():
+                return render(request, 'login/login2.html', {'email': email_})
             else:
                 username_ = email_.split("@")[0].split('.')[0]
-                return render(request, 'login/register.html',{"email":email_,'username':username_})
+                return render(request, 'login/register.html', {"email": email_, 'username': username_})
         else:
             try:
-                username = User.objects.get(email=email_).username 
+                username = User.objects.get(email=email_).username
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
@@ -183,13 +197,13 @@ def login_page(request):
                     if request.user.is_superuser:
                         return redirect('/admin/admin/')
                     return HttpResponseRedirect(previous_page)
- 
+
             except:
                 messages.error(request, 'Login failed. Please check your credentials.')
-                
+
             else:
                 messages.error(request, 'Login failed. Please check your credentials.')
-    
+
     if request.user.is_authenticated:
         return redirect('profile')
     return render(request, 'login/login.html')
@@ -238,6 +252,8 @@ def register(request):
         else:
             return redirect('login')
     return render(request, 'login/register.html')
+
+
 def verify_email(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -252,8 +268,9 @@ def verify_email(request, uidb64, token):
             messages.error(request, 'Invalid verification link.')
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         messages.error(request, 'Invalid verification link.')
-    
+
     return render(request, 'verify.html', {'messages': messages.get_messages(request)})
+
 
 def forgot_password_page(request):
     if request.user.is_authenticated == 0:
@@ -277,11 +294,13 @@ def forgot_password_page(request):
                 to_email = email
                 send_mail(subject, message, from_email, [to_email])
                 mess = "reset link is sent to your mail"
-                return render(request, "login/forgotpassword1.html",{'messages':mess})
+                return render(request, "login/forgotpassword1.html", {'messages': mess})
             else:
                 messages.error(request, "!! email is not registered")
-        return render(request, "login/forgotpassword.html",)
+        return render(request, "login/forgotpassword.html", )
     return redirect('profile')
+
+
 def forgot_password(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
@@ -294,16 +313,19 @@ def forgot_password(request, uidb64, token):
                 user.save()
                 messages.success(request, "password changed")
                 return redirect('login')
-            return render(request, 'login/forgotpasswordreal.html', {'messages': messages.get_messages(request)})            
+            return render(request, 'login/forgotpasswordreal.html', {'messages': messages.get_messages(request)})
         else:
             messages.error(request, 'Invalid verification link.')
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         messages.error(request, 'Invalid verification link.')
-    
+
     return render(request, 'login/forgotpasswordreal.html', {'messages': messages.get_messages(request)})
+
+
 def accounts_logout(request):
-    lo=logout(request)
+    lo = logout(request)
     return redirect('index')
+
 
 def resend_verify_email(request):
     # Generate custom token
@@ -322,15 +344,17 @@ def resend_verify_email(request):
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = request.user.email
 
-        send_mail(subject, message, from_email, [to_email,from_email])
+        send_mail(subject, message, from_email, [to_email, from_email])
         previous_page = request.session.pop('previous_page', '/')
         return HttpResponseRedirect(previous_page)
     previous_page = request.session.pop('previous_page', '/')
     return HttpResponseRedirect(previous_page)
-#-------------------------[ profile ]-------------------------------------------------    
+
+
+#-------------------------[ profile ]-------------------------------------------------
 
 def profile(request):
-    if request.method == "POST"  and request.user.is_authenticated:
+    if request.method == "POST" and request.user.is_authenticated:
         userdata_ = UserData.objects.get(user=request.user)
         userdata_.user.first_name = request.POST.get('first_name')
         userdata_.user.last_name = request.POST.get('last_name')
@@ -338,28 +362,29 @@ def profile(request):
         userdata_.user.save()
         return redirect('profile')
     if request.user.is_authenticated:
-        return render(request,'profile.html')
+        return render(request, 'profile.html')
     return redirect('index')
 
-#-------------------------[ cart] ---------------------------------------------------------------    
+
+#-------------------------[ cart] ---------------------------------------------------------------
 def calculate_shipping_charge(order_price):
     base_charge = setting_values.objects.get(name='shipping').value['base_charge']
     threshold = setting_values.objects.get(name='shipping').value['threshold']
     #print(base_charge,type(base_charge),threshold,type(threshold),order_price,type(order_price))
     order_price = float(order_price)
 
-
-
     print('Order Price:', order_price)
 
     if order_price > 0:
-        num_thresholds_exceeded = (order_price - 1) // threshold  # Subtract 1 to handle the case when order_price exactly matches a threshold
+        num_thresholds_exceeded = (
+                                              order_price - 1) // threshold  # Subtract 1 to handle the case when order_price exactly matches a threshold
         charges = base_charge * (num_thresholds_exceeded + 1)  # Adding 1 to include the first threshold
         print('Charges:', charges)
     else:
         charges = 0
         print('Charges:', charges)
     return charges
+
 
 def user_cart(request):
     request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
@@ -373,21 +398,26 @@ def user_cart(request):
         prod_id_list = []
         for item in session_cart:
             if item['verient_id'] != None:
-                cart_items.append({'id':item['product_id'],'user':None, "products":Products.objects.get(id=item['product_id']),'verients':product_choices.objects.get(id=item['verient_id'])})
+                cart_items.append(
+                    {'id': item['product_id'], 'user': None, "products": Products.objects.get(id=item['product_id']),
+                     'verients': product_choices.objects.get(id=item['verient_id'])})
             else:
-                cart_items.append({'id':item['product_id'],'user':None, "products":Products.objects.get(id=item['product_id']),'verients':None})
+                cart_items.append(
+                    {'id': item['product_id'], 'user': None, "products": Products.objects.get(id=item['product_id']),
+                     'verients': None})
     context = {
         'cart': cart_items
     }
 
     return render(request, 'cart.html', context)
 
+
 def add_to_cart(request, prod_id):
     request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
-    
+
     if request.method == 'POST':
         verid = request.POST.get('verient')
-        
+
         # If the user is authenticated, use the database cart
         if request.user.is_authenticated:
             user_data = get_object_or_404(UserData, user=request.user)
@@ -399,7 +429,7 @@ def add_to_cart(request, prod_id):
                 if not cart.objects.filter(user=user_data, products_id=prod_id).exists():
                     cart.objects.create(user=user_data, products_id=prod_id)
             return redirect('cart')
-        
+
         # If the user is not authenticated, use the session cart
         else:
             session_cart = request.session.get('cart', [])
@@ -416,7 +446,7 @@ def add_to_cart(request, prod_id):
             return redirect('cart')
     elif request.method == 'GET':
         verid = request.POST.get('verient')
-        
+
         # If the user is authenticated, use the database cart
         if request.user.is_authenticated:
             user_data = get_object_or_404(UserData, user=request.user)
@@ -428,7 +458,7 @@ def add_to_cart(request, prod_id):
                 if not cart.objects.filter(user=user_data, products_id=prod_id).exists():
                     cart.objects.create(user=user_data, products_id=prod_id)
             return redirect('cart')
-        
+
         # If the user is not authenticated, use the session cart
         else:
             session_cart = request.session.get('cart', [])
@@ -445,39 +475,45 @@ def add_to_cart(request, prod_id):
             return redirect('cart')
     return redirect('login')
 
+
 def remove_from_cart(request, prod_id):
     if request.user.is_authenticated:
         user_data = UserData.objects.get(user=request.user)
-        cart_item = cart.objects.filter(user=user_data,products=cart.objects.get(id=prod_id).products)
+        cart_item = cart.objects.filter(user=user_data, products=cart.objects.get(id=prod_id).products)
         cart_item.delete()
     else:
         session_cart = request.session.get('cart', [])
         session_cart = [item for item in session_cart if item['product_id'] != prod_id]
         request.session['cart'] = session_cart
-    
+
     return redirect('cart')
 
-#-------------------------[ wishlist ]-----------------------------------------------------------    
+
+#-------------------------[ wishlist ]-----------------------------------------------------------
 
 def wish_list(request):
     request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
     if request.user.is_authenticated:
         context = {
-            'cart':wishlist.objects.filter(user=UserData.objects.get(user=request.user))
+            'cart': wishlist.objects.filter(user=UserData.objects.get(user=request.user))
         }
-        return render(request,'wishlist.html',context)
+        return render(request, 'wishlist.html', context)
     return redirect('login')
 
-def add_to_wishlist(request,prod_id):
+
+def add_to_wishlist(request, prod_id):
     request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
     if request.user.is_authenticated:
-        if wishlist.objects.filter(user=UserData.objects.get(user=request.user),products = Products.objects.get(id=prod_id)).exists():
+        if wishlist.objects.filter(user=UserData.objects.get(user=request.user),
+                                   products=Products.objects.get(id=prod_id)).exists():
             pass
         else:
-            wishlist.objects.create(user=UserData.objects.get(user=request.user),products = Products.objects.get(id=prod_id))
-            
+            wishlist.objects.create(user=UserData.objects.get(user=request.user),
+                                    products=Products.objects.get(id=prod_id))
+
         return redirect('wishlist')
     return redirect('login')
+
 
 def update_wishlist(request):
     item_id = request.POST.get('item_id')
@@ -493,14 +529,15 @@ def update_wishlist(request):
         added = True
 
     return JsonResponse({"status": 'success'}, safe=False)
-        
-def remove_from_wishlist(request,prod_id):
+
+
+def remove_from_wishlist(request, prod_id):
     if request.user.is_authenticated:
-        
-        wishlist.objects.get(user=UserData.objects.filter(user=request.user),id=prod_id).delete()
+        wishlist.objects.get(user=UserData.objects.filter(user=request.user), id=prod_id).delete()
     return redirect('wishlist')
 
-#-------------------------[ checkout ]-----------------------------------------------------------    
+
+#-------------------------[ checkout ]-----------------------------------------------------------
 
 def show_product(request, prod_id):
     is_reviewed = []
@@ -510,15 +547,15 @@ def show_product(request, prod_id):
 
     try:
         product_details = Products.objects.get(id=prod_id)
-        prod_image = images.objects.filter(product = product_details)
-        
+        prod_image = images.objects.filter(product=product_details)
+
         if 'recently_viewed' in request.session:
             print('yeah there')
             if prod_id not in request.session['recently_viewed']:
                 print('viewd')
-                product_details.views +=1
-                product_details.save()        
-        
+                product_details.views += 1
+                product_details.save()
+
                 today_date = timezone.now().date()
 
                 product_view, created = product_views.objects.get_or_create(date=today_date, product=product_details)
@@ -533,8 +570,8 @@ def show_product(request, prod_id):
         if 'recently_viewed' in request.session:
             if prod_id in request.session['recently_viewed']:
                 request.session['recently_viewed'].remove(prod_id)
-            
-            request.session['recently_viewed'].insert(0,prod_id)
+
+            request.session['recently_viewed'].insert(0, prod_id)
 
         else:
             request.session['recently_viewed'] = [prod_id]
@@ -545,80 +582,82 @@ def show_product(request, prod_id):
             ~Q(id=product_details.id)
         )[:10]
 
-
-        
         context = {
             "product_details": product_details,
 
-            "recent_prod": Products.objects.filter(id__in = request.session['recently_viewed']),
-            "prod_image":prod_image,
-            "recomend":recomendations,
+            "recent_prod": Products.objects.filter(id__in=request.session['recently_viewed']),
+            "prod_image": prod_image,
+            "recomend": recomendations,
         }
     except Products.DoesNotExist:
         return render(request, '404_error.html')
 
     return render(request, 'detail.html', context)
 
-def edit_review(request,prod_id):
+
+def edit_review(request, prod_id):
     if request.method == 'POST' and request.user.is_authenticated:
-        review = Rating.objects.get(user=UserData.objects.get(user=request.user),product=Products.objects.get(id=prod_id))
+        review = Rating.objects.get(user=UserData.objects.get(user=request.user),
+                                    product=Products.objects.get(id=prod_id))
         review.review_choice = request.POST.get('review_options')
         review.rate = request.POST.get('rate')
         review.commands = request.POST.get('review')
         review.save()
-        return redirect('product_details',prod_id=prod_id)
+        return redirect('product_details', prod_id=prod_id)
 
-def product_checkout_page(request,product_id):
+
+def product_checkout_page(request, product_id):
     if request.method == 'POST':
         verient = request.POST.get('verient')
         request.session['sng_verient_id'] = verient
 
     if request.method == 'POST' and request.user.is_authenticated:
         product_ = Products.objects.get(id=product_id)
-        print(len(product_choices.objects.filter(product__id=product_id))!=0)
-        if len(product_choices.objects.filter(product__id=product_id))!=0:
+        print(len(product_choices.objects.filter(product__id=product_id)) != 0)
+        if len(product_choices.objects.filter(product__id=product_id)) != 0:
             verient = request.POST.get('verient')
             if verient is None:
                 verient = product_choices.objects.get(id=request.session.get("sng_verient_id"))
-            else:                
+            else:
                 verient = product_choices.objects.get(id=verient)
 
         user_data = UserData.objects.get(user=request.user)
         order_data = orders.objects.filter(user=user_data).last()
         context = {
-            'product' : product_,
-            'is_single_product_checkout':1,
-            'verient':verient,
-            'userdata':user_data,
-            'orderdata':order_data,
+            'product': product_,
+            'is_single_product_checkout': 1,
+            'verient': verient,
+            'userdata': user_data,
+            'orderdata': order_data,
         }
-        return render(request,'checkout.html',context)
-    
+        return render(request, 'checkout.html', context)
+
     elif not request.user.is_authenticated:
         request.session['previous_page'] = request.build_absolute_uri()
         return render(request, 'login/login.html')
-    
+
     product_ = Products.objects.get(id=product_id)
     verient = None
-    if len(product_choices.objects.filter(product__id=product_id))!=0:
-            verient = request.POST.get('verient')
-            if verient is None:
-                verient = product_choices.objects.get(id=request.session.get("sng_verient_id"))
-            else:                
-                verient = product_choices.objects.get(id=verient)
+    if len(product_choices.objects.filter(product__id=product_id)) != 0:
+        verient = request.POST.get('verient')
+        if verient is None:
+            verient = product_choices.objects.get(id=request.session.get("sng_verient_id"))
+        else:
+            verient = product_choices.objects.get(id=verient)
 
     user_data = UserData.objects.get(user=request.user)
     order_data = orders.objects.filter(user=user_data).last()
 
     context = {
-        'product' : product_,
-        'is_single_product_checkout':1,
-        'verient':verient,
-        'userdata':user_data,
-        'orderdata':order_data,
+        'product': product_,
+        'is_single_product_checkout': 1,
+        'verient': verient,
+        'userdata': user_data,
+        'orderdata': order_data,
     }
     request.session['previous_page'] = request.build_absolute_uri()
-    return render(request,'checkout.html',context)
+    return render(request, 'checkout.html', context)
+
 
 #original
 
@@ -783,14 +822,54 @@ def calculate_cart_totals(cart_):
 
 
 def create_razorpay_order(cart_products, user_data):
-    client = razorpay.Client(auth=("rzp_test_Lb2CDpM9Jlk8BQ", "DPPTzAzVzqRZUIoLmWTBdqJ2"))
     cart_products['receipt_id'] = f"{user_data}_{random.randint(0, 999999):06d}"
-    return client.order.create({
+    return rzp_client.order.create({
         "amount": int(cart_products['g_total']) * 100,
         "currency": "INR",
         "receipt": cart_products['receipt_id'],
         "notes": cart_products['notes']
     })
+
+
+def generate_hmac_sha256_signature(order_id, pay_id, secret_key):
+    # Create the message by concatenating order_id and pay_id with a separator
+    message = f"{order_id}|{pay_id}".encode('utf-8')
+
+    # Encode the secret key to bytes
+    secret_key_bytes = secret_key.encode('utf-8')
+
+    # Create HMAC-SHA256 signature
+    hmac_sha256 = hmac.new(secret_key_bytes, message, hashlib.sha256)
+
+    # Return the hexadecimal representation of the signature
+    return hmac_sha256.hexdigest()
+
+
+@csrf_exempt
+def verify_payment(request):
+    if request.method == "POST":
+        order_id = request.POST.get('order_id')
+        pay_id = request.POST.get('pay_id')
+        received_signature = request.POST.get('signature')
+
+        generated_signature = rzp_client.utility.verify_payment_signature({
+            'razorpay_order_id': order_id,
+            'razorpay_payment_id': pay_id,
+            'razorpay_signature': received_signature
+        })
+        print(generated_signature)
+
+        print(received_signature)
+
+        secret_key = settings.RAZORPAY_KEY_SECRET
+        """generated_signature = generate_hmac_sha256_signature(rzp_pay_data['order_id'], rzp_pay_data['id'], secret_key)
+
+        if generated_signature == received_signature:
+            return JsonResponse({"status": "success"})
+        else:
+            return JsonResponse({"status": "failure"}, status=400)"""
+
+    return JsonResponse({"status": "invalid request"}, status=400)
 
 
 def cart_checkout_page(request):
@@ -842,7 +921,8 @@ def cart_checkout_page(request):
     request.session['previous_page'] = request.build_absolute_uri()
     return render(request, 'login/login.html')
 
-def save_checkouts(request):
+
+"""def save_checkouts(request):
     if request.method == 'POST' and request.user.is_authenticated:
         name = request.POST.get('user_name')
         email = request.POST.get('email')
@@ -855,13 +935,23 @@ def save_checkouts(request):
         payment = 'razerpay'
         area = request.POST.get("area")
         payid = request.POST.get('payid')
-        
+        orderid = request.POST.get('rzp_orderid')
+        rzp_signature = request.POST.get('rzp_signature')
+
+        #signature verification
+        #payment_verification_sts = verify_payment(request)
+        #print(payment_verification_sts)
+        #generated_signature = hmac_sha256(orderid + "|" + payid, settings.RAZORPAY_KEY_SECRET);
+
+        #print("rzp_order_id",orderid)
+        #print("rzp_signature", rzp_signature)
+
         if not payid or orders.objects.filter(pay_id=payid).exists():
             previous_page = request.session.pop('previous_page', '/')
             return HttpResponseRedirect(previous_page)
 
-        user_ =  User.objects.get(id=request.user.id)
-        print('fst lst name',user_.first_name,user_.last_name)
+        user_ = User.objects.get(id=request.user.id)
+        print('fst lst name', user_.first_name, user_.last_name)
         if user_.first_name is '' and user_.last_name is '':
             user_.first_name = request.POST.get('first_name')
             user_.last_name = request.POST.get('last_name')
@@ -870,80 +960,79 @@ def save_checkouts(request):
             ud = UserData.objects.get(user=user_)
             ud.phone_number = phono
             ud.save()
-        pincode_details = pincode_df[(pincode_df['Pincode'] == int(pincode)) & (pincode_df['OfficeType'] == 'PO')]        
+        pincode_details = pincode_df[(pincode_df['Pincode'] == int(pincode)) & (pincode_df['OfficeType'] == 'PO')]
         district = str(pincode_details.iloc[0]['District'])
         state = str(pincode_details.iloc[0]['StateName'])
         total_cost = 0
-        print('products',products)
+        print('products', products)
         cart_prods = cart.objects.filter(user=UserData.objects.get(user=request.user))
         for prod in cart_prods:
             prod_id = prod.products.id
-            print('prod id',prod_id)
+            print('prod id', prod_id)
             product = Products.objects.get(id=prod_id)
-            print('exists',prod_id,product_choices.objects.filter(product__id=prod_id).exists())
+            print('exists', prod_id, product_choices.objects.filter(product__id=prod_id).exists())
             if product_choices.objects.filter(product__id=prod_id).exists():
-                verids = request.POST.getlist(str(prod_id)+'verient')
+                verids = request.POST.getlist(str(prod_id) + 'verient')
                 print(verids)
                 for verid in verids:
-                    quantity_ = int(request.POST.get('quantity'+str(verid)))
+                    quantity_ = int(request.POST.get('quantity' + str(verid)))
                     total_cost += int(product_choices.objects.get(id=verid).options_cost) * quantity_
             else:
-                print('justprod',prod_id)
-                quantity_ = int(request.POST.get('quantity'+str(prod_id)))
-                total_cost +=product.price*quantity_    
-                
-        
-        order = orders.objects.create(
-                user=UserData.objects.get(user=request.user),
+                print('justprod', prod_id)
+                quantity_ = int(request.POST.get('quantity' + str(prod_id)))
+                total_cost += product.price * quantity_
 
-                name = request.user.username,
-                pincode= pincode,
-                district = district,
-                city = city,
-                state = state,
-                address=address,
-                phno = phono,
-                email=email,
-                payment_method = payment,    
-                pay_id=payid,
-                area=area,
-                shipping_cost = calculate_shipping_charge(total_cost),
-                tax_cost = 00,
-                total_cost =  total_cost,   
-                is_paid= 1                     
-            )
-        
+        order = orders.objects.create(
+            user=UserData.objects.get(user=request.user),
+
+            name=request.user.username,
+            pincode=pincode,
+            district=district,
+            city=city,
+            state=state,
+            address=address,
+            phno=phono,
+            email=email,
+            payment_method=payment,
+            pay_id=payid,
+            area=area,
+            shipping_cost=calculate_shipping_charge(total_cost),
+            tax_cost=00,
+            total_cost=total_cost,
+            is_paid=1
+        )
+
         for prod_id in list(set(products)):
             product = Products.objects.get(id=prod_id)
             if product_choices.objects.filter(product__id=prod_id).exists():
-                verids = request.POST.getlist(str(prod_id)+'verient')
+                verids = request.POST.getlist(str(prod_id) + 'verient')
                 print(verids)
                 for verid in verids:
-                    quantity_ = int(request.POST.get('quantity'+str(verid)))
+                    quantity_ = int(request.POST.get('quantity' + str(verid)))
                     order_products.objects.create(
-                        order = order,
-                        products = Products.objects.get(id=prod_id),
-                        product_price = product_choices.objects.get(id=verid).options_cost,
-                        verient = product_choices.objects.get(id=verid),
-                        quantity = quantity_,
+                        order=order,
+                        products=Products.objects.get(id=prod_id),
+                        product_price=product_choices.objects.get(id=verid).options_cost,
+                        verient=product_choices.objects.get(id=verid),
+                        quantity=quantity_,
                     )
             else:
-                quantity_ = int(request.POST.get('quantity'+str(prod_id)))
+                quantity_ = int(request.POST.get('quantity' + str(prod_id)))
                 order_products.objects.create(
-                            order = order,
-                            products = Products.objects.get(id=prod_id),
-                            product_price = Products.objects.get(id=prod_id).price,
-                            quantity = quantity_,
-                        )
+                    order=order,
+                    products=Products.objects.get(id=prod_id),
+                    product_price=Products.objects.get(id=prod_id).price,
+                    quantity=quantity_,
+                )
         # Sending email verification
-        urlasd = request.build_absolute_uri(
+        order_url = request.build_absolute_uri(
             reverse('order_details', kwargs={'order_id': order.id})
         )
         subject = 'FABKRAFT order placed'
         message = render_to_string('orderplacedmail.html', {
             'user': request.user,
-            'orderid': order ,
-            'url':urlasd,
+            'orderid': order,
+            'url': order_url,
         })
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = email
@@ -951,39 +1040,163 @@ def save_checkouts(request):
         send_mail(subject, message, from_email, [to_email])
         '''except:
             messages.error(request, 'Error while checkout')'''
-        
-        
-        return redirect('/order_details/'+str(order.id))
-    
+
+        return redirect('/order_details/' + str(order.id))
+"""
+
+def verify_payment_signature(order_id, payment_id, signature):
+    try:
+        key_secret = settings.RAZORPAY_KEY_SECRET
+        generated_signature = hmac.new(
+            key_secret.encode(),
+            (order_id + "|" + payment_id).encode(),
+            hashlib.sha256
+        ).hexdigest()
+        return generated_signature == signature
+    except Exception as e:
+        return False
+
+def save_checkouts(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        name = request.POST.get('user_name')
+        email = request.POST.get('email')
+        phono = request.POST.get('phone')
+        address = request.POST.get('address')
+        products = request.POST.getlist('product_id')
+        pincode = request.POST.get('pincode')
+        city = request.POST.get('city')
+        payment = 'razorpay'
+        area = request.POST.get("area")
+        payid = request.POST.get('payid')
+        orderid = request.POST.get('rzp_orderid')
+        rzp_signature = request.POST.get('rzp_signature')
+
+        # Verify the payment signature
+        if not verify_payment_signature(orderid, payid, rzp_signature):
+            return HttpResponseBadRequest("Payment verification failed")
+
+        if not payid or orders.objects.filter(pay_id=payid).exists():
+            previous_page = request.session.pop('previous_page', '/')
+            return HttpResponseRedirect(previous_page)
+
+        user_ = request.user
+        if not user_.first_name or not user_.last_name:
+            user_.first_name = request.POST.get('first_name')
+            user_.last_name = request.POST.get('last_name')
+            user_.username = request.POST.get("user_name")
+            user_.save()
+
+            ud, created = UserData.objects.get_or_create(user=user_)
+            ud.phone_number = phono
+            ud.save()
+
+        # Assuming pincode_df is available in the context
+        pincode_details = pincode_df[(pincode_df['Pincode'] == int(pincode)) & (pincode_df['OfficeType'] == 'PO')].iloc[0]
+        district = pincode_details['District']
+        state = pincode_details['StateName']
+
+        total_cost = 0
+        cart_prods = cart.objects.filter(user=UserData.objects.get(user=request.user)).select_related('products')
+
+        for prod in cart_prods:
+            product = prod.products
+            product_id = product.id
+            if product_choices.objects.filter(product__id=product_id).exists():
+                verids = request.POST.getlist(f'{product_id}verient')
+                for verid in verids:
+                    quantity_ = int(request.POST.get(f'quantity{verid}'))
+                    total_cost += product_choices.objects.get(id=verid).options_cost * quantity_
+            else:
+                quantity_ = int(request.POST.get(f'quantity{product_id}'))
+                total_cost += product.price * quantity_
+
+        order = orders.objects.create(
+            user=UserData.objects.get(user=request.user),
+            name=user_.username,
+            pincode=pincode,
+            district=district,
+            city=city,
+            state=state,
+            address=address,
+            phno=phono,
+            email=email,
+            payment_method=payment,
+            pay_id=payid,
+            area=area,
+            shipping_cost=calculate_shipping_charge(total_cost),
+            tax_cost=0,
+            total_cost=total_cost,
+            is_paid=1
+        )
+
+        for product_id in set(products):
+            product = Products.objects.get(id=product_id)
+            if product_choices.objects.filter(product__id=product_id).exists():
+                verids = request.POST.getlist(f'{product_id}verient')
+                for verid in verids:
+                    quantity_ = int(request.POST.get(f'quantity{verid}'))
+                    order_products.objects.create(
+                        order=order,
+                        products=product,
+                        product_price=product_choices.objects.get(id=verid).options_cost,
+                        verient=product_choices.objects.get(id=verid),
+                        quantity=quantity_,
+                    )
+            else:
+                quantity_ = int(request.POST.get(f'quantity{product_id}'))
+                order_products.objects.create(
+                    order=order,
+                    products=product,
+                    product_price=product.price,
+                    quantity=quantity_,
+                )
+
+        order_url = request.build_absolute_uri(reverse('order_details', kwargs={'order_id': order.id}))
+        subject = 'FABKRAFT order placed'
+        message = render_to_string('orderplacedmail.html', {
+            'user': user_,
+            'orderid': order,
+            'url': order_url,
+        })
+        from_email = settings.DEFAULT_FROM_EMAIL
+
+        send_mail(subject, message, from_email, [email])
+
+        return redirect('/order_details/' + str(order.id))
+
+
+
 def order_list(request):
     if request.user.is_authenticated:
         context = {
-            'userdata':UserData.objects.get(user=request.user),
-            'orders':reversed(orders.objects.filter(user=UserData.objects.get(user=request.user))),
+            'userdata': UserData.objects.get(user=request.user),
+            'orders': reversed(orders.objects.filter(user=UserData.objects.get(user=request.user))),
         }
-        return render(request,'my order.html',context)
+        return render(request, 'my order.html', context)
     return redirect('login')
 
-def order_details(request,order_id):
+
+def order_details(request, order_id):
     if request.user.is_authenticated:
         order = orders.objects.get(id=order_id)
         order_product = order_products.objects.filter(order=order)
 
         context = {
-            'order':order,
-            'orderproducts':order_product
+            'order': order,
+            'orderproducts': order_product
         }
         request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
-        return render(request,'order_derails.html',context)
+        return render(request, 'order_derails.html', context)
     request.session['previous_page'] = request.build_absolute_uri()
     return redirect('login')
 
-def cancel_order(request,order_id):
+
+def cancel_order(request, order_id):
     if request.method == 'POST' and request.user.is_authenticated:
         order = orders.objects.get(id=order_id)
         canel_Reson = request.POST.get('cancelReason')
-        if order.is_canceled==0:
-            order.is_canceled  = 1
+        if order.is_canceled == 0:
+            order.is_canceled = 1
             order.status = "Cancelled"
             if canel_Reson == 'other':
                 order.cancel_reason = request.POST.get('cancelReasontxt')
@@ -992,31 +1205,34 @@ def cancel_order(request,order_id):
 
         order.save()
         context = {
-            'order':order
+            'order': order
         }
-        return render(request,'order_derails.html',context)
-    
+        return render(request, 'order_derails.html', context)
+
     if request.user.is_authenticated:
         order = orders.objects.get(id=order_id)
         context = {
-            'order':order
+            'order': order
         }
-        return render(request,'order_derails.html',context)
+        return render(request, 'order_derails.html', context)
     return redirect('login')
+
+
 #=================================[category page]=========================================
 
-def category_page(request,cat_name):
+def category_page(request, cat_name):
     if request.method == 'POST':
         selected_subcategories = request.POST.getlist('subcategories')
         print(selected_subcategories)
         # Perform the filtering based on selected_subcategories
         Category_ = Category.objects.get(name=cat_name)
-        
+
         sub_cate = sub_Category.objects.filter(category=Category_)
-        
+
         cat_products = Products.objects.filter(subcategory__sub_category__in=selected_subcategories)
-    
-        return render(request,'category.html',{'products':cat_products,'cat_name':cat_name,'sub_cate':sub_cate,'selected_cate':selected_subcategories})
+
+        return render(request, 'category.html', {'products': cat_products, 'cat_name': cat_name, 'sub_cate': sub_cate,
+                                                 'selected_cate': selected_subcategories})
 
     #try:
     Category_ = sub_Category.objects.get(sub_category=cat_name)
@@ -1025,21 +1241,23 @@ def category_page(request,cat_name):
     '''  except:
         cat_products = None
         return render(request,'404_error.html')'''
-       
-    return render(request,'category.html',{'products':cat_products,'cat_name':cat_name,})
 
-def sub_category_page(request,cat_name):
+    return render(request, 'category.html', {'products': cat_products, 'cat_name': cat_name, })
+
+
+def sub_category_page(request, cat_name):
     if request.method == 'POST':
         selected_subcategories = request.POST.getlist('subcategories')
         print(selected_subcategories)
         # Perform the filtering based on selected_subcategories
         Category_ = Category.objects.get(name=cat_name)
-        
+
         sub_cate = sub_Category.objects.filter(category=Category_)
-        
+
         cat_products = Products.objects.filter(subcategory__sub_category__in=selected_subcategories)
-    
-        return render(request,'category.html',{'products':cat_products,'cat_name':cat_name,'sub_cate':sub_cate,'selected_cate':selected_subcategories})
+
+        return render(request, 'category.html', {'products': cat_products, 'cat_name': cat_name, 'sub_cate': sub_cate,
+                                                 'selected_cate': selected_subcategories})
 
     #try:
     Category_ = Category.objects.get(name=cat_name)
@@ -1048,8 +1266,10 @@ def sub_category_page(request,cat_name):
     '''  except:
         cat_products = None
         return render(request,'404_error.html')'''
-       
-    return render(request,'category.html',{'products':cat_products,'cat_name':cat_name,})
+
+    return render(request, 'category.html', {'products': cat_products, 'cat_name': cat_name, })
+
+
 #=============================[search products]===========================================
 
 def search_products(request):
@@ -1076,7 +1296,7 @@ def search_products(request):
         for product in all_products:
             # Calculate similarity between the query and product name
             name_similarity = fuzz.ratio(query_lower, product.product_name.lower())
-            
+
             # Calculate similarity between the query and product description
             description_similarity = fuzz.ratio(query_lower, product.description.lower())
 
@@ -1111,25 +1331,32 @@ def get_keyword_suggestions(request):
 
 def FAQ_page(request):
     faq = FAQ.objects.all()
-    return render(request,'aboutus/FAQ.html',{'faq':faq})  
+    return render(request, 'aboutus/FAQ.html', {'faq': faq})
+
 
 def Refunds(request):
-    return render(request,'aboutus/Refunds.html')    
+    return render(request, 'aboutus/Refunds.html')
+
 
 def contact(request):
-    return render(request,'aboutus/contact.html')
+    return render(request, 'aboutus/contact.html')
+
+
 def About(request):
     reviews_ = Rating.objects.all()
-    return render(request,'aboutus/About.html',{'rating':reviews_})
+    return render(request, 'aboutus/About.html', {'rating': reviews_})
+
 
 def Shipping(request):
-    return render(request,'aboutus/Shipping.html')    
+    return render(request, 'aboutus/Shipping.html')
+
 
 def Privacy(request):
-    return render(request,'aboutus/privacy.html')  
+    return render(request, 'aboutus/privacy.html')
+
 
 def Terms(request):
-    return render(request,'aboutus/terms.html')      
+    return render(request, 'aboutus/terms.html')
 
 
 #=======================================[ CODE ]=======================================
@@ -1137,21 +1364,22 @@ def Terms(request):
 def pincode_details(request):
     if request.method == 'POST':
         pincode = request.POST.get('pincode')
-        pincode_details = pincode_df[(pincode_df['Pincode'] == int(pincode)) & (pincode_df['OfficeType'] == 'PO')]        
+        pincode_details = pincode_df[(pincode_df['Pincode'] == int(pincode)) & (pincode_df['OfficeType'] == 'PO')]
         dist = str(pincode_details.iloc[0]['District'])
         state = str(pincode_details.iloc[0]['StateName'])
-        response_data = {'state': state,'dist':dist}
-        
+        response_data = {'state': state, 'dist': dist}
+
         return JsonResponse(response_data)
 
 
 def shipping_cost(request):
     if request.method == 'POST':
         total = request.POST.get('total')
-        Shipping  = calculate_shipping_charge(total)
+        Shipping = calculate_shipping_charge(total)
         response_data = {'shipping': Shipping}
-        
+
         return JsonResponse(response_data)
+
 
 def checkmail(request):
     if request.method == 'POST':

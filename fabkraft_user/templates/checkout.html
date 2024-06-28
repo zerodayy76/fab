@@ -355,17 +355,19 @@ button{
           <div class="cart_total">
             <div class="price_total">
               <p>Total</p>
-              <p>500</p>
+              <p>Error</p>
             </div>
             <div class="Shipping">
               <p>Shipping</p>
-              <p>free</p>
+              <p>Error</p>
             </div>
           </div>
           <input id="payid" name="payid" hidden>
+          <input id="rzp_orderid" name="rzp_orderid" hidden>
+          <input id="rzp_signature" name="rzp_signature" hidden>
           <button type="button" class="total_btn_cart">
             <span>Total</span>
-            <span>500</span>
+            <span>Error</span>
           </button>
         </div>
       </div>
@@ -374,7 +376,7 @@ button{
   <button id="rzpbutton" class="total_btn_cart text_center_button mt-12px bg_green"><i class="fas fa-money-bill"></i> pay with razorpay</button>
   <!-- end content -->
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="{% static 'user/js/checkout.js' %}"></script>
@@ -451,13 +453,27 @@ $(document).ready(function () {
             "handler": function (response){
                 if (response.razorpay_payment_id) {
                     $('#payid').val(response.razorpay_payment_id);
+                    $('#rzp_orderid').val(response.razorpay_order_id);
+                    $('#rzp_signature').val(response.razorpay_signature);
                     $('#regForm').submit();
                 } else {
                     alert("Payment failed. Please try again.");
                 }
-                alert(response.razorpay_payment_id);
-                alert(response.razorpay_order_id);
-                alert(response.razorpay_signature)
+                //alert(response.razorpay_payment_id);
+                //alert(response.razorpay_order_id);
+                //alert(response.razorpay_signature)
+                Swal.fire({
+                  title: 'Success!',
+                  html: `
+                    <div>
+                      <span>Your Payment Id: ${response.razorpay_payment_id}</span>
+                      <span>RZP_OrderID: ${response.razorpay_order_id}</span>
+                      <p>Thank you for Shopping!!!</p>
+                    </div>
+                  `,
+                  icon: 'success',
+                  confirmButtonText: 'Done'
+                });
             },
             "prefill": {
               "email": $('#email').val(),
@@ -472,13 +488,28 @@ $(document).ready(function () {
         };
         var rzp1 = new Razorpay(options);
         rzp1.on('payment.failed', function (response){
-                alert(response.error.code);
-                alert(response.error.description);
-                alert(response.error.source);
-                alert(response.error.step);
-                alert(response.error.reason);
-                alert(response.error.metadata.order_id);
-                alert(response.error.metadata.payment_id);
+                Swal.fire({
+                  title: 'Payment Failed',
+                  html: `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                      <div>Error:${response.error.description}</div>
+                      <div>Code: ${response.error.code}</div>
+                      <div>Reason: ${response.error.reason}</div>
+                      <div>RZP_OrderId: ${response.error.metadata.order_id}</div>
+                      <div>PaymentId: ${response.error.metadata.payment_id}</div>
+                      <div>Support: <a mailto="www.support@thefabkraft.in">support@thefabkraft.in</a> </div>
+                    </div>
+                  `,
+                  icon: 'error',
+                  confirmButtonText: 'Retry'
+                });
+                //alert(response.error.code);
+                //alert(response.error.description);
+                //alert(response.error.source);
+                //alert(response.error.step);
+                //alert(response.error.reason);
+                //alert(response.error.metadata.order_id);
+                //alert(response.error.metadata.payment_id);
         });
         document.getElementById('rzpbutton').onclick = function(e){
             var isTrue = "{{userdata.email_verified}}";
