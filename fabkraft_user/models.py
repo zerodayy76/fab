@@ -122,6 +122,8 @@ class orders(models.Model):
     pay_id = models.CharField(max_length=225)
     status = models.CharField(max_length=225,choices=status_choice,default='not_Confirmed')
     payment_method = models.CharField(max_length=225)
+    payment_sts = models.CharField(max_length=225,default='')
+    rzp_order_id = models.CharField(max_length=225,default='')
     is_paid = models.BooleanField(default=False)
     is_canceled = models.BooleanField(default=False)    
     cancel_reason = models.TextField(null=True)

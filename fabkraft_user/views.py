@@ -875,6 +875,7 @@ def verify_payment(request):
 def cart_checkout_page(request):
     if request.method == 'POST':
         qun_list = request.POST.getlist("quantity")
+
         if not request.user.is_authenticated:
             update_session_cart(request, qun_list)
             session_cart = request.session.get('cart', [])
@@ -884,13 +885,21 @@ def cart_checkout_page(request):
                     item['verient_id'] = int(verient_id)
             request.session['cart'] = session_cart
         else:
-            cart_ = cart.objects.filter(user=UserData.objects.get(user=request.user))
+            user_data = UserData.objects.get(user=request.user)
+
+            cart_ = cart.objects.filter(user=user_data)
             if not cart_:
                 return redirect('cart')
+
             update_authenticated_cart(cart_, qun_list, request)
-            user_data = UserData.objects.get(user=request.user)
             order_data = orders.objects.filter(user=user_data).last()
             rzp_order = create_razorpay_order(calculate_cart_totals(cart_), user_data)
+
+            last_order = orders.objects.filter(rzp_order_id=rzp_order['id'])
+
+            if last_order and last_order.payment_sts == 'captured':
+                return redirect('order_details', order_id=last_order.id)
+
             context = {
                 'cartdata': cart_,
                 'userdata': user_data,
@@ -902,13 +911,23 @@ def cart_checkout_page(request):
             return render(request, 'checkout.html', context)
 
     if request.user.is_authenticated:
-        cart_ = cart.objects.filter(user=UserData.objects.get(user=request.user))
+        user_data = UserData.objects.get(user=request.user)
+        #last_order = orders.objects.filter(user=user_data).last()
+
+
+
+        cart_ = cart.objects.filter(user=user_data)
         if 'cart_qunity' not in request.session:
             request.session['cart_qunity'] = [1] * len(cart_)
-        user_data = UserData.objects.get(user=request.user)
         order_data = orders.objects.filter(user=user_data).last()
         cart_products = calculate_cart_totals(cart_)
         rzp_order = create_razorpay_order(cart_products, user_data)
+
+        last_order = orders.objects.filter(rzp_order_id=rzp_order['id'])
+
+        if last_order and last_order.payment_sts == 'captured':
+            return redirect('order_details', order_id=last_order.id)
+
         context = {
             'cartdata': cart_,
             'userdata': user_data,
@@ -920,7 +939,6 @@ def cart_checkout_page(request):
 
     request.session['previous_page'] = request.build_absolute_uri()
     return render(request, 'login/login.html')
-
 
 """def save_checkouts(request):
     if request.method == 'POST' and request.user.is_authenticated:
@@ -1052,6 +1070,8 @@ def verify_payment_signature(order_id, payment_id, signature):
             (order_id + "|" + payment_id).encode(),
             hashlib.sha256
         ).hexdigest()
+        print('generated_signature:',generated_signature)
+        print('signature:',signature)
         return generated_signature == signature
     except Exception as e:
         return False
@@ -1110,6 +1130,10 @@ def save_checkouts(request):
                 quantity_ = int(request.POST.get(f'quantity{product_id}'))
                 total_cost += product.price * quantity_
 
+        pay_data = rzp_client.payment.fetch(payid)
+        print('OrderId',pay_data['order_id'])
+        print('Status',pay_data['status'])
+
         order = orders.objects.create(
             user=UserData.objects.get(user=request.user),
             name=user_.username,
@@ -1126,7 +1150,9 @@ def save_checkouts(request):
             shipping_cost=calculate_shipping_charge(total_cost),
             tax_cost=0,
             total_cost=total_cost,
-            is_paid=1
+            is_paid=1,
+            rzp_order_id=pay_data['order_id'],
+            payment_sts=pay_data['status']
         )
 
         for product_id in set(products):
