@@ -394,18 +394,21 @@ def user_cart(request):
     if request.user.is_authenticated:
         user_data = get_object_or_404(UserData, user=request.user)
         cart_items = cart.objects.filter(user=user_data)
+
     else:
         session_cart = request.session.get('cart', [])
-        prod_id_list = []
+        # Iterate through session cart items and fetch the necessary product details
         for item in session_cart:
-            if item['verient_id'] != None:
-                cart_items.append(
-                    {'id': item['product_id'], 'user': None, "products": Products.objects.get(id=item['product_id']),
-                     'verients': product_choices.objects.get(id=item['verient_id'])})
-            else:
-                cart_items.append(
-                    {'id': item['product_id'], 'user': None, "products": Products.objects.get(id=item['product_id']),
-                     'verients': None})
+            product = get_object_or_404(Products, id=item['product_id'])
+            verient = product_choices.objects.filter(id=item.get('verient_id')).first() if item.get('verient_id') else None
+            cart_items.append({
+                'id': item['product_id'],
+                'user': None,
+                'products': product,
+                'verients': verient,
+                'quantity': item.get('quantity', 1)
+            })
+
     context = {
         'cart': cart_items
     }
@@ -414,80 +417,35 @@ def user_cart(request):
 
 
 def add_to_cart(request, prod_id):
+    # Store the previous page URL in session
     request.session['previous_page'] = request.META.get('HTTP_REFERER', '/')
 
     if request.method == 'POST':
         verid = request.POST.get('verient')
 
-        # If the user is authenticated, use the database cart
+        # Check if the product exists in choices
+        if product_choices.objects.filter(product__id=prod_id).exists() and verid:
+            verid = int(verid)
+            item = {'product_id': prod_id, 'verient_id': verid}
+        else:
+            item = {'product_id': prod_id, 'verient_id': None}
+
+        # If user is authenticated, use database cart
         if request.user.is_authenticated:
             user_data = get_object_or_404(UserData, user=request.user)
-            if product_choices.objects.filter(product__id=prod_id).exists() and verid:
-                verid = int(verid)
-                if not cart.objects.filter(user=user_data, products_id=prod_id, verients_id=verid).exists():
-                    cart.objects.create(user=user_data, products_id=prod_id, verients_id=verid)
-            else:
-                if cart.objects.filter(user=user_data, products_id=prod_id).exists():
-                    print("found")
-                    try:
-                        cart_item = cart.objects.get(user=user_data, products_id=prod_id)
-                        cart_item.quantity += 1
-                        cart_item.save()
-                    except cart.DoesNotExist:
-                        # Handle the case where the cart item does not exist
-                        pass
-
-                if not cart.objects.filter(user=user_data, products_id=prod_id).exists():
-                    cart.objects.create(user=user_data, products_id=prod_id)
-                    
+            if not cart.objects.filter(user=user_data, products_id=prod_id, verients_id=verid).exists():
+                cart.objects.create(user=user_data, products_id=prod_id, verients_id=verid)
             return redirect('cart')
 
-        # If the user is not authenticated, use the session cart
+        # If user is not authenticated, use session cart
         else:
             session_cart = request.session.get('cart', [])
-            if product_choices.objects.filter(product__id=prod_id).exists() and verid:
-                verid = int(verid)
-                item = {'product_id': prod_id, 'verient_id': verid}
-                if item not in session_cart:
-                    session_cart.append(item)
-            else:
-                item = {'product_id': prod_id, 'verient_id': None}
-                if item not in session_cart:
-                    session_cart.append(item)
+            if item not in session_cart:
+                session_cart.append(item)
             request.session['cart'] = session_cart
             return redirect('cart')
-    elif request.method == 'GET':
-        verid = request.POST.get('verient')
 
-        print("get",verid)
-
-        # If the user is authenticated, use the database cart
-        if request.user.is_authenticated:
-            user_data = get_object_or_404(UserData, user=request.user)
-            if product_choices.objects.filter(product__id=prod_id).exists() and verid:
-                verid = verid
-                if not cart.objects.filter(user=user_data, products_id=prod_id, verients_id=verid).exists():
-                    cart.objects.create(user=user_data, products_id=prod_id, verients_id=verid)
-            else:
-                if not cart.objects.filter(user=user_data, products_id=prod_id).exists():
-                    cart.objects.create(user=user_data, products_id=prod_id)
-            return redirect('cart')
-
-        # If the user is not authenticated, use the session cart
-        else:
-            session_cart = request.session.get('cart', [])
-            if product_choices.objects.filter(product__id=prod_id).exists() and verid:
-                verid = int(verid)
-                item = {'product_id': prod_id, 'verient_id': verid}
-                if item not in session_cart:
-                    session_cart.append(item)
-            else:
-                item = {'product_id': prod_id, 'verient_id': None}
-                if item not in session_cart:
-                    session_cart.append(item)
-            request.session['cart'] = session_cart
-            return redirect('cart')
-    return redirect('login')
+    return redirect('login')  # Redirect to login if neither POST nor authenticated
 
 
 def remove_from_cart(request, prod_id):
@@ -505,58 +463,53 @@ def remove_from_cart(request, prod_id):
 import json
 @require_POST
 def update_cart(request, prod_id):
-    data = json.loads(request.body)
-    print(data)
-    quantity = int(data.get('quantity', 1))
-    verient_id = data.get('verientId', None)
-    print(verient_id)
+    try:
+        data = json.loads(request.body)
+        quantity = int(data.get('quantity', 1))
+        verient_id = data.get('verientId', None)
 
-    if request.user.is_authenticated:
-        user_data = get_object_or_404(UserData, user=request.user)
-        try:
-            cart_items = cart.objects.filter(user=user_data, products_id=prod_id)
-            print(cart_items)
-            if cart_items.exists():
-                # Merge duplicate cart items
-                primary_cart_item = cart_items[0]
-                print(primary_cart_item)
+        if request.user.is_authenticated:
+            user_data = request.user.userdata
+            try:
+                cart_item = cart.objects.get(user=user_data, products_id=prod_id)
+                cart_item.quantity = quantity
+                if verient_id:
+                    cart_item.verients_id = verient_id
+                cart_item.save()
+                return JsonResponse({'message': 'Cart item updated successfully'})
+
+            except cart.DoesNotExist:
+                return JsonResponse({'error': 'Cart item not found'}, status=404)
+            except cart.MultipleObjectsReturned:
+                cart_items = cart.objects.filter(user=user_data, products_id=prod_id)
+                primary_cart_item = cart_items.first()
                 for duplicate_cart_item in cart_items[1:]:
-                    print(duplicate_cart_item)
                     primary_cart_item.quantity += duplicate_cart_item.quantity
-                    print(primary_cart_item.quantity)
                     duplicate_cart_item.delete()
 
+                primary_cart_item.quantity = quantity
                 primary_cart_item.save()
 
-                return JsonResponse({'msg':'Cart item merged','flag':'merged'},status=200) # Redirect to the cart page after updating
+                return JsonResponse({'message': 'Cart item updated successfully'})
 
-            else:
-                # Create a new cart item if none exists
-                cart.objects.create(user=user_data, products_id=prod_id, verients_id=verient_id, quantity=quantity)
-                return redirect('cart')  # Redirect to the cart page after creating
+        else:
+            # Handle session cart update for anonymous users
+            session_cart = request.session.get('cart', [])
 
-        except cart.DoesNotExist:
-            return JsonResponse({'error': 'Cart item not found'}, status=404)
-        except cart.MultipleObjectsReturned:
-            print('MultipleObjectsReturned')
-            cart_items = cart.objects.filter(user=user_data, products_id=prod_id)
-            print(cart_items)
-            primary_cart_item = cart_items.first()
-            print('primary', primary_cart_item)
-            for duplicate_cart_item in cart_items[1:]:
-                print('duplicate quantity', duplicate_cart_item.quantity)
-                primary_cart_item.quantity += duplicate_cart_item.quantity
-                duplicate_cart_item.delete()
+            for item in session_cart:
+                if item['product_id'] == prod_id:
+                    item['quantity'] = quantity
+                    if verient_id:
+                        item['verient_id'] = verient_id
+                    break
+            request.session['cart'] = session_cart
 
-            # Update the primary cart item
-            primary_cart_item.quantity = quantity
-            primary_cart_item.save()
+            return JsonResponse({'message': 'Session cart updated successfully'})
 
-            return redirect('cart')  # Redirect to the cart page after merging
-
-    else:
-        # Handle anonymous user session cart update here if needed
-        return JsonResponse({'error': 'Anonymous users not supported for this operation'}, status=403)
+    except json.JSONDecodeError as e:
+        return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 
 
@@ -867,8 +820,9 @@ def update_authenticated_cart(cart_, qun_list, request):
     request.session['cart_qunity'] = []
     for item in cart_:
         if item.products.product_choices_set.all().exists():
-            verient_id = request.POST.get(f"verients{item.id}")
-
+            #verient_id = request.POST.get(f"verients{item.id}")
+            verient_id = request.POST.get('verients')
+            print(verient_id)
             item.verients = product_choices.objects.get(id=int(verient_id))
             item.save()
     update_session_cart(request, qun_list)
@@ -877,17 +831,19 @@ def update_authenticated_cart(cart_, qun_list, request):
 def calculate_cart_totals(cart_):
     cart_products = {
         "rates": [],
-        "total": 0,
-        "shipping": 0,
-        "g_total": 0,
+        "total": 0.00,
+        "shipping": 0.00,
+        "g_total": 0.00,
         "order_id": '',
         "receipt_id": '',
         'products':{},
         "notes": {}
     }
     for item in cart_:
-        price = int(item.verients.options_cost) if item.verients else int(item.products.price)
-        cart_products["rates"].append(price)
+        price = float(item.verients.options_cost) if item.verients else float(item.products.price)
+        quantity = int(item.quantity)
+        item_total = price * quantity
+        cart_products["rates"].append(float(item_total))
         cart_products["notes"][item.id] = item.products.product_name
     cart_products['total'] = float(sum(cart_products['rates']))
     cart_products['shipping'] = calculate_shipping_charge(cart_products['total'])
@@ -949,61 +905,70 @@ def verify_payment(request):
 def cart_checkout_page(request):
     if request.method == 'POST':
         qun_list = request.POST.getlist("quantity")
+        print('qun_list',qun_list)
+        print('post', request.POST)
 
         if not request.user.is_authenticated:
             update_session_cart(request, qun_list)
             session_cart = request.session.get('cart', [])
             for item in session_cart:
                 if Products.objects.get(id=item['product_id']).product_choices_set.all().exists():
-                    verient_id = request.POST.get(f"verients{item['product_id']}")
+                    #verient_id = request.POST.get(f"verients{item['product_id']}")
+                    verient_id = request.POST.get('verients')
                     item['verient_id'] = int(verient_id)
             request.session['cart'] = session_cart
         else:
-            user_data = UserData.objects.get(user=request.user)
-
+            user_data = get_object_or_404(UserData, user=request.user)
             cart_ = cart.objects.filter(user=user_data)
             if not cart_:
                 return redirect('cart')
 
             update_authenticated_cart(cart_, qun_list, request)
             order_data = orders.objects.filter(user=user_data).last()
-            rzp_order = create_razorpay_order(calculate_cart_totals(cart_), user_data)
+            cart_calculations = calculate_cart_totals(cart_)
+            rzp_order = create_razorpay_order(cart_calculations, user_data)
 
             last_order = orders.objects.filter(rzp_order_id=rzp_order['id'])
 
             if last_order and last_order.payment_sts == 'captured':
                 return redirect('order_details', order_id=last_order.id)
 
+            print("mapla pudichiten",cart_)
+
             context = {
+                "total": cart_calculations['total'],
+                "shipping": cart_calculations['shipping'],
+                "grand_total": cart_calculations['g_total'],
                 'cartdata': cart_,
                 'userdata': user_data,
                 'qun_': qun_list,
                 'orderdata': order_data,
                 'rzp_order': rzp_order,
-                'key':settings.RAZORPAY_KEY_ID,
+                'key': settings.RAZORPAY_KEY_ID,
             }
             request.session['previous_page'] = request.build_absolute_uri()
             return render(request, 'checkout.html', context)
 
     if request.user.is_authenticated:
-        user_data = UserData.objects.get(user=request.user)
-        #last_order = orders.objects.filter(user=user_data).last()
-
-
-
+        user_data = get_object_or_404(UserData, user=request.user)
         cart_ = cart.objects.filter(user=user_data)
         if 'cart_qunity' not in request.session:
             request.session['cart_qunity'] = [1] * len(cart_)
         order_data = orders.objects.filter(user=user_data).last()
-        cart_products = calculate_cart_totals(cart_)
-        rzp_order = create_razorpay_order(cart_products, user_data)
+        cart_calculations = calculate_cart_totals(cart_)
+        rzp_order = create_razorpay_order(cart_calculations, user_data)
 
         last_order = orders.objects.filter(rzp_order_id=rzp_order['id'])
 
         if last_order and last_order.payment_sts == 'captured':
             return redirect('order_details', order_id=last_order.id)
 
+        print("mapla pudichiten auth",cart_)
+
         context = {
+            "total": cart_calculations['total'],
+            "shipping": cart_calculations['shipping'],
+            "grand_total": cart_calculations['g_total'],
             'cartdata': cart_,
             'userdata': user_data,
             'orderdata': order_data,
@@ -1015,6 +980,7 @@ def cart_checkout_page(request):
 
     request.session['previous_page'] = request.build_absolute_uri()
     return render(request, 'login/login.html')
+
 
 """def save_checkouts(request):
     if request.method == 'POST' and request.user.is_authenticated:
@@ -1154,6 +1120,7 @@ def verify_payment_signature(order_id, payment_id, signature):
 
 def save_checkouts(request):
     if request.method == 'POST' and request.user.is_authenticated:
+        print("order_post",request.POST)
         name = request.POST.get('user_name')
         email = request.POST.get('email')
         phono = request.POST.get('phone')
@@ -1194,21 +1161,17 @@ def save_checkouts(request):
         total_cost = 0
         cart_prods = cart.objects.filter(user=UserData.objects.get(user=request.user)).select_related('products')
 
-        for prod in cart_prods:
-            product = prod.products
-            product_id = product.id
-            if product_choices.objects.filter(product__id=product_id).exists():
-                verids = request.POST.getlist(f'{product_id}verient')
-                for verid in verids:
-                    quantity_ = int(request.POST.get(f'quantity{verid}'))
-                    total_cost += product_choices.objects.get(id=verid).options_cost * quantity_
+        for item in cart_prods:
+            quantity = item.quantity
+            if item.verients:
+                total_cost += item.verients.options_cost * quantity
             else:
-                quantity_ = int(request.POST.get(f'quantity{product_id}'))
-                total_cost += product.price * quantity_
+                total_cost += item.products.price * quantity
 
         pay_data = rzp_client.payment.fetch(payid)
         print('OrderId',pay_data['order_id'])
         print('Status',pay_data['status'])
+        print("order-total",total_cost)
 
         order = orders.objects.create(
             user=UserData.objects.get(user=request.user),
@@ -1231,7 +1194,32 @@ def save_checkouts(request):
             payment_sts=pay_data['status']
         )
 
-        for product_id in set(products):
+        for item in cart_prods:
+            quantity = item.quantity
+            if item.verients:
+                product = Products.objects.get(id=item.products.id)
+
+                order_products.objects.create(
+                    order=order,
+                    products=product,
+                    product_price=item.verients.options_cost,
+                    verient=product_choices.objects.get(id=item.verients.id),
+                    quantity=quantity,
+                )
+
+            else:
+                product = Products.objects.get(id=item.products.id)
+
+                order_products.objects.create(
+                    order=order,
+                    products=product,
+                    product_price=item.products.price,
+                    quantity=quantity,
+                )
+
+
+
+        """for product_id in set(products):
             product = Products.objects.get(id=product_id)
             if product_choices.objects.filter(product__id=product_id).exists():
                 verids = request.POST.getlist(f'{product_id}verient')
@@ -1251,7 +1239,7 @@ def save_checkouts(request):
                     products=product,
                     product_price=product.price,
                     quantity=quantity_,
-                )
+                )"""
 
         order_url = request.build_absolute_uri(reverse('order_details', kwargs={'order_id': order.id}))
         subject = 'FABKRAFT order placed'
@@ -1263,6 +1251,10 @@ def save_checkouts(request):
         from_email = settings.DEFAULT_FROM_EMAIL
 
         send_mail(subject, message, from_email, [email])
+
+        #clearing cart:
+        print("cart cleared")
+        cart_prods.delete()
 
         return redirect('/order_details/' + str(order.id))
 

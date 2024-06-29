@@ -334,18 +334,18 @@ button{
                   <div class="food_dec_flex">
                     <label>{{cart_item.products.product_name}}</label>
                     {% if cart_item.products.product_choices_set.all %}
-                    <label for="verient">option:{{cart_item.verients.product_options}}</label>
-                    <input type="text" name="{{cart_item.products.id}}verient" value="{{cart_item.verients.id}}" hidden>
-                    <input type="text" name="product_id" value="{{cart_item.products.id}}" hidden>
+                        <label for="verient">Option: {{ cart_item.verients.product_options }}</label>
+                        <input type="text" name="{{ cart_item.products.id }}verient" value="{{ cart_item.verients.id }}" hidden>
+                        <input type="text" name="product_id" value="{{ cart_item.products.id }}" hidden>
 
-                    <p><input type="text" class="price" value="{{cart_item.verients.options_cost}}"  hidden>{{cart_item.verients.options_cost}}</p>
-                    <input type="number" style="width: 100px;" class="quantity" name="quantity{{cart_item.verients.id}}" min="1" value="1" >
-
-                    {%else%}
-                    <input type="text" name="product_id" value="{{cart_item.products.id}}" hidden>
-                    <input type="number" style="width: 100px;" class="quantity" name="quantity{{cart_item.products.id}}" min="1" value="1">
-                    <p><input type="text" class="price" value="{{cart_item.products.price}}"  hidden>{{cart_item.products.price}}</p>
+                        <p>Price: <span class="price">&#8377;{{ cart_item.verients.options_cost }}</span></p>
+                    {% else %}
+                        <input type="text" name="product_id" value="{{ cart_item.products.id }}" hidden>
+                        <p>Price: <span class="price">&#8377;{{ cart_item.products.price }}</span></p>
                     {% endif %}
+
+                    <p>Quantity: <input type="number" class="quantity" value="{{ cart_item.quantity }}" hidden>{{ cart_item.quantity }}</p>
+                    <p>Total: <span class="item-total"></span></p>
                   </div>
                   </div>
                 </div>
@@ -356,20 +356,20 @@ button{
           <div class="cart_total">
             <div class="price_total">
               <p>Total</p>
-              <p>Error</p>
+              <p>&#8377;{{total}}</p>
             </div>
             <div class="Shipping">
               <p>Shipping</p>
-              <p>Error</p>
+              <p>&#8377;{{shipping}}</p>
             </div>
           </div>
           <input id="payid" name="payid" hidden>
           <input id="rzp_orderid" name="rzp_orderid" hidden>
           <input id="rzp_signature" name="rzp_signature" hidden>
-          <button type="button" class="total_btn_cart">
+          <span class="total_btn_cart">
             <span>Total</span>
-            <span>Error</span>
-          </button>
+            <span>&#8377;{{grand_total}}</span>
+          </span>
         </div>
       </div>
     </div>
@@ -381,6 +381,37 @@ button{
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="{% static 'user/js/checkout.js' %}"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var priceElements = document.querySelectorAll('.price');
+    var quantityInputs = document.querySelectorAll('.quantity');
+    var itemTotalElements = document.querySelectorAll('.item-total');
+
+    function updateTotals() {
+        priceElements.forEach(function(priceElement, index) {
+            var priceText = priceElement.textContent.trim();
+            var price = parseFloat(priceText.replace('₹', '').trim()); // Remove ₹ symbol if present
+            var quantity = parseInt(quantityInputs[index].value.trim(), 10);
+
+            if (!isNaN(price) && !isNaN(quantity)) {
+                var total = price * quantity;
+                var formattedTotal = '₹ ' + total.toFixed(2); // Concatenate ₹ symbol
+                itemTotalElements[index].textContent = formattedTotal;
+            } else {
+                itemTotalElements[index].textContent = '₹ 0.00'; // Handle invalid or empty inputs
+            }
+        });
+    }
+
+    // Update totals whenever quantity changes
+    quantityInputs.forEach(function(input) {
+        input.addEventListener('input', updateTotals);
+    });
+
+    // Initial update on page load
+    updateTotals();
+});
+</script>
 <script>
   var grandTotal = 0;
 
@@ -392,22 +423,12 @@ $(document).ready(function () {
         var subtotal = 0;
 
         $('.food_img_price_des').each(function () {
-            var priceStr = $(this).find('.price').val(); // Fetching price value as string
-            var price = parseFloat(priceStr); // Parsing price string to float
-            if (isNaN(price)) {
-                return; // Skip to the next iteration
+            var itemTotal = $(this).find('.item-total').val();
+            console.log("itemsprice:",itemTotal)
+            subtotal += itemTotal;
+            if(isNaN(itemTotal)){
+              return;
             }
-
-            var quantityStr = $(this).find('.quantity').val(); // Fetching quantity value as string
-            var quantity = parseInt(quantityStr, 10); // Parsing quantity string to integer
-            if (isNaN(quantity)) {
-                return; // Skip to the next iteration
-            }
-
-            var total = price * quantity;
-            $(this).find('.total_price').text(total.toFixed(2));
-
-            subtotal += total;
         });
 
         // Calculate subtotal, shipping, and total
@@ -492,7 +513,7 @@ $(document).ready(function () {
                 Swal.fire({
                   title: 'Payment Failed',
                   html: `
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 2px;">
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
                       <div>Error:${response.error.description}</div>
                       <div>Code: ${response.error.code}</div>
                       <div>Reason: ${response.error.reason}</div>
