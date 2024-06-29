@@ -1,4 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect, JsonResponse,HttpResponseBadRequest
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
@@ -426,8 +427,19 @@ def add_to_cart(request, prod_id):
                 if not cart.objects.filter(user=user_data, products_id=prod_id, verients_id=verid).exists():
                     cart.objects.create(user=user_data, products_id=prod_id, verients_id=verid)
             else:
+                if cart.objects.filter(user=user_data, products_id=prod_id).exists():
+                    print("found")
+                    try:
+                        cart_item = cart.objects.get(user=user_data, products_id=prod_id)
+                        cart_item.quantity += 1
+                        cart_item.save()
+                    except cart.DoesNotExist:
+                        # Handle the case where the cart item does not exist
+                        pass
+
                 if not cart.objects.filter(user=user_data, products_id=prod_id).exists():
                     cart.objects.create(user=user_data, products_id=prod_id)
+                    
             return redirect('cart')
 
         # If the user is not authenticated, use the session cart
@@ -446,6 +458,8 @@ def add_to_cart(request, prod_id):
             return redirect('cart')
     elif request.method == 'GET':
         verid = request.POST.get('verient')
+
+        print("get",verid)
 
         # If the user is authenticated, use the database cart
         if request.user.is_authenticated:
@@ -487,6 +501,64 @@ def remove_from_cart(request, prod_id):
         request.session['cart'] = session_cart
 
     return redirect('cart')
+
+import json
+@require_POST
+def update_cart(request, prod_id):
+    data = json.loads(request.body)
+    print(data)
+    quantity = int(data.get('quantity', 1))
+    verient_id = data.get('verientId', None)
+    print(verient_id)
+
+    if request.user.is_authenticated:
+        user_data = get_object_or_404(UserData, user=request.user)
+        try:
+            cart_items = cart.objects.filter(user=user_data, products_id=prod_id)
+            print(cart_items)
+            if cart_items.exists():
+                # Merge duplicate cart items
+                primary_cart_item = cart_items[0]
+                print(primary_cart_item)
+                for duplicate_cart_item in cart_items[1:]:
+                    print(duplicate_cart_item)
+                    primary_cart_item.quantity += duplicate_cart_item.quantity
+                    print(primary_cart_item.quantity)
+                    duplicate_cart_item.delete()
+
+                primary_cart_item.save()
+
+                return JsonResponse({'msg':'Cart item merged','flag':'merged'},status=200) # Redirect to the cart page after updating
+
+            else:
+                # Create a new cart item if none exists
+                cart.objects.create(user=user_data, products_id=prod_id, verients_id=verient_id, quantity=quantity)
+                return redirect('cart')  # Redirect to the cart page after creating
+
+        except cart.DoesNotExist:
+            return JsonResponse({'error': 'Cart item not found'}, status=404)
+        except cart.MultipleObjectsReturned:
+            print('MultipleObjectsReturned')
+            cart_items = cart.objects.filter(user=user_data, products_id=prod_id)
+            print(cart_items)
+            primary_cart_item = cart_items.first()
+            print('primary', primary_cart_item)
+            for duplicate_cart_item in cart_items[1:]:
+                print('duplicate quantity', duplicate_cart_item.quantity)
+                primary_cart_item.quantity += duplicate_cart_item.quantity
+                duplicate_cart_item.delete()
+
+            # Update the primary cart item
+            primary_cart_item.quantity = quantity
+            primary_cart_item.save()
+
+            return redirect('cart')  # Redirect to the cart page after merging
+
+    else:
+        # Handle anonymous user session cart update here if needed
+        return JsonResponse({'error': 'Anonymous users not supported for this operation'}, status=403)
+
+
 
 
 #-------------------------[ wishlist ]-----------------------------------------------------------
@@ -809,6 +881,7 @@ def calculate_cart_totals(cart_):
         "g_total": 0,
         "order_id": '',
         "receipt_id": '',
+        'products':{},
         "notes": {}
     }
     for item in cart_:

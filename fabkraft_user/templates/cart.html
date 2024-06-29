@@ -146,13 +146,12 @@ font-weight: 700;
 
 
 
-<form action="{% url 'checkout_cart' %}" method="post">
+<form action="{% url 'checkout_cart' %}" method="post" id="checkout-form">
     {% csrf_token %}
     <section id="cart-container" class="container my-5">
         <div class="row">
-            {%if not cart%}
-
-            <div class="message-box red"><center>Nothing in CART!!</center></div>    
+            {% if not cart %}
+            <div class="message-box red"><center>Nothing in CART!!</center></div>
             {% endif %}
             {% for i in cart %}
             <div class="col-md-6 mb-4">
@@ -160,52 +159,51 @@ font-weight: 700;
                     <div class="card-body">
                         <img src="/media/{{ i.products.images_set.first.images }}" class="card-img-top" style="width: 8em;height: 9em;" alt="">
                         <h5 class="card-title">{{ i.products.product_name }}</h5>
+
                         {% if i.products.product_choices_set.all %}
-                        
-                        <select name="verients{{i.id}}" class="verients" data-product-id="{{ i.id }}">
+                        <select id="verients-{{ i.id }}" name="verients" class="verients" data-product-id="{{ i.id }}">
                             {% for verient in i.products.product_choices_set.all %}
                             <option value="{{ verient.id }}" data-cost="{{ verient.options_cost }}" {% if verient.id == i.verients.id %} selected {% endif %}>{{ verient.product_options }}</option>
                             {% endfor %}
                         </select>
-                        
                         <p class="card-text price" id="price-{{ i.id }}" data-price="{{ i.verients.options_cost }}">Price: {{ i.verients.options_cost }}</p>
                         {% else %}
                         <p class="card-text price" id="price-{{ i.id }}" data-price="{{ i.products.price }}">Price: {{ i.products.price }}</p>
                         {% endif %}
-                        <label for="quantity-{{ i.id }}">Quantity:</label>
-                        <input type="number" id="quantity-{{ i.id }}" class="form-control quantity" name="quantity" min="1" value="1" data-product-id="{{ i.id }}">
 
-                        <a href="{% url 'remove_from_cart' i.id %}" class="remove-btn"><i class="fa fa-trash"></i></a>
+                        <label for="quantity-{{ i.id }}">Quantity:</label>
+                        <input type="number" id="quantity-{{ i.id }}" class="form-control quantity" name="quantity" min="1" value="{{ i.quantity }}" data-product-id="{{ i.id }}">
+
+                        <button type="button" class="add-btn" onclick="updateCart('{{i.id}}','{{ i.products.id }}')"><i class="fa fa-add"></i>Update</button>
+
+                        <a href="{% url 'remove_from_cart' i.id %}" class="remove-btn"><i class="fa fa-trash"></i> Remove</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
     </section>
-    
-    <section id="cart-bottom">
-        <div class="row">
-            <div class="total col-lg-6 col-md-10 col-12">
-                <div>
-                    <h5>CART TOTAL</h5>
-                    <div class="d-flex justify-content-between">
-                        <p>Subtotal</p>
-                        <p id="subtotal">00</p>
-                    </div>
-                    <hr class="second-hr">
-                    <div class="d-flex justify-content-between">
-                        <p>TOTAL</p>
-                        <p id="total">00</p>
-                    </div>
-                    <button class="m1-auto">PROCEED TO CHECKOUT</button>
-                </div>
-            </div>
-        </div>
-    </section>
 </form>
 
-
-
+<section id="cart-bottom">
+    <div class="row">
+        <div class="total col-lg-6 col-md-10 col-12">
+            <div>
+                <h5>CART TOTAL</h5>
+                <div class="d-flex justify-content-between">
+                    <p>Subtotal</p>
+                    <p id="subtotal">00</p>
+                </div>
+                <hr class="second-hr">
+                <div class="d-flex justify-content-between">
+                    <p>TOTAL</p>
+                    <p id="total">00</p>
+                </div>
+                <button class="m1-auto" onclick="proceedToCheckout()">PROCEED TO CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+</section>
 
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -214,6 +212,59 @@ font-weight: 700;
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+            function updateCart(itemId,prodId) {
+                console.log("prod",prodId);
+                console.log('cart',itemId)
+                const quantity = document.getElementById('quantity-' + itemId).value;
+
+                console.log('quantity',quantity)
+
+                // Check if the element exists before accessing its value
+                const verientElement = document.getElementById('verients-' + itemId);
+                let verientId = null;
+
+                if (verientElement) {
+                    verientId = verientElement.value;
+                }
+
+                fetch(`/update_cart/${prodId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        quantity: quantity,
+                        verientId: verientId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Cart item updated successfully:', data);
+                    // Optionally update UI here
+                    if (data.flag == 'merged'){
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating cart item:', error);
+                    // Handle error (if needed)
+                });
+            }
+
+            function proceedToCheckout() {
+                // Submit the main checkout form
+                const checkoutForm = document.getElementById('checkout-form');
+                if (checkoutForm) {
+                    checkoutForm.submit();
+                } else {
+                    console.error('Checkout form not found');
+                }
+            }
+        </script>
+
 <script>
 $(document).ready(function() {
     function updatePriceAndTotal() {

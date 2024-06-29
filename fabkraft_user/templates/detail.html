@@ -1,379 +1,397 @@
 {% extends 'base/base.html' %} {%load static%} {% block title %} Buy2Sell {% endblock %} {% block content %}
 
 <style>
-  .rate {
-      float: left;
-      height: 46px;
-      padding: 0 10px;
-  }
-  
-  .rate:not(:checked)>input {
-  display: none;
-  }
-  
-  .rate:not(:checked)>label {
-      float: right;
-      width: 1em;
-      overflow: hidden;
-      white-space: nowrap;
-      cursor: pointer;
-      font-size: 30px;
-      color: #ccc;
-  }
-  
-  .rate:not(:checked)>label:before {
-      content: '★ ';
-  }
-  
-  .rate>input:checked~label {
-      color: #ffc700;
-  }
-  
-  .rate:not(:checked)>label:hover,
-  .rate:not(:checked)>label:hover~label {
-      color: #deb217;
-  }
-  
-  .rate>input:checked+label:hover,
-  .rate>input:checked+label:hover~label,
-  .rate>input:checked~label:hover,
-  .rate>input:checked~label:hover~label,
-  .rate>label:hover~input:checked~label {
-      color: #c59b08;
-  }
-.card{
-    margin-top: 30px;
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  background-color: #fff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-}
-  .card-wrapper{
-      margin: 0 auto;
-      background: white;
-  }
+    .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+    }
 
-  .product-imgs{
-      /* width: 300px;
+    .rate:not(:checked)>input {
+        display: none;
+    }
+
+    .rate:not(:checked)>label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
+
+    .rate:not(:checked)>label:before {
+        content: '★ ';
+    }
+
+    .rate>input:checked~label {
+        color: #ffc700;
+    }
+
+    .rate:not(:checked)>label:hover,
+    .rate:not(:checked)>label:hover~label {
+        color: #deb217;
+    }
+
+    .rate>input:checked+label:hover,
+    .rate>input:checked+label:hover~label,
+    .rate>input:checked~label:hover,
+    .rate>input:checked~label:hover~label,
+    .rate>label:hover~input:checked~label {
+        color: #c59b08;
+    }
+
+    .card {
+        margin-top: 30px;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .card-wrapper {
+        margin: 0 auto;
+        background: white;
+    }
+
+    .product-imgs {
+        /* width: 300px;
       display: block; */
-      margin-left: 5px;
-  }
+        margin-left: 5px;
+    }
 
-  .img-display{
-      overflow: hidden;
-padding: 10px;  }
+    .img-display {
+        overflow: hidden;
+        padding: 10px;
+    }
 
-  .img-showcase img{
-      min-width: 100%;
-      
-  }
+    .img-showcase img {
+        min-width: 100%;
 
-.img-select {
-  padding: 10px;
-    display: flex;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: nowrap; /* Prevent wrapping of items to next line */
-}
+    }
 
-.img-item {
-  padding: 10px;
-    flex: 0 0 auto; /* Allow items to grow and shrink, but do not specify initial size */
-    margin-right: 10px; /* Add some spacing between items */
-}
+    .img-select {
+        padding: 10px;
+        display: flex;
+        overflow-x: auto;
+        /* Enable horizontal scrolling */
+        white-space: nowrap;
+        /* Prevent wrapping of items to next line */
+    }
 
-.img-item:last-child {
-    margin-right: 0; /* Remove margin from the last item to prevent unnecessary space */
-}
+    .img-item {
+        padding: 10px;
+        flex: 0 0 auto;
+        /* Allow items to grow and shrink, but do not specify initial size */
+        margin-right: 10px;
+        /* Add some spacing between items */
+    }
 
-.img-item img {
-    display: block; /* Ensure images are displayed as block elements */
-}
+    .img-item:last-child {
+        margin-right: 0;
+        /* Remove margin from the last item to prevent unnecessary space */
+    }
 
-  .img-item:nth-child(1),
-  .img-item:nth-child(2),
-  .img-item:nth-child(3){
-      margin-right: 0;
-  }
+    .img-item img {
+        display: block;
+        /* Ensure images are displayed as block elements */
+    }
 
-  .img-item:hover{
-      opacity: 0.8;
-  }
+    .img-item:nth-child(1),
+    .img-item:nth-child(2),
+    .img-item:nth-child(3) {
+        margin-right: 0;
+    }
 
-  .product-content{
-    padding: 1rem 1rem;
-    margin-top: 0px;
-  }
+    .img-item:hover {
+        opacity: 0.8;
+    }
 
-
-  .product-link{
-      text-decoration: none;
-      text-transform: uppercase;
-      font-weight: 400;
-      font-size: 0.9rem;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-      background: #256eff;
-      color: #fff;
-      padding: 0 0.3rem;
-      transition: all 0.5s ease;
-  }
-
-  .product-link:hover{
-      opacity: 0.9;
-  }
-
-  .product-rating span{
-      font-weight: 600;
-      color: gold;
-
-  }
-
-  .product-price{
-      margin: 1rem 0;
-      font-size: 1rem;
-      font-weight: 700;
-      display: flex;
-  }
-  .product-price p {
-    margin-right: 1rem; /* Adjust the value as needed */
-}
+    .product-content {
+        padding: 1rem 1rem;
+        margin-top: 0px;
+    }
 
 
-  .last-price span{
-      /* color: #f64749; */ /* RED */
-      color: #808080;
-      text-decoration: line-through;
-  }
+    .product-link {
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 400;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        background: #256eff;
+        color: #fff;
+        padding: 0 0.3rem;
+        transition: all 0.5s ease;
+    }
 
-  .new-price span{
-      color: #256eff;
-  }
+    .product-link:hover {
+        opacity: 0.9;
+    }
 
-  .product-detail h2{
-      text-transform: capitalize;
-      color: #12263a;
-      padding-bottom: 0.6rem;
-  }
+    .product-rating span {
+        font-weight: 600;
+        color: gold;
 
-  .product-detail pre{
-      color: #12263a;
-      font-size: 1.2rem;
-      padding: 0.3rem;
-      opacity: 0.8;
-      white-space: pre-wrap;
-  }
+    }
 
-  .product-detail ul li{
-      background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
-      background-size: 18px;
-      padding-left: 1.7rem;
-      margin: 0.4rem 0;
-      font-weight: 600;
-      opacity: 0.9;
-  }
+    .product-price {
+        margin: 1rem 0;
+        font-size: 1rem;
+        font-weight: 700;
+        display: flex;
+    }
 
-  .product-detail ul li span{
-      font-weight: 400;
-  }
+    .product-price p {
+        margin-right: 1rem;
+        /* Adjust the value as needed */
+    }
 
 
-  .purchase-info{
-      margin: 0px;
-  }
+    .last-price span {
+        /* color: #f64749; */
+        /* RED */
+        color: #808080;
+        text-decoration: line-through;
+    }
 
-  .purchase-info input,
-  .purchase-info .btn{
-      border: 1.5px solid #ddd;
-      border-radius: 25px;
-      text-align: center;
-      padding: 0.45rem 0.8rem;
-      outline: 0;
-      margin-right: 0.2rem;
-      margin-bottom: 1rem;
-  }
+    .new-price span {
+        color: #256eff;
+    }
 
-  .purchase-info input{
-      width: 60px;
-  }
+    .product-detail h2 {
+        text-transform: capitalize;
+        color: #12263a;
+        padding-bottom: 0.6rem;
+    }
 
-  .purchase-info .btn{
-      cursor: pointer;
-      color: #fff;
-  }
+    .product-detail pre {
+        color: #12263a;
+        font-size: 1.2rem;
+        padding: 0.3rem;
+        opacity: 0.8;
+        white-space: pre-wrap;
+    }
 
-  .purchase-info .btn:first-of-type{
-      background: #77cc33;
-  }
+    .product-detail ul li {
+        background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
+        background-size: 18px;
+        padding-left: 1.7rem;
+        margin: 0.4rem 0;
+        font-weight: 600;
+        opacity: 0.9;
+    }
 
-  .purchase-info .btn:last-of-type{
-      background: #77cc33;
-  }
+    .product-detail ul li span {
+        font-weight: 400;
+    }
 
-  .purchase-info .btn:hover{
-      opacity: 0.9;
-  }
 
-  .social-links a{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      color: #000;
-      border: 1px solid #000;
-      margin: 0 0.2rem;
-      border-radius: 50%;
-      text-decoration: none;
-      font-size: 0.8rem;
-      transition: all 0.5s ease;
-  }
+    .purchase-info {
+        margin: 0px;
+    }
 
-  .social-links a:hover{
-      background: #000;
-      border-color: transparent;
-      color: #fff;
-  }
+    .purchase-info input,
+    .purchase-info .btn {
+        border: 1.5px solid #ddd;
+        border-radius: 25px;
+        text-align: center;
+        padding: 0.45rem 0.8rem;
+        outline: 0;
+        margin-right: 0.2rem;
+        margin-bottom: 1rem;
+    }
 
-  @media screen and (min-width: 992px){
+    .purchase-info input {
+        width: 60px;
+    }
 
-      .card{
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-      }
-      .card-wrapper{
-          justify-content: center;
-          align-items: center;
-          width: 1100px;
-      }
-      .product-imgs{
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-content: center;
-      }
-      .product-content{
-          padding-top: 0px;
-      }
+    .purchase-info .btn {
+        cursor: pointer;
+        color: #fff;
+    }
 
-  }
+    .purchase-info .btn:first-of-type {
+        background: #77cc33;
+    }
 
-  .tab {
-      display: none;
-  }
+    .purchase-info .btn:last-of-type {
+        background: #77cc33;
+    }
 
-  .active {
-      display: block;
-  }
+    .purchase-info .btn:hover {
+        opacity: 0.9;
+    }
 
-  #tabs button {
-      background-color: #77cc33;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  }
+    .social-links a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        color: #000;
+        border: 1px solid #000;
+        margin: 0 0.2rem;
+        border-radius: 50%;
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: all 0.5s ease;
+    }
 
-  #tabs button:hover {
-      background-color: #45a049;
-}
+    .social-links a:hover {
+        background: #000;
+        border-color: transparent;
+        color: #fff;
+    }
 
-#description, #reviews {
-  padding: 20px;
-  margin-top:1em;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+    @media screen and (min-width: 992px) {
 
-#description pre{
-    color: #122630;
-    opacity: 90%;
-    font-size: 1.2rem;
-}
+        .card {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
 
-.stars {
-  margin-bottom: 10px;
-}
+        .card-wrapper {
+            justify-content: center;
+            align-items: center;
+            width: 1100px;
+        }
 
-.stars i {
-  color: #ccc;
-  font-size: 24px;
-  cursor: pointer;
-}
+        .product-imgs {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+        }
 
-.stars i.rated, .stars i:hover {
-  color: gold;
-}
+        .product-content {
+            padding-top: 0px;
+        }
 
-.review-container {
-  margin-bottom: 20px;
-}
+    }
 
-form input[type="text"],
-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
+    .tab {
+        display: none;
+    }
 
-form button[type="submit"] {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+    .active {
+        display: block;
+    }
 
-form button[type="submit"]:hover {
-  background-color: #45a049;
-}
+    #tabs button {
+        background-color: #77cc33;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-/* Popup box styles */
-.popup {
-  display: none;
-  position: fixed;
-  z-index: 999;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0,0,0,0.4);
-}
+    #tabs button:hover {
+        background-color: #45a049;
+    }
 
-.popup-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  border-radius: 5px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
+    #description,
+    #reviews {
+        padding: 20px;
+        margin-top: 1em;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-.close {
-  float: right;
-  cursor: pointer;
-}
+    #description pre {
+        color: #122630;
+        opacity: 90%;
+        font-size: 1.2rem;
+    }
 
-.stars i {
-  cursor: pointer;
-}
+    .stars {
+        margin-bottom: 10px;
+    }
 
-.stars .rated {
-  color: gold;
-}
+    .stars i {
+        color: #ccc;
+        font-size: 24px;
+        cursor: pointer;
+    }
 
-.hidden {
-  display: none;
-}
-.review-container {
+    .stars i.rated,
+    .stars i:hover {
+        color: gold;
+    }
+
+    .review-container {
+        margin-bottom: 20px;
+    }
+
+    form input[type="text"],
+    form textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    form button[type="submit"] {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    form button[type="submit"]:hover {
+        background-color: #45a049;
+    }
+
+    /* Popup box styles */
+    .popup {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .popup-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+        float: right;
+        cursor: pointer;
+    }
+
+    .stars i {
+        cursor: pointer;
+    }
+
+    .stars .rated {
+        color: gold;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .review-container {
         height: 400px;
         overflow-y: auto;
         border: 1px solid #ccc;
@@ -435,31 +453,37 @@ form button[type="submit"]:hover {
     .product_row {
         display: flex;
         flex-wrap: wrap;
-       
+
     }
 
     .product-grid {
-    background-color: #fff;
-    font-family: 'Montserrat', sans-serif;
-    text-align: center;
-    padding: 5px; /* Adjust padding */
-    margin: 0 auto 30px; /* Adjust margin */
-    max-width: 250px; /* Adjust max-width for smaller screens */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        background-color: #fff;
+        font-family: 'Montserrat', sans-serif;
+        text-align: center;
+        padding: 5px;
+        /* Adjust padding */
+        margin: 0 auto 30px;
+        /* Adjust margin */
+        max-width: 250px;
+        /* Adjust max-width for smaller screens */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-.product-grid .product-image {
-    position: relative;
-    overflow: hidden;
-    height: 200px; /* Set a fixed height for the product image container */
-}
+    .product-grid .product-image {
+        position: relative;
+        overflow: hidden;
+        height: 200px;
+        /* Set a fixed height for the product image container */
+    }
 
-.product-grid .product-image img {
-    width: 96%;
-    height: 100%; /* Ensure the image fills the container */
-    object-fit: cover; /* Maintain aspect ratio and cover the container */
-}
+    .product-grid .product-image img {
+        width: 96%;
+        height: 100%;
+        /* Ensure the image fills the container */
+        object-fit: cover;
+        /* Maintain aspect ratio and cover the container */
+    }
 
     /* .product-grid .product-image .pic-1 {
         transition: all 0.3s ease 0s;
@@ -536,8 +560,10 @@ form button[type="submit"]:hover {
     }
 
     .product-grid .product-image img {
-        height: 400px; /* Set height for product image */
-        overflow: hidden; /* Hide overflow content */
+        height: 400px;
+        /* Set height for product image */
+        overflow: hidden;
+        /* Hide overflow content */
     }
 
     .product-grid .title {
@@ -545,12 +571,15 @@ form button[type="submit"]:hover {
         font-weight: 500;
         text-transform: capitalize;
         margin: 0 0 8px;
-        overflow:hidden;
+        overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1; /* Limit product name to 2 lines */
-        line-height: 1.2em; /* Ensure consistent line height */
-        max-height: 2.4em; /* Set maximum height for 2 lines */
+        -webkit-line-clamp: 1;
+        /* Limit product name to 2 lines */
+        line-height: 1.2em;
+        /* Ensure consistent line height */
+        max-height: 2.4em;
+        /* Set maximum height for 2 lines */
         margin: 0 0 8px;
         text-overflow: ellipsis;
     }
@@ -581,205 +610,259 @@ form button[type="submit"]:hover {
     }
 
     @media screen and (max-width: 1000px) {
-h2.product-title{
-  font-size: 2em;
-  margin: 0;
-}
+        h2.product-title {
+            font-size: 2em;
+            margin: 0;
+        }
 
         .col-md-2 {
-        /* Adjust to display two products per row */
-        max-width: 50%; /* Adjust maximum width for smaller screens */
-        padding-left: 0%;
-        padding-right: 0%;
-    }
-    .purchase-info input,
-  .purchase-info .btn{
-      border: 1.5px solid #ddd;
-      border-radius: 0px;
-      text-align: center;
-      padding: 0.45rem 0.8rem;
-      outline: 0;
-      margin-right: 0.2rem;
-      margin-bottom: 1rem;
-      width: 100%;
-  }
+            /* Adjust to display two products per row */
+            max-width: 50%;
+            /* Adjust maximum width for smaller screens */
+            padding-left: 0%;
+            padding-right: 0%;
+        }
 
-    .product-detail{
-        display: block; /* product detail visibility */
-      }
-     pre{
-      font-size: 0.9rem;
-      padding: 0.3rem;
-      opacity: 0.8;
-      white-space: pre-wrap;
-  }
+        .purchase-info input,
+        .purchase-info .btn {
+            border: 1.5px solid #ddd;
+            border-radius: 0px;
+            text-align: center;
+            padding: 0.45rem 0.8rem;
+            outline: 0;
+            margin-right: 0.2rem;
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .product-detail {
+            display: block;
+            /* product detail visibility */
+        }
+
+        pre {
+            font-size: 0.9rem;
+            padding: 0.3rem;
+            opacity: 0.8;
+            white-space: pre-wrap;
+        }
+
+        .product-grid {
+            padding: 5px;
+            /* Reduce padding for product grid */
+            margin: 0 5px 10px;
+            /* Adjust margin to reduce space between products */
+            max-width: 100%;
+            /* Adjust max-width for smaller screens */
+        }
+
+        .product_row {
+            padding: 0px;
+            flex-wrap: wrap;
+
+        }
+
+        .product-grid .product-image {
+            height: 150px;
+            /* Adjust height for product image */
+        }
+
+        .product-grid .product-content {
+            text-align: center;
+            /* Center-align text */
+        }
+
+        .product-grid .title {
+            font-size: 14px;
+            /* Adjust font size for product title */
+            margin-bottom: 5px;
+            /* Add some space below product title */
+        }
+
+        .product-grid .price {
+            font-size: 14px;
+            /* Adjust font size for product price */
+
+        }
+
+        .container {
+            margin: 0;
+            /* Remove default margin for container */
+        }
+    }
+
+    h2 pre {
+        font-family: Poly, serif;
+        font-weight: 400;
+        font-style: normal;
+    }
 
     .product-grid {
-        padding: 5px; /* Reduce padding for product grid */
-        margin: 0 5px 10px; /* Adjust margin to reduce space between products */
-        max-width: 100%; /* Adjust max-width for smaller screens */
+        position: relative;
     }
-    .product_row{
-        padding: 0px;
-        flex-wrap:wrap;
 
+    .product-image {
+        position: relative;
     }
-        .product-grid .product-image {
-            height: 150px; /* Adjust height for product image */
-        }
-        .product-grid .product-content {
-            text-align: center; /* Center-align text */
-        }
-        .product-grid .title {
-            font-size: 14px; /* Adjust font size for product title */
-            margin-bottom: 5px; /* Add some space below product title */
-        }
-        .product-grid .price {
-            font-size: 14px; /* Adjust font size for product price */
 
+    .add-to-cart-icon {
+        position: absolute;
+        bottom: 10px;
+        /* Adjust as needed */
+        right: 10px;
+        /* Adjust as needed */
+        background: rgba(255, 255, 255, 0.7);
+        /* Optional: add background for better visibility */
+        border-radius: 50%;
+        padding: 5px;
+        /* Adjust as needed */
+        color: #333;
+        /* Change color as needed */
+        text-align: center;
+        width: 30px;
+        height: 30px;
+        line-height: 20px;
+        /* Align icon vertically */
+        font-size: 16px;
+        /* Adjust size as needed */
     }
-    .container {
-            margin: 0; /* Remove default margin for container */
-        }
-}
-h2 pre {
-    font-family: Poly, serif;
-      font-weight: 400;
-      font-style: normal;
-}
-.product-grid {
-    position: relative;
-}
 
-.product-image {
-    position: relative;
-}
+    .add-to-cart-icon:hover {
+        color: #fff;
+        /* Change color on hover */
+        background: #333;
+        /* Change background on hover */
+    }
 
-.add-to-cart-icon {
-    position: absolute;
-    bottom: 10px; /* Adjust as needed */
-    right: 10px; /* Adjust as needed */
-    background: rgba(255, 255, 255, 0.7); /* Optional: add background for better visibility */
-    border-radius: 50%;
-    padding: 5px; /* Adjust as needed */
-    color: #333; /* Change color as needed */
-    text-align: center;
-    width: 30px;
-    height: 30px;
-    line-height: 20px; /* Align icon vertically */
-    font-size: 16px; /* Adjust size as needed */
-}
+    .radiocontainer {
+        display: inline-flex;
 
-.add-to-cart-icon:hover {
-    color: #fff; /* Change color on hover */
-    background: #333; /* Change background on hover */
-}
-.radiocontainer {
-  display: inline-flex;
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 5px;
+    }
 
-  align-items: center;
-  justify-content: space-evenly;
-  border-radius: 5px;
-}
-.radiocontainer .selection {
-  background: #fff;
-  height: 100%;
-  /* width: 100%; */
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin: 0 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 0 10px;
-  border: 2px solid lightgrey;
-  transition: all 0.3s ease;
-}
-.radiocontainer .selection .circle {
-  display: none; /* Hide the circle */
-}
-.radiocontainer .selection::before {
-  content: "";
-  height: 20px;
-  width: 20px;
-  background: #d9d9d9;
-  border-radius: 50%;
-  position: relative;
-  display: block;
-}
-.radiocontainer .selection::before {
-  position: absolute;
-  content: "";
-  top: 4px;
-  left: 4px;
-  width: 12px;
-  height: 12px;
-  background: #ff69b4;
-  border-radius: 50%;
-  opacity: 0;
-  transform: scale(1.5);
-  transition: all 0.3s ease;
-}
-input[type="radio"] {
-  display: none;
-}
-input[type="radio"]:checked + .selection {
-  border-color: #ff69b4;
-  background: #ff69b4;
-}
-input[type="radio"]:checked + .selection::before {
-  background: #fff;
-}
-input[type="radio"]:checked + .selection::before {
-  opacity: 1;
-  transform: scale(1);
-}
-.radiocontainer .selection span {
-  font-size: 15px;
-  color: #808080;
-}
-input[type="radio"]:checked + .selection span {
-  color: #fff;
-}
+    .radiocontainer .selection {
+        background: #fff;
+        height: 100%;
+        /* width: 100%; */
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        margin: 0 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        padding: 0 10px;
+        border: 2px solid lightgrey;
+        transition: all 0.3s ease;
+    }
 
+    .radiocontainer .selection .circle {
+        display: none;
+        /* Hide the circle */
+    }
+
+    .radiocontainer .selection::before {
+        content: "";
+        height: 20px;
+        width: 20px;
+        background: #d9d9d9;
+        border-radius: 50%;
+        position: relative;
+        display: block;
+    }
+
+    .radiocontainer .selection::before {
+        position: absolute;
+        content: "";
+        top: 4px;
+        left: 4px;
+        width: 12px;
+        height: 12px;
+        background: #ff69b4;
+        border-radius: 50%;
+        opacity: 0;
+        transform: scale(1.5);
+        transition: all 0.3s ease;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"]:checked+.selection {
+        border-color: #ff69b4;
+        background: #ff69b4;
+    }
+
+    input[type="radio"]:checked+.selection::before {
+        background: #fff;
+    }
+
+    input[type="radio"]:checked+.selection::before {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .radiocontainer .selection span {
+        font-size: 15px;
+        color: #808080;
+    }
+
+    input[type="radio"]:checked+.selection span {
+        color: #fff;
+    }
+
+    .oft_tag{
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgb(224, 51, 51);
+        color: white;
+        padding: 10px 5px;
+        z-index: 999;
+    }
 
 </style>
-   <div class="container">
+<div class="container">
     <!-- Products End -->
-    <div class = "card-wrapper">
-        <div class = "card">
-          <!-- card left -->
-          <div class = "product-imgs">
-            <div class = "img-display">
+    <div class="card-wrapper">
+        <div class="card">
+            <!-- card left -->
+            <div class="product-imgs">
+                <div class="img-display">
 
-              <div class = "img-showcase">
-                <img src = "/media/{{product_details.images_set.first.images}}" alt = "product image">
+                    <div class="img-showcase" style="position: relative;">
+                        {% if product_details.stock == 0 %}
+                            <span class="oft_tag">Out of Stock</span>
+                        {% endif %}
+                        <img src="/media/{{product_details.images_set.first.images}}" alt="product image">
 
-              </div>
+                    </div>
+                </div>
+                <div class="img-select">
+                    {% for i in prod_image %}
+                    <div class="img-item">
+                        <a href="#" data-id="{{ forloop.counter }}">
+                            <img src="/media/{{ i.images }}" alt="{{ i.product }}" style="width: 120px; height: 120px;">
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+
+
             </div>
-            <div class="img-select">
-              {% for i in prod_image %}
-              <div class="img-item">
-                  <a href="#" data-id="{{ forloop.counter }}">
-                      <img src="/media/{{ i.images }}" alt="{{ i.product }}" style="width: 120px; height: 120px;">
-                  </a>
-              </div>
-              {% endfor %}
-          </div>
-          
-          
-          </div>
-          <!-- card right -->
-          <div class = "product-content">
-            <h2 class = "product-title" style="    font-family: Poly, serif;
+            <!-- card right -->
+            <div class="product-content">
+                <h2 class="product-title" style="    font-family: Poly, serif;
             font-weight: 400;
             font-style: normal;">{{product_details.product_name}}</h2>
-            {% if product_details.is_deleted %}
-            Product is removed permanently
-            {% elif not product_details.is_active %}
-            Product is not available
-            {% else %}
-            <!-- <div class = "product-rating" >
+                {% if product_details.is_deleted %}
+                Product is removed permanently
+                {% elif not product_details.is_active %}
+                Product is not available
+                {% else %}
+                <!-- <div class = "product-rating" >
                 {% for base in base_rate %}
                 {% if base <= overall_ratiing %}
               <i class = "fas fa-star" style="color: gold;"></i>
@@ -788,53 +871,66 @@ input[type="radio"]:checked + .selection span {
           {% endif %}
       {% endfor %}
     </div> -->
-      
-   <div class = "product-price" style="margin-bottom: 0px;">
-              <p id="np" class = "new-price" style="margin-bottom: 0px; color: #256eff"><span id="price" tyle="    font-family: Poly, serif;
+
+                <div class="product-price" style="margin-bottom: 0px;">
+                    <p id="np" class="new-price" style="margin-bottom: 0px; color: #256eff"><span id="price" tyle="    font-family: Poly, serif;
                 font-weight: 400;
-                font-style: normal;" >₹{{product_details.price}}</span></p>
-              <p id="lp" class = "last-price" style="margin-bottom: 0px;"><del id="max-cost" tyle="    font-family: Poly, serif;
+                font-style: normal;">₹{{product_details.price}}</span></p>
+                    <p id="lp" class="last-price" style="margin-bottom: 0px;"><del id="max-cost" tyle="    font-family: Poly, serif;
                 font-weight: 400;
                 font-style: normal;">₹{{product_details.max_price}}</del></p>
-            </div>
+                </div>
 
-              <p>{{product_details.}}</p>
-
-            <div class = "purchase-info">
-              <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform" style="margin-bottom: 0px;margin-top: 0px;" method="post">
-                {%csrf_token%}
-              {%if product_details.product_choices_set.all%}
-              <div class="radiocontainer" style="margin-top: 15px;">
-                {% for i in product_details.product_choices_set.all %}
-                  <input type="radio" id="option{{ forloop.counter }}" name="verient" data-max-cost="{{ i.options_max_cost }}" data-cost="{{ i.options_cost }}" value="{{ i.id }}" class="radio-input">
-                  <label for="option{{ forloop.counter }}" class="selection">
-                    <div class="circle"></div>
-                    <span>{{ i.product_options }}</span>
-                  </label>
-                {% endfor %}
-
-            </div>
-            <br>
-                {%endif%}
-                  <button type = "button"  class = "btn" onclick="checkout('addtocart')" style="margin-bottom: 0rem; ">Add to Cart <i class = "fas fa-shopping-cart"></i></button>
-                <!-- <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button> -->
-            </form>
-                <div class = "product-detail">
-              <h2 style="    font-family: Poly, serif;
+                <div class="purchase-info">
+                    <form action="{% url 'add_to_cart' product_details.id %}" id="checkoutform"
+                        style="margin-bottom: 0px;margin-top: 0px;" method="post">
+                        {%csrf_token%}
+                        {% if product_details.product_choices_set.all %}
+                            <div class="radiocontainer" style="margin-top: 15px;">
+                                {% for i in product_details.product_choices_set.all %}
+                                    {% if forloop.first %}
+                                        <!-- This will mark the first radio button as checked by default -->
+                                        <input type="radio" id="option{{ forloop.counter }}" name="verient"
+                                               data-max-cost="{{ i.options_max_cost }}" data-cost="{{ i.options_cost }}"
+                                               value="{{ i.id }}" class="radio-input" checked>
+                                    {% else %}
+                                        <input type="radio" id="option{{ forloop.counter }}" name="verient"
+                                               data-max-cost="{{ i.options_max_cost }}" data-cost="{{ i.options_cost }}"
+                                               value="{{ i.id }}" class="radio-input">
+                                    {% endif %}
+                                    <label for="option{{ forloop.counter }}" class="selection">
+                                        <div class="circle"></div>
+                                        <span>{{ i.product_options }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                            <br>
+                        {% endif %}
+                        {% if product_details.stock > 0 %}
+                        <button type="button" class="btn" onclick="checkout('addtocart')"
+                            style="margin-bottom: 0rem; ">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+                        {% else %}
+                        <button disabled type="button" class="btn"
+                            style="margin-bottom: 0rem; ">Out of Stock<i class="fas fa-shopping-cart"></i></button>
+                        {% endif %}
+                        <!-- <button type = "button"  class = "btn" onclick="checkout('checkout')">Buy now</button> -->
+                    </form>
+                    <div class="product-detail">
+                        <h2 style="    font-family: Poly, serif;
               font-weight: 400;
               font-style: normal;">Product Description: </h2>
-              <pre style="    font-family: Poly, serif;
+                        <pre style="    font-family: Poly, serif;
               font-weight: 400;
               font-style: normal;">{{product_details.description}}</pre>
+                    </div>
+                </div>
+                {%endif%}
             </div>
-            </div>
-            {%endif%}
-          </div>
         </div>
-      </div>
+    </div>
 
-    
-      <div id="description" class="tab active">
+
+    <div id="description" class="tab active">
         <!-- Description area -->
         <h2 style="        font-family: Poly, serif;
         font-weight: 400;
@@ -849,17 +945,17 @@ margin-top: 0px;
 margin-bottom: 0px;
 margin-top: 0px;
 ">{{product_details.product_information}}</pre>
-      </div>
-    
+    </div>
 
-      
-      <div class="container" style="padding-left: 0.5em; padding-right: 0px;">  
+
+
+    <div class="container" style="padding-left: 0.5em; padding-right: 0px;">
         <div class="section-header d-flex flex-wrap align-items-center justify-content-between">
-          <h2 class="section-title" style="    font-family: Poly, serif;
+            <h2 class="section-title" style="    font-family: Poly, serif;
           font-weight: 400;
           font-style: normal;">recommended products</h2>
-          <hr>
-      </div>
+            <hr>
+        </div>
         <div class="product_row">
             {% for product in recomend %}
             <div class="col-md-2">
@@ -873,8 +969,10 @@ margin-top: 0px;
                         </a>
                     </div>
                     <div class="product-content">
-                        <h3 class="title"><a href="{% url 'product_details' product.id %}">{{ product.product_name }}</a></h3>
-                        <div class="price">{{ product.price }} <del style="color: #555;">{{ product.max_price }}</del> </div>
+                        <h3 class="title"><a href="{% url 'product_details' product.id %}">{{ product.product_name
+                                }}</a></h3>
+                        <div class="price">{{ product.price }} <del style="color: #555;">{{ product.max_price }}</del>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -882,9 +980,9 @@ margin-top: 0px;
         </div>
     </div>
 </div>
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <script>
-        function openTab(tabName) {
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function openTab(tabName) {
         var i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tab");
         for (i = 0; i < tabcontent.length; i++) {
@@ -892,60 +990,58 @@ margin-top: 0px;
         }
         document.getElementById(tabName).style.display = "block";
     }
-    
-          // jQuery code for image slider, tabs, and review functionality
-          $(document).ready(function() {
-            $('.img-select a').click(function(event) {
+
+    // jQuery code for image slider, tabs, and review functionality
+    $(document).ready(function () {
+        $('.img-select a').click(function (event) {
             event.preventDefault();
             var imageUrl = $(this).find('img').attr('src');
             $('.img-showcase img').attr('src', imageUrl);
         });
-              $('[data-tab]').click(function() {
-                  var tabName = $(this).data('tab');
-                  $('.tab').hide();
-                  $('#' + tabName).show();
-              });
-          });
-          $(document).ready(function() {
-
-});
-
-      </script>
-      
-      <script>
-        function checkout(action) {
-            var form = document.getElementById('checkoutform');
-            if (action === 'addtocart') {
-                // Change the form action URL for action 1
-                form.action = "{% url 'add_to_cart' product_details.id %}";
-            } else if (action === 'checkout') {
-                // Change the form action URL for action 2
-                form.action = "{% url 'checkout_product' product_details.id %}";
-            }
-            // Submit the form
-            form.submit();
-        }
-    </script>
-    <script>
-$(document).ready(function(){
-    $('.radio-input').change(function(){
-        var cost = $(this).data('cost');
-        cost = '₹'+cost
-        $('#price').text(cost);
+        $('[data-tab]').click(function () {
+            var tabName = $(this).data('tab');
+            $('.tab').hide();
+            $('#' + tabName).show();
+        });
     });
-});
-    </script>
+    $(document).ready(function () {
 
-    <script>
-    $(document).ready(function(){
-        $('.radio-input').change(function(){
+    });
+
+</script>
+
+<script>
+    function checkout(action) {
+        var form = document.getElementById('checkoutform');
+        if (action === 'addtocart') {
+            // Change the form action URL for action 1
+            form.action = "{% url 'add_to_cart' product_details.id %}";
+        } else if (action === 'checkout') {
+            // Change the form action URL for action 2
+            form.action = "{% url 'checkout_product' product_details.id %}";
+        }
+        // Submit the form
+        form.submit();
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('.radio-input').change(function () {
+            var cost = $(this).data('cost');
+            cost = '₹' + cost
+            $('#price').text(cost);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.radio-input').change(function () {
             var cost = $(this).data('max-cost');
-            cost = '₹'+cost
+            cost = '₹' + cost
             $('#max-cost').text(cost);
         });
     });
-        </script>
-    
-  </div>
-</section>
- {% endblock %}
+</script>
+
+{% endblock %}

@@ -77,5 +77,6 @@ urlpatterns = [
 
     #===================ajax=====================================
     path('test-rzp/',views.rzp_test,name='test_rzp'),
+    path('update_cart/<int:prod_id>/', views.update_cart, name='update_cart'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

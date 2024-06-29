@@ -317,6 +317,7 @@ button{
                 {%else%}
                 <input type="text" name="product_id" value="{{product.id}}" hidden>
                 <input type="number" style="width: 100px;" class="quantity" name="quantity{{product.id}}" min="1" value="1">
+
                 <p><input type="text" class="price" value="{{product.price}}"  hidden>{{product.price}}</p>
                 {% endif %}
 
@@ -342,7 +343,7 @@ button{
 
                     {%else%}
                     <input type="text" name="product_id" value="{{cart_item.products.id}}" hidden>
-                    <input type="number" style="width: 100px;" class="quantity" name="quantity{{cart_item.products.id}}" min="1" value="1">
+                    <input type="number" style="width: 100px;" class="quantity" name="quantity{{cart_item.products.id}}" min="1" value="1" disabled>
                     <p><input type="text" class="price" value="{{cart_item.products.price}}"  hidden>{{cart_item.products.price}}</p>
                     {% endif %}
                   </div>

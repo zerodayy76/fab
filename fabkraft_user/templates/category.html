@@ -150,6 +150,16 @@
         }
     }
 
+    .oft_tag{
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: rgb(224, 51, 51);
+        color: white;
+        padding: 5px;
+        z-index: 999;
+    }
+
 </style>
 <div class="container">
     <div class="section-header d-flex flex-wrap align-items-center justify-content-between" style="padding-bottom: 0px;margin-bottom: 0px;">
@@ -164,7 +174,10 @@
         {% if not i.is_deleted and i.is_active %}
         <div class="col-md-2 col-sm-6">
             <div class="product-grid">
-                <div class="product-image">
+                <div class="product-image" style="position: relative;">
+                    {% if i.stock == 0 %}
+                            <span class="oft_tag">Out of Stock</span>
+                    {% endif %}
                     <a href="{% url 'product_details' i.id %}" class="image">
                         <img class="pic-1" src="/media/{{i.images_set.first.images}}" class="lazy">
                     </a>
