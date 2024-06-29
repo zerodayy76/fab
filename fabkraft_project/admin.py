@@ -88,7 +88,7 @@ class OrderProductsInline(admin.TabularInline):
         return False
 @admin.register(orders)
 class OrdersAdmin(admin.ModelAdmin):
-    readonly_fields = ['user', 'date','address','pincode','city','state','phno','email','area','district','shipping_cost','tax_cost','total_cost','pay_id','payment_method','is_paid','is_canceled','cancel_reason']
+    readonly_fields = ['name','rzp_order_id',"payment_sts",'user', 'date','address','pincode','city','state','phno','email','area','district','shipping_cost','tax_cost','total_cost','pay_id','payment_method','is_paid','is_canceled','cancel_reason',]
     inlines = [OrderProductsInline]
     list_display = ["id","get_first_image","name","status",'pay_id']
     search_fields = ['id', 'name', 'status', 'pay_id']  # Add fields you want to search
