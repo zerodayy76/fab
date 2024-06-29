@@ -868,6 +868,7 @@ def update_authenticated_cart(cart_, qun_list, request):
     for item in cart_:
         if item.products.product_choices_set.all().exists():
             verient_id = request.POST.get(f"verients{item.id}")
+
             item.verients = product_choices.objects.get(id=int(verient_id))
             item.save()
     update_session_cart(request, qun_list)
